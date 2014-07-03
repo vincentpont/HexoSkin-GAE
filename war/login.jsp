@@ -61,9 +61,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-				<a class="navbar-brand" href="index.jsp" style="font-size:18pt;">HexoSkin</a>
+				<a class="navbar-brand" href="index.jsp">HexoSkin</a>
 			</div>
-			<div class="navbar-collapse collapse" style="font-size:18pt;">
+			<div class="navbar-collapse collapse">
 				
 				<form class="navbar-form navbar-right"></form>
 			</div>
@@ -73,7 +73,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar" style="font-size:16pt;">
+          <ul class="nav nav-sidebar">
 	            <li class="active"><a href="index.jsp">Dashboard</a></li>
             <li><a href="compare.jsp">Comparer</a></li>
             <li><a href="map.jsp">Carte</a></li>
@@ -102,6 +102,19 @@
 
         </div>
       </div>
+      
+      <div class="row">
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		<hr>
+		<footer>
+			<p>
+				<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
+					réservés.</b>
+			</p>
+		</footer>
+		</div>
+	</div>
+      
     </div>
 
     <!-- Bootstrap core JavaScript

@@ -9,7 +9,8 @@
 <%@ page import="restHexoSkin.RestInvokerHexo"%>
 <%@ page import="java.util.Iterator, java.util.List, java.util.Date;"%>
 
-<!-- Placez ce script JavaScript asynchrone juste devant votre balise </body> -->
+
+<!-- LOGIN Google</body> -->
 <script type="text/javascript">
 	(function() {
 		var po = document.createElement('script');
@@ -118,12 +119,44 @@
 
 
 <script>
-	function logout() {
-		// A AMELIORER EN PRODUCTION
-		//document.location.href = "https://accounts.google.com/Logout?service=profiles&continue=http://localhost:8080/HexoSkin-JSP/index.jsp";
-		document.location.href = "https://accounts.google.com/Logout?service=profiles";
-		//window.location = "login.jsp";
+function logout() {
+	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://8-dot-logical-light-564.appspot.com/login.jsp";
+}
+</script>
+
+<script
+	src="https://maps.googleapis.com/maps/api/js?v=3?key={AIzaSyA9MSARpM9GdjunV4sR5mxpOuD3pfkyldc}">
+	
+</script>
+<script>
+	var map;
+	function initialize() {
+		var mapOptions = {
+			zoom : 3,
+			center : new google.maps.LatLng(0, -180),
+			mapTypeId : google.maps.MapTypeId.TERRAIN
+		};
+
+		var map = new google.maps.Map(document.getElementById('map-canvas'),
+				mapOptions);
+
+		var flightPlanCoordinates = [
+				new google.maps.LatLng(37.772323, -122.214897),
+				new google.maps.LatLng(21.291982, -157.821856),
+				new google.maps.LatLng(-18.142599, 178.431),
+				new google.maps.LatLng(-27.46758, 153.027892) ];
+		var flightPath = new google.maps.Polyline({
+			path : flightPlanCoordinates,
+			geodesic : true,
+			strokeColor : '#FF0000',
+			strokeOpacity : 1.0,
+			strokeWeight : 2
+		});
+
+		flightPath.setMap(map);
 	}
+
+	google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 
 <meta charset="utf-8">
@@ -164,9 +197,9 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.jsp" style="font-size:18pt;">HexoSkin</a>
+				<a class="navbar-brand" href="index.jsp">HexoSkin</a>
 			</div>
-			<div class="navbar-collapse collapse" style="font-size:18pt;">
+			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="profile.jsp">Profile</a></li>
 					<li><a href="javascript:logout();">Logout</a></li>
@@ -180,7 +213,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
-				<ul class="nav nav-sidebar" style="font-size:16pt;">
+				<ul class="nav nav-sidebar titreNavigation">
 					<li class="active"><a href="index.jsp">Dashboard</a></li>
 					<li><a href="compare.jsp">Comparer</a></li>
 					<li><a href="map.jsp">Carte</a></li>
@@ -203,8 +236,8 @@
 				<h1 class="page-header">Dernière séance</h1>
 <br>
 				<h3>
-					  <span  style="font-size:25pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
-					  <span style="font-size:18pt;" > <% out.print(lastWorkout.substring(0, 10));  %> à  <% out.print(lastWorkout.substring(11, 16));  %>  </span>
+					  <span  style="font-size:23pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
+					  <span style="font-size:16pt;" > <% out.print(lastWorkout.substring(0, 10));  %> à  <% out.print(lastWorkout.substring(11, 16));  %>  </span>
 				</h3>
 				
 <br>
@@ -212,29 +245,29 @@
 				<div class="row" >
 				
 					<div  title="Temps" class="col-md-2">
-					  <span  style="font-size:25pt;" class="glyphicon glyphicon-time"></span> 
-					  <span style="font-size:18pt; font-family:Verdana;"> &nbsp; <% out.print(list.get(1)); %> </span>
+					  <span  style="font-size:21pt;" class="glyphicon glyphicon-time"></span> 
+					  <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(list.get(1)); %> </span>
 					 </div>
 
-					<div title="Distance" class="col-md-2">
-					<span  style="font-size:25pt;" class="glyphicon glyphicon-sort"></span> 
-					 <span style="font-size:18pt; font-family:Verdana;"> &nbsp;  <% out.print(list.get(2)); %> m </span>
+					<div title="Distance en mètre" class="col-md-2">
+					<span  style="font-size:21pt;" class="glyphicon glyphicon-sort"></span> 
+					 <span style="font-size:14pt; font-family:Verdana;"> &nbsp;  <% out.print(list.get(2)); %> </span>
 					
 					</div>
 
 					<div title="Calories brûlées" class="col-md-2">
-					<span style="font-size:25pt;" class="glyphicon glyphicon-fire"></span>	
-					 <span style="font-size:18pt; font-family:Verdana;"> &nbsp; <% out.print(list.get(3)); %> ca</span>
+					<span style="font-size:21pt;" class="glyphicon glyphicon-fire"></span>	
+					 <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(list.get(3)); %></span>
 					</div>
 
-					<div title="Vitesse moyenne" class="col-md-2">
-					<span style="font-size:25pt;" class="glyphicon glyphicon-flash"></span>	
-					 <span style="font-size:18pt; font-family:Verdana;">  <% out.print(vitesse); %> km/h</span>	
+					<div title="Vitesse moyenne en km/h" class="col-md-2">
+					<span style="font-size:21pt;" class="glyphicon glyphicon-flash"></span>	
+					 <span style="font-size:14pt; font-family:Verdana;">  <% out.print(vitesse); %> </span>	
 					</div>
 					
 				    <div title="Mètre/min moyen" class="col-md-2">
-					<span style="font-size:25pt;" class="glyphicon glyphicon-signal"></span>	
-				    <span style="font-size:18pt; font-family:Verdana;"> &nbsp;<% out.print(list.get(4)); %> m/min</span>	
+					<span style="font-size:21pt;" class="glyphicon glyphicon-signal"></span>	
+				    <span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(list.get(4)); %></span>	
 					</div>
 					
 					</div>
@@ -261,32 +294,48 @@
 				<div class="row" >
 				
 					<div title="Pulsation" class="col-md-2">
-					<span  style="font-size:25pt;" class="glyphicon glyphicon-heart"></span>						
-					<span style="font-size:18pt; font-family:Verdana;"> &nbsp;<% out.print(listPulsation.get(listPulsation.size()-1));  %> </span>	
+					<span  style="font-size:21pt;" class="glyphicon glyphicon-heart"></span>						
+					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(listPulsation.get(listPulsation.size()-1));  %> </span>	
 					</div>
 
 					<div title="Pas" class="col-md-2">
-					<span style="font-size:25pt;" class="glyphicon glyphicon-road"></span>						
-				    <span style="font-size:18pt; font-family:Verdana;"> &nbsp; <% out.print(listSteps.get(listSteps.size()-1));  %> </span>	
+					<span style="font-size:21pt;" class="glyphicon glyphicon-road"></span>						
+				    <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(listSteps.get(listSteps.size()-1));  %> </span>	
 					</div>
 					
 					<div title="Volume Tidal" class="col-md-2">
-					<span  style="font-size:25pt;" class="glyphicon glyphicon-stats"></span>						
-					<span style="font-size:18pt; font-family:Verdana;"> &nbsp;<%  out.print(listVolumeTidal.get(listVolumeTidal.size()-1));  %> </span>	
+					<span  style="font-size:21pt;" class="glyphicon glyphicon-stats"></span>						
+					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<%  out.print(listVolumeTidal.get(listVolumeTidal.size()-1));  %> </span>	
 					</div>
 					
 					<div title="Breathing Rate" class="col-md-2">
-					<span  style="font-size:25pt;" class="glyphicon glyphicon-transfer"></span>						
-					<span style="font-size:18pt; font-family:Verdana;"> &nbsp;<% out.print(listBreathing.get(listBreathing.size()-1));  %> </span>	
+					<span  style="font-size:21pt;" class="glyphicon glyphicon-transfer"></span>						
+					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(listBreathing.get(listBreathing.size()-1));  %> </span>	
 					</div>
 					
 				    <div title="Minute Ventilation " class="col-md-2">
-					<span  style="font-size:25pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
-					<span style="font-size:18pt; font-family:Verdana;"> &nbsp;<%  out.print(listVentilation.get(listVentilation.size()-1));  %>  </span>	
+					<span  style="font-size:21pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
+					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<%  out.print(listVentilation.get(listVentilation.size()-1));  %>  </span>	
 					</div>
 					
 
 				</div>
+			</div>
+			
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<br>
+				<h1 class="page-header">Carte</h1>
+
+				<br>
+				<div class="row placeholders">
+
+				<div id="map-canvas" style="height: 500px; width: 700px"></div>
+
+					
+				</div>
+
+
+
 			</div>
 
 
@@ -299,12 +348,12 @@
 				<br>
 				<div class="row placeholders">
 					<div class="col-xs-6">
-						<div id="chart_div1" style="width: 600px; height: 400px;"></div>
+						<div id="chart_div1" style="width: 500px; height: 350px;"></div>
 						<h4>Performance</h4>
 						<span class="text-muted">ECG / Respiration</span>
 					</div>
 					<div class="col-xs-6">
-						<div id="chart_div2" style="width: 600px; height: 400px;"></div>
+						<div id="chart_div2" style="width: 500px; height: 350px;"></div>
 
 						<h4>Accélération</h4>
 						<span class="text-muted"></span>
@@ -312,14 +361,13 @@
 
 				</div>
 
-
-
 			</div>
 
 		</div>
-	</div>
+	
 
-	<div class="container">
+<div class="row">
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<hr>
 		<footer>
 			<p>
@@ -327,8 +375,10 @@
 					réservés.</b>
 			</p>
 		</footer>
+		</div>
 	</div>
-
+	
+</div>
 
 	<span id="signinButton" style="display: none"> <span
 		class="g-signin" data-callback="signinCallback"
