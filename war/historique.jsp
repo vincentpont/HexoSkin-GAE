@@ -287,7 +287,7 @@
 								<th> <span style="font-size:18pt;" class="glyphicon glyphicon-time"> Time</span> </th>
 								<th> <span style="font-size:18pt;" class="glyphicon glyphicon-sort"> Distance</span> </th>
 								<th> <span style="font-size:18pt;" class="glyphicon glyphicon-fire"> Calories</span> </th>
-								<th> <span style="font-size:18pt;" class="glyphicon glyphicon-signal"> Mètre/min</span> </th>
+								<th> <span style="font-size:18pt;" class="glyphicon glyphicon-signal"> Vitesse</span> </th>
 							</tr>
 						</thead>
 						<tbody style="font-size:12pt; font-family:Verdana;">
@@ -295,7 +295,7 @@
 							<%
 								RestInvokerDatastore rest =  new RestInvokerDatastore();
 							    List<String> list = rest.getAllWorkoutByEmail("vincentpont@gmail.com");
-							    
+								
 							    // To know number of workout for my table 
 								int countRows = rest.countRows;
 							    int rows = 0 ;
@@ -310,8 +310,7 @@
 								    for(int j = 0 ; j < 5 ;j++) {
 							     	out.print("<TD>" + list.get(rows) + "</TD>");
 							     	rows++;
-									}
-								    	
+									}	
 							     out.print("</TR>");
 							    }
 							%>

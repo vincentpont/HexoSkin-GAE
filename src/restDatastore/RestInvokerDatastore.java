@@ -2,13 +2,10 @@ package restDatastore;
 
 import helper.DatesComparator;
 import helper.withComparator;
-
 import java.io.BufferedReader;
-
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -16,20 +13,17 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import org.json.JSONException;
 
-
 /**
- * Author : Pont Vincent
- * Class : This class do REST requests to the datastore to get data saved from android client.
- * Date : 09.06.2014
- * Last modification : 25.06.2014
- * Travail de bachelor 2014
+ * Author : Pont Vincent Class : This class do REST requests to the datastore to
+ * get data saved from android client. Date : 09.06.2014 Last modification :
+ * 25.06.2014 Travail de bachelor 2014
  */
 
 public class RestInvokerDatastore {
@@ -38,13 +32,16 @@ public class RestInvokerDatastore {
 	private final String password = "volcom888";
 	private String userpass;
 	private String basicAuth;
-	private String url;
 	private JSONObject json;
 	public int countRows = 0;
-	private String StringLatitudes ;
-	private String StringLongitudes ;
-	private String StringVitesses  ;
-	private String StringAltitudes ;
+	private String StringLatitudes;
+	private String StringLongitudes;
+	private String StringVitesses;
+	private String StringAltitudes;
+	private List<Double> listLatitudes = new ArrayList<Double>();
+	private List<Double> listLongitudes = new ArrayList<Double>();
+	private List<Double> listVitesses = new ArrayList<Double>();
+	private List<Double> listAltitudes = new ArrayList<Double>();
 
 	// Constructor
 	public RestInvokerDatastore() {
@@ -53,7 +50,6 @@ public class RestInvokerDatastore {
 		userpass = username + ":" + password;
 		basicAuth = "Basic "
 				+ new String(new Base64().encode(userpass.getBytes()));
-		System.out.println(basicAuth);
 	}
 
 	/**
@@ -72,7 +68,7 @@ public class RestInvokerDatastore {
 				+ "&Email="
 				+ URLEncoder.encode(email, "UTF-8");
 
-		List list = new ArrayList();
+		List<String> list = new ArrayList<String>();
 
 		try {
 
@@ -97,7 +93,6 @@ public class RestInvokerDatastore {
 				json = new JSONObject(jsonText);
 
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -141,7 +136,6 @@ public class RestInvokerDatastore {
 			urlRequest = "https://logical-light-564.appspot.com/_ah/api/helloworld/v1/jsonobject/getDatasWorkoutByEmail?Email="
 					+ URLEncoder.encode(email, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -169,9 +163,7 @@ public class RestInvokerDatastore {
 			try {
 				json = new JSONObject(jsonText);
 
-
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -204,23 +196,19 @@ public class RestInvokerDatastore {
 		return list;
 
 	}
-	
+
 	/**
 	 * Method to return all data of the map by email and date
 	 * 
 	 * @Param: String email, String date
 	 * 
-	 * @Return: JSONObject containing a JSONArray with all the data : 
-	 * List of latitudes, list of longitudes, list of speed and altitudes
 	 */
-	public List getDataMap(String email)
-			throws UnsupportedEncodingException {
+	public void getDataMap(String email) throws UnsupportedEncodingException {
 
-		// Create url request and encode email and date
+		// Create url request and encode email
 		String urlRequest = "https://logical-light-564.appspot.com/_ah/api/helloworld/v1/jsonobject/getDataMap?Email="
 				+ URLEncoder.encode(email, "UTF-8");
 
-		List list = new ArrayList();
 
 		try {
 
@@ -245,7 +233,6 @@ public class RestInvokerDatastore {
 				json = new JSONObject(jsonText);
 
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -271,14 +258,36 @@ public class RestInvokerDatastore {
 			}
 
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return list;
+		// Substring and parse the values into Double
+		listLatitudes = substringLists(StringLatitudes);
+		listLongitudes = substringLists(StringLongitudes);
+		listVitesses = substringLists(StringVitesses);
+		listAltitudes = substringLists(StringAltitudes);
 
 	}
-	
+
+	/**
+	 * Method that return an average of speed Take the entire list of speed
+	 * 
+	 * @return String formated into 2 decimals
+	 */
+	public String getSpeedAverage() {
+
+		DecimalFormat df = new DecimalFormat("####0.00");
+		int count = 0;
+		Double value = 0.0;
+
+		Iterator<Double> iterator = listVitesses.iterator();
+		while (iterator.hasNext()) {
+			value += iterator.next();
+			count++;
+		}
+
+		return df.format(value / count);
+	}
 
 	/**
 	 * Method to get all dates from the specified email
@@ -290,11 +299,11 @@ public class RestInvokerDatastore {
 	public List getAllWorkoutDates(String email)
 			throws UnsupportedEncodingException {
 
-		// Create url request and encode email and date
+		// Create url request and encode email
 		String urlRequest = "https://logical-light-564.appspot.com/_ah/api/helloworld/v1/jsonobject/getAllWorkoutDates?Email="
 				+ URLEncoder.encode(email, "UTF-8");
 
-		List list = new ArrayList();
+		List<String> list = new ArrayList<String>();
 
 		try {
 
@@ -319,7 +328,6 @@ public class RestInvokerDatastore {
 				json = new JSONObject(jsonText);
 
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -342,15 +350,12 @@ public class RestInvokerDatastore {
 			}
 
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return list;
 
 	}
-	
-	
 
 	/**
 	 * Method to return all the workout dates sorted date (last workout)
@@ -375,10 +380,6 @@ public class RestInvokerDatastore {
 
 		return list;
 	}
-	
-	
-	
-	
 
 	/**
 	 * Method to sort the date returned by datastore and return the more current
@@ -427,7 +428,28 @@ public class RestInvokerDatastore {
 	}
 	
 	/**
-	 * Method who substring a string (list) and replace all characters non desired and parse to double list
+	 * Method that return a string buffer to pass it in an array of javascript
+	 * JSP->JS
+	 * @param list of latitudes, longitudes, speed, altitude
+	 * @return StringBuffer
+	 */
+	public StringBuffer convertListToStringBuffer(List list){
+		
+		StringBuffer stringBuffer = new StringBuffer();
+		
+		for (int i = 0; i < list.size(); ++i) {
+		    if (stringBuffer.length() > 0) {
+		    	stringBuffer.append(',');
+		    }
+		    stringBuffer.append('"').append(list.get(i)).append('"');
+		}
+		
+		return stringBuffer;
+	}
+
+	/**
+	 * Method who substring a string (list) and replace all characters non
+	 * desired and parse to double list
 	 * 
 	 * @Param : String list
 	 * 
@@ -442,7 +464,6 @@ public class RestInvokerDatastore {
 		// Replace all none double characters
 		list = list.replaceAll("\\[", "");
 		list = list.replaceAll("\\]", "");
-		list = list.replace('"', ' ');
 		list = list.trim();
 
 		for (int i = 0; i < list.length(); i++) {
@@ -450,9 +471,7 @@ public class RestInvokerDatastore {
 			j = temp;
 
 			if (list.charAt(i) == ',') {
-				System.out.println("i :" + i + " j :" + j);
 				listDouble.add(Double.parseDouble(list.substring(j, i)));
-				System.out.println("Ajout :" + list.substring(j, i));
 				temp = i + 1;
 			}
 		}
@@ -463,26 +482,25 @@ public class RestInvokerDatastore {
 		return listDouble;
 
 	}
-	
-	
+
 	/**
-	 *  Getters and Setters
+	 * Getters and Setters
 	 */
 
-	public String getStringLatitudes() {
-		return StringLatitudes;
+	public List<Double> getListLatitudes() {
+		return listLatitudes;
 	}
 
-	public String getStringLongitudes() {
-		return StringLongitudes;
+	public List<Double> getListLongitudes() {
+		return listLongitudes;
 	}
 
-	public String getStringVitesses() {
-		return StringVitesses;
+	public List<Double> getListVitesses() {
+		return listVitesses;
 	}
 
-	public String getStringAltitudes() {
-		return StringAltitudes;
+	public List<Double> getListAltitudes() {
+		return listAltitudes;
 	}
 
 }

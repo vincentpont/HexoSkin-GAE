@@ -124,33 +124,74 @@ function logout() {
 }
 </script>
 
+
+
 <script
 	src="https://maps.googleapis.com/maps/api/js?v=3?key={AIzaSyA9MSARpM9GdjunV4sR5mxpOuD3pfkyldc}">
-	
 </script>
+
+
+	<% 
+	// Get the values from the map to recreate the path on google maps api v3
+	RestInvokerDatastore restMap = new RestInvokerDatastore();
+	restMap.getDataMap("vincentpont@gmail.com");
+	List<Double> listLatitude = restMap.getListLatitudes();
+	List<Double> listLongitude = restMap.getListLongitudes();
+	List<Double> listSpeed = restMap.getListVitesses();
+	List<Double> listAltitude = restMap.getListAltitudes();
+
+	StringBuffer stringBufferLat = new StringBuffer();
+	StringBuffer stringBufferLong = new StringBuffer();
+	StringBuffer stringBufferSpeed = new StringBuffer();
+	StringBuffer stringBufferAlti = new StringBuffer();
+	
+	// Convert to stringbuffer to pass the list in javascript array
+	stringBufferLat = restMap.convertListToStringBuffer(listLatitude);
+	stringBufferLong = restMap.convertListToStringBuffer(listLongitude);
+	stringBufferSpeed = restMap.convertListToStringBuffer(listSpeed);
+	stringBufferAlti = restMap.convertListToStringBuffer(listAltitude);
+	
+	restMap.getDataMap("vincentpont@gmail.com");
+	String vitesseMoyenneMap = restMap.getSpeedAverage();
+	%>
+
 <script>
+
+    var arrayLat = [ <%= stringBufferLat.toString() %> ];
+    var arrayLong = [ <%= stringBufferLong.toString() %> ];
+    var arraySpeed = [ <%= stringBufferSpeed.toString() %> ];
+    var arrayAlti = [ <%= stringBufferAlti.toString() %> ];
 	var map;
+	
+	// Average speed to have the indice to draw different color
+	var VitesseMoyenne =  <%= vitesseMoyenneMap %> ;
+	
+	
 	function initialize() {
 		var mapOptions = {
-			zoom : 3,
-			center : new google.maps.LatLng(0, -180),
-			mapTypeId : google.maps.MapTypeId.TERRAIN
+			zoom : 17,
+			center : new google.maps.LatLng(arrayLat[0], arrayLong[0]),
+			mapTypeId : google.maps.MapTypeId.PLAN
 		};
 
 		var map = new google.maps.Map(document.getElementById('map-canvas'),
 				mapOptions);
+		
+		// Pass the value to the array of path
+		var flightPlanCoordinates = new Array() ;
+			for(var i = 0 ; i < arrayLat.length ;i++){	
+				flightPlanCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
+			}
+			
 
-		var flightPlanCoordinates = [
-				new google.maps.LatLng(37.772323, -122.214897),
-				new google.maps.LatLng(21.291982, -157.821856),
-				new google.maps.LatLng(-18.142599, 178.431),
-				new google.maps.LatLng(-27.46758, 153.027892) ];
+
+		
 		var flightPath = new google.maps.Polyline({
 			path : flightPlanCoordinates,
 			geodesic : true,
 			strokeColor : '#FF0000',
 			strokeOpacity : 1.0,
-			strokeWeight : 2
+			strokeWeight : 4
 		});
 
 		flightPath.setMap(map);
@@ -227,9 +268,11 @@ function logout() {
 				String lastWorkout = rest.getLastDateWorkout("vincentpont@gmail.com");
 				List list = rest.getDataWorkoutByEmailAndDate(lastWorkout,
 						"vincentpont@gmail.com");
-				// Conversion m/min en km/h
-				double vitesse = Double.parseDouble(list.get(4).toString());
-				vitesse = (vitesse * 3) /50 ;
+				
+				// Get average of the speed
+				String vitesse = "0.0";
+				rest.getDataMap("vincentpont@gmail.com");
+				vitesse = rest.getSpeedAverage();
 			%>
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

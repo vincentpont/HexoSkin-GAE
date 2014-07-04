@@ -19,19 +19,14 @@ public class testDatastore {
 		System.out.println("Data from entity newSeance :");
 		System.out.println("");
 
-		/*
-		 * JSONObject json =
-		 * rest.getDataWorkoutByEmailAndDate("2014.06.25.17:39"
-		 * ,"vincentpont@gmail.com"); System.out.println(json.toString());
-		 */
-
+/*
 		
 		  List list = rest.getAllWorkoutByEmail("vincentpont@gmail.com");
 		  //System.out.println(json.toString());
 		  
 		  Iterator<String> iterator = list.iterator(); while
 		  (iterator.hasNext()) { System.out.println(iterator.next()); }
-		 
+	*/	 
 
 		/*
 		  List list = rest.getAllWorkoutDates("vincentpont@gmail.com");
@@ -41,24 +36,18 @@ public class testDatastore {
 		 */
 
 		
-		/*
-		List list = rest.getDataMap("vincentpont@gmail.com");
+		// Get listofDouble data map, Get average speed
+		rest.getDataMap("vincentpont@gmail.com");
 
-		String StringLatitudes;
-		String StringLongitudes;
-		String StringVitesses;
-		String StringAltitudes;
+		Iterator<Double> iterator = rest.getListLatitudes().iterator(); 
+		while(iterator.hasNext()) {
+			System.out.println(iterator.next());
+			}
+		
+		System.out.println(rest.getSpeedAverage());
 
-		StringLatitudes = rest.getStringLatitudes();
-		StringLongitudes = rest.getStringLongitudes();
-		StringVitesses = rest.getStringVitesses();
-		StringAltitudes = rest.getStringAltitudes();
-
-		System.out.println(StringLatitudes);
-		System.out.println(StringLongitudes);
-		System.out.println(StringVitesses);
-		System.out.println(StringAltitudes);
-		*/
+		
+		
 	}
 
 }
