@@ -134,7 +134,8 @@ function logout() {
 	<% 
 	// Get the values from the map to recreate the path on google maps api v3
 	RestInvokerDatastore restMap = new RestInvokerDatastore();
-	restMap.getDataMap("vincentpont@gmail.com");
+	String lastDate = restMap.getLastDateWorkout("vincentpont@gmail.com");
+	restMap.getDataMap("vincentpont@gmail.com", lastDate);
 	List<Double> listLatitude = restMap.getListLatitudes();
 	List<Double> listLongitude = restMap.getListLongitudes();
 	List<Double> listSpeed = restMap.getListVitesses();
@@ -151,7 +152,7 @@ function logout() {
 	stringBufferSpeed = restMap.convertListToStringBuffer(listSpeed);
 	stringBufferAlti = restMap.convertListToStringBuffer(listAltitude);
 	
-	restMap.getDataMap("vincentpont@gmail.com");
+	restMap.getDataMap("vincentpont@gmail.com", lastDate);
 	String vitesseMoyenneMap = restMap.getSpeedAverage();
 	%>
 
@@ -161,6 +162,11 @@ function logout() {
     var arrayLong = [ <%= stringBufferLong.toString() %> ];
     var arraySpeed = [ <%= stringBufferSpeed.toString() %> ];
     var arrayAlti = [ <%= stringBufferAlti.toString() %> ];
+    var size = arrayLat.length;
+    
+	var startMarker = new google.maps.LatLng(arrayLat[0],arrayLong[0]);
+	var endMarker = new google.maps.LatLng(arrayLat[size-1],arrayLong[size-1]);
+	
 	var map;
 	
 	// Average speed to have the indice to draw different color
@@ -178,23 +184,35 @@ function logout() {
 				mapOptions);
 		
 		// Pass the value to the array of path
-		var flightPlanCoordinates = new Array() ;
+		var planCoordinates = new Array() ;
 			for(var i = 0 ; i < arrayLat.length ;i++){	
-				flightPlanCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
+				planCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
 			}
 			
-
-
+		// Add markers start
+		var markerStart = new google.maps.Marker({
+    		position: startMarker,
+    		title:"START"
+		});
 		
-		var flightPath = new google.maps.Polyline({
-			path : flightPlanCoordinates,
+		// Add markers start
+		var markerEnd = new google.maps.Marker({
+    		position: endMarker,
+    		title:"END"
+		});
+		
+		markerStart.setMap(map);
+		markerEnd.setMap(map);
+
+		var path = new google.maps.Polyline({
+			path : planCoordinates,
 			geodesic : true,
 			strokeColor : '#FF0000',
 			strokeOpacity : 1.0,
 			strokeWeight : 4
 		});
 
-		flightPath.setMap(map);
+		path.setMap(map);
 	}
 
 	google.maps.event.addDomListener(window, 'load', initialize);
@@ -266,12 +284,13 @@ function logout() {
 				RestInvokerDatastore rest = new RestInvokerDatastore();
 
 				String lastWorkout = rest.getLastDateWorkout("vincentpont@gmail.com");
+				String lastDate2 = rest.getLastDateWorkout("vincentpont@gmail.com");
 				List list = rest.getDataWorkoutByEmailAndDate(lastWorkout,
 						"vincentpont@gmail.com");
 				
 				// Get average of the speed
 				String vitesse = "0.0";
-				rest.getDataMap("vincentpont@gmail.com");
+				rest.getDataMap("vincentpont@gmail.com", lastDate2);
 				vitesse = rest.getSpeedAverage();
 			%>
 
@@ -391,7 +410,7 @@ function logout() {
 				<br>
 				<div class="row placeholders">
 					<div class="col-xs-6">
-						<div id="chart_div1" style="width: 500px; height: 350px;"></div>
+						<div id="chart_div1" style="width: 450px; height: 350px;"></div>
 						<h4>Performance</h4>
 						<span class="text-muted">ECG / Respiration</span>
 					</div>

@@ -19,14 +19,14 @@ public class testDatastore {
 		System.out.println("Data from entity newSeance :");
 		System.out.println("");
 
-/*
-		
+
+/*		
 		  List list = rest.getAllWorkoutByEmail("vincentpont@gmail.com");
 		  //System.out.println(json.toString());
 		  
 		  Iterator<String> iterator = list.iterator(); while
 		  (iterator.hasNext()) { System.out.println(iterator.next()); }
-	*/	 
+	 */
 
 		/*
 		  List list = rest.getAllWorkoutDates("vincentpont@gmail.com");
@@ -37,7 +37,8 @@ public class testDatastore {
 
 		
 		// Get listofDouble data map, Get average speed
-		rest.getDataMap("vincentpont@gmail.com");
+		
+		rest.getDataMap("vincentpont@gmail.com", "2014.07.04.14:48");
 
 		Iterator<Double> iterator = rest.getListLatitudes().iterator(); 
 		while(iterator.hasNext()) {
@@ -45,7 +46,7 @@ public class testDatastore {
 			}
 		
 		System.out.println(rest.getSpeedAverage());
-
+		
 		
 		
 	}

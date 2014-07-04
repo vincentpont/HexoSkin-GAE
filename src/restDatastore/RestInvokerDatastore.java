@@ -111,7 +111,7 @@ public class RestInvokerDatastore {
 			list.add(json.getString("Time"));
 			list.add(json.getString("Distance"));
 			list.add(json.getString("Calories"));
-			list.add(json.getString("MeterMin"));
+			list.add(json.getString("Speed"));
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -186,7 +186,7 @@ public class RestInvokerDatastore {
 				list.add(childJSONObject.getString("Time"));
 				list.add(childJSONObject.getString("Distance"));
 				list.add(childJSONObject.getString("Calories"));
-				list.add(childJSONObject.getString("MeterMin"));
+				list.add(childJSONObject.getString("Speed"));
 				countRows++;
 			}
 		} catch (JSONException e) {
@@ -203,12 +203,14 @@ public class RestInvokerDatastore {
 	 * @Param: String email, String date
 	 * 
 	 */
-	public void getDataMap(String email) throws UnsupportedEncodingException {
+	public void getDataMap(String email, String date)
+			throws UnsupportedEncodingException {
 
 		// Create url request and encode email
-		String urlRequest = "https://logical-light-564.appspot.com/_ah/api/helloworld/v1/jsonobject/getDataMap?Email="
+		String urlRequest = "https://logical-light-564.appspot.com/_ah/api/helloworld/v1/jsonobject/getDataMap?Date="
+				+ URLEncoder.encode(date, "UTF-8")
+				+ "&Email="
 				+ URLEncoder.encode(email, "UTF-8");
-
 
 		try {
 
@@ -248,12 +250,13 @@ public class RestInvokerDatastore {
 		JSONArray jsonMainArr;
 		try {
 			jsonMainArr = json.getJSONArray("DataMap");
+			System.out.println(json.toString());
 
 			for (int i = 0; i < jsonMainArr.length(); i++) {
 				JSONObject childJSONObject = jsonMainArr.getJSONObject(i);
 				StringLatitudes = childJSONObject.getString("Latitudes");
 				StringLongitudes = childJSONObject.getString("Longitudes");
-				StringVitesses = childJSONObject.getString("Speed");
+				StringVitesses = childJSONObject.getString("Speeds");
 				StringAltitudes = childJSONObject.getString("Altitudes");
 			}
 
@@ -277,7 +280,7 @@ public class RestInvokerDatastore {
 	public String getSpeedAverage() {
 
 		DecimalFormat df = new DecimalFormat("####0.00");
-		int count = 0;
+		int count = 1;
 		Double value = 0.0;
 
 		Iterator<Double> iterator = listVitesses.iterator();
@@ -426,24 +429,26 @@ public class RestInvokerDatastore {
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Method that return a string buffer to pass it in an array of javascript
 	 * JSP->JS
-	 * @param list of latitudes, longitudes, speed, altitude
+	 * 
+	 * @param list
+	 *            of latitudes, longitudes, speed, altitude
 	 * @return StringBuffer
 	 */
-	public StringBuffer convertListToStringBuffer(List list){
-		
+	public StringBuffer convertListToStringBuffer(List list) {
+
 		StringBuffer stringBuffer = new StringBuffer();
-		
+
 		for (int i = 0; i < list.size(); ++i) {
-		    if (stringBuffer.length() > 0) {
-		    	stringBuffer.append(',');
-		    }
-		    stringBuffer.append('"').append(list.get(i)).append('"');
+			if (stringBuffer.length() > 0) {
+				stringBuffer.append(',');
+			}
+			stringBuffer.append('"').append(list.get(i)).append('"');
 		}
-		
+
 		return stringBuffer;
 	}
 
