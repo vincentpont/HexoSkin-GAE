@@ -1,5 +1,7 @@
 package restHexoSkin;
 
+import java.text.DecimalFormat;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.BufferedReader;
@@ -8,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -246,6 +249,29 @@ public class RestInvokerHexo {
 		}
 		return values;
 
+	}
+
+	/**
+	 * Method to get the average of a list of datatype
+	 * 
+	 * @param list of Strings
+	 * @return String average of this list into two decimals
+	 */
+	public String getAverageFromList(List<String> list){
+		
+		Double average = 0.0 ;
+		int count = 1;
+		DecimalFormat df = new DecimalFormat("####0.00");
+		
+		Iterator<String> iterator = list.iterator(); 
+		 
+		while (iterator.hasNext()) {
+		 average += Double.parseDouble(iterator.next());
+		 count++;
+		}
+
+			
+		return df.format(average / count);
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package restDatastore;
 
+
+
 import helper.DatesComparator;
 import helper.withComparator;
 import java.io.BufferedReader;
@@ -272,25 +274,6 @@ public class RestInvokerDatastore {
 
 	}
 
-	/**
-	 * Method that return an average of speed Take the entire list of speed
-	 * 
-	 * @return String formated into 2 decimals
-	 */
-	public String getSpeedAverage() {
-
-		DecimalFormat df = new DecimalFormat("####0.00");
-		int count = 1;
-		Double value = 0.0;
-
-		Iterator<Double> iterator = listVitesses.iterator();
-		while (iterator.hasNext()) {
-			value += iterator.next();
-			count++;
-		}
-
-		return df.format(value / count);
-	}
 
 	/**
 	 * Method to get all dates from the specified email
@@ -431,7 +414,7 @@ public class RestInvokerDatastore {
 	}
 
 	/**
-	 * Method that return a string buffer to pass it in an array of javascript
+	 * Method that return a string buffer to pass it in an array of javascript in String
 	 * JSP->JS
 	 * 
 	 * @param list
@@ -447,6 +430,28 @@ public class RestInvokerDatastore {
 				stringBuffer.append(',');
 			}
 			stringBuffer.append('"').append(list.get(i)).append('"');
+		}
+
+		return stringBuffer;
+	}
+	
+	/**
+	 * Method that return a string buffer to pass it in an array of javascript in integer
+	 * JSP->JS
+	 * 
+	 * @param List
+	 *          
+	 * @return StringBuffer
+	 */
+	public StringBuffer convertListToStringBufferInteger(List list) {
+
+		StringBuffer stringBuffer = new StringBuffer();
+
+		for (int i = 0; i < list.size(); ++i) {
+			if (stringBuffer.length() > 0) {
+				stringBuffer.append(',');
+			}
+			stringBuffer.append(list.get(i));
 		}
 
 		return stringBuffer;

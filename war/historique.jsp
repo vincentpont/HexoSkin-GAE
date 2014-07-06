@@ -283,11 +283,11 @@
 					<table class="table table-striped sortable">
 						<thead>
 							<tr>
-								<th> <span style="font-size:18pt;" class="glyphicon glyphicon-calendar"> Date</span> </th>
-								<th> <span style="font-size:18pt;" class="glyphicon glyphicon-time"> Time</span> </th>
-								<th> <span style="font-size:18pt;" class="glyphicon glyphicon-sort"> Distance</span> </th>
-								<th> <span style="font-size:18pt;" class="glyphicon glyphicon-fire"> Calories</span> </th>
-								<th> <span style="font-size:18pt;" class="glyphicon glyphicon-signal"> Vitesse</span> </th>
+								<th title="Date"> <span style="font-size:18pt;" class="glyphicon glyphicon-calendar"> Date</span> </th>
+								<th title="Temps"> <span style="font-size:18pt;" class="glyphicon glyphicon-time"> Time</span> </th>
+								<th title="Distance en mètre"> <span style="font-size:18pt;" class="glyphicon glyphicon-sort"> Distance</span> </th>
+								<th title="Calories brûlées"> <span style="font-size:18pt;" class="glyphicon glyphicon-fire"> Calories</span> </th>
+								<th title="Vitesse moyenne en km/h"> <span style="font-size:18pt;" class="glyphicon glyphicon-flash"> Vitesse</span> </th>
 							</tr>
 						</thead>
 						<tbody style="font-size:12pt; font-family:Verdana;">

@@ -16,13 +16,16 @@ public class testHexoSkin {
 		RestInvokerHexo rest = new RestInvokerHexo(s1);
 		
 		 	
-		 List list = rest.returnAllValueFromJson("2014-06-28", "19" );
+		 List list = rest.returnAllValueFromJson("2014-06-28", "19");
 
 		 Iterator<String> iterator = list.iterator(); 
 		 
 		 while (iterator.hasNext()) {
 		 System.out.println(iterator.next()); 
 		 }
+		 
+		 String average = rest.getAverageFromList(list);
+		 System.out.println("Moyenne pulsation " + average);
 
 	}
 
