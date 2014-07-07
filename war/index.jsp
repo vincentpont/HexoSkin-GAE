@@ -316,23 +316,33 @@ function logout() {
 				<ul class="nav nav-sidebar titreNavigation">
 					<li class="active"><a href="index.jsp">Dashboard</a></li>
 					<li><a href="compare.jsp">Comparer</a></li>
-					<li><a href="map.jsp">Carte</a></li>
 					<li><a href="historique.jsp">Historiques</a></li>
 				</ul>
 			</div>
 
 			<%
-				String lastWorkout = rest.getLastDateWorkout("vincentpont@gmail.com");
-				String lastDate2 = rest.getLastDateWorkout("vincentpont@gmail.com");
-				List listWorkout = rest.getDataWorkoutByEmailAndDate(lastWorkout,
-						"vincentpont@gmail.com");	
+				List listWorkout  ;
+				String dateToShow ;
+			
+				// Test if we have something in param 
+				if(request.getParameter("date") != null){
+					listWorkout = rest.getDataWorkoutByEmailAndDate(request.getParameter("date"),
+							"vincentpont@gmail.com");
+					dateToShow = request.getParameter("date");
+				}
+			     // If not we show the last workout
+				else{
+					dateToShow = rest.getLastDateWorkout("vincentpont@gmail.com");
+					listWorkout = rest.getDataWorkoutByEmailAndDate(dateToShow,
+							"vincentpont@gmail.com");
+				}
 			%>
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<h3 class="page-header">Dernière séance</h3>
 
 			    <span title="Date" style="font-size:20pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
-				<span title="Date" style="font-size:14pt;" > <% out.print(lastWorkout.substring(0, 10));  %> à  <% out.print(lastWorkout.substring(11, 16));  %>  </span>
+				<span title="Date" style="font-size:14pt;" > <% out.print(dateToShow.substring(0, 10));  %> à  <% out.print(dateToShow.substring(11, 16));  %>  </span>
 
 				<table class="table">
 				<TR>
@@ -408,7 +418,9 @@ function logout() {
 	</div>		
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-				<h3 class="page-header">Carte</h3>
+				<h3 class="page-header">Carte
+				<span  style="font-size:20pt;" class="glyphicon glyphicon-map-marker"></span>
+				</h3>
 
 				<br>
 				<div class="row placeholders">

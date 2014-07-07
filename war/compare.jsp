@@ -214,7 +214,6 @@ function logout() {
 	          <ul class="nav nav-sidebar">
 	            <li><a href="index.jsp">Dashboard</a></li>
 	            <li class="active"><a href="compare.jsp">Comparer</a></li>
-	            <li><a href="map.jsp">Carte</a></li>
             <li><a href="historique.jsp">Historiques</a></li>
 	          </ul>
 			</div>

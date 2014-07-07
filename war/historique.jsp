@@ -271,7 +271,6 @@
 				<ul class="nav nav-sidebar">
 					<li><a href="index.jsp">Dashboard</a></li>
 					<li><a href="compare.jsp">Comparer</a></li>
-					<li><a href="map.jsp">Carte</a></li>
 					<li class="active"><a href="historique.jsp">Historiques</a></li>
 				</ul>
 			</div>
@@ -280,7 +279,7 @@
 <br>
 <br>
 				<div class="table-responsive">
-					<table class="table table-striped sortable">
+					<table class="table table-hover sortable">
 						<thead>
 							<tr>
 								<th title="Date"> <span style="font-size:18pt;" class="glyphicon glyphicon-calendar"> Date</span> </th>
@@ -288,6 +287,7 @@
 								<th title="Distance en mètre"> <span style="font-size:18pt;" class="glyphicon glyphicon-sort"> Distance</span> </th>
 								<th title="Calories brûlées"> <span style="font-size:18pt;" class="glyphicon glyphicon-fire"> Calories</span> </th>
 								<th title="Vitesse moyenne en km/h"> <span style="font-size:18pt;" class="glyphicon glyphicon-flash"> Vitesse</span> </th>
+								<th title="Détail"> <span style="font-size:18pt;" class="glyphicon"> Détail</span> </th>
 							</tr>
 						</thead>
 						<tbody style="font-size:12pt; font-family:Verdana;">
@@ -298,31 +298,38 @@
 								
 							    // To know number of workout for my table 
 								int countRows = rest.countRows;
-							    int rows = 0 ;
-	
+							    int rows = 0 ; // data
+							    int dateCount = 0 ;
+							    		
 							    // Number of rows
 							    for(int i = 0 ; i < countRows ; i++){	
-							    	
-							    out.print("<TR>");		
-								Iterator<String> iterator = list.iterator();
-									
-								    // Write data in rows, each time 5 data per rows
-								    for(int j = 0 ; j < 5 ;j++) {
-							     	out.print("<TD>" + list.get(rows) + "</TD>");
+							     Iterator<String> iterator = list.iterator(); %>
+							     </TR>
+								<form action="index.jsp">
+
+								<% 
+								// Write data in rows, each time 5 data per rows
+								    for(int j = 0 ; j < 5 ;j++) { %>
+							     	<% out.print("<TD>" + list.get(rows) + "</TD>");
 							     	rows++;
-									}	
-							     out.print("</TR>");
-							    }
-							%>
+									}
+								// Insert button for details
+									for(int l = 0 ; l < 1 ;l++) { %>
+									<TD>
+							     	<input type='hidden' name='date' value='<%= list.get(dateCount) %>'>  
+									<button title="Détail" type="submit" class="btn btn-success">
+									<span style="font-size:14pt;" class="glyphicon glyphicon-search"></span>
+									</button>
+							     	</TD>
+							     <%	}
+									dateCount += 5; //every 5 data we have the date
+								%> </form> 
+							     </TR>
+								<% } %>
 								
-								
-							<TR> 
-							
-							</TR>
 						</tbody>
 					</table>
 				</div>
-  <div id="email" class="hide"></div>
 			</div>
 
 		</div>
