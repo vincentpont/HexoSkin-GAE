@@ -271,11 +271,11 @@
 				<ul class="nav nav-sidebar">
 					<li><a href="index.jsp">Dashboard</a></li>
 					<li><a href="compare.jsp">Comparer</a></li>
-					<li class="active"><a href="historique.jsp">Historiques</a></li>
+					<li class="active"><a href="historique.jsp">Historique</a></li>
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h1 class="page-header">Historiques Séances</h1>
+				<h1 class="page-header">Historique des séances</h1>
 <br>
 <br>
 				<div class="table-responsive">

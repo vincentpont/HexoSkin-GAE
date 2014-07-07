@@ -31,8 +31,6 @@ public class RestInvokerHexo {
 	private String userpass;
 	private String basicAuth;
 	private String urlIDAndDatatype;
-	private String idDatatype;
-	private String date;
 	private final String username = "bruno.alves@hevs.ch";
 	private final String password = "$hes-so2014!";
 
@@ -175,8 +173,6 @@ public class RestInvokerHexo {
 	public List<String> returnAllValueFromJson(String date, String dataType) {
 
 		String idWorkout = returnIdOfWorkout(date);
-		this.idDatatype = dataType;
-		this.date = date;
 		this.urlIDAndDatatype = "https://api.hexoskin.com/api/v1/data/?datatype="
 				+ dataType + "&record=" + idWorkout;
 
@@ -188,7 +184,6 @@ public class RestInvokerHexo {
 		try {
 			JSONObject jsonObject = jsonArray.getJSONObject(0);
 			jsonString = jsonObject.getString("data");
-			System.out.println(jsonObject.getString("data"));
 
 		} catch (JSONException e) {
 			e.printStackTrace();

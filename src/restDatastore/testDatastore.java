@@ -28,24 +28,26 @@ public class testDatastore {
 		  (iterator.hasNext()) { System.out.println(iterator.next()); }
  */
 
-		
+		/*
 		  List list = rest.getAllWorkoutDates("vincentpont@gmail.com");
 		  
 		  Iterator<String> iterator = list.iterator(); while
 		  (iterator.hasNext()) { System.out.println(iterator.next()); }
 		 
 		  System.out.println(rest.getLastDateWorkout("vincentpont@gmail.com"));
-
+*/
 		
 		// Get listofDouble data map, Get average speed
-		/*
-		rest.getDataMap("vincentpont@gmail.com", "2014.07.06.00:28");
-
+		
+		
+		String date = rest.getLastDateWorkout("vincentpont@gmail.com");
+		System.out.println(date);
+		rest.getDataMap("vincentpont@gmail.com", "2014.06.08.12:40");
 		Iterator<Double> iterator = rest.getListLatitudes().iterator(); 
 		while(iterator.hasNext()) {
 			System.out.println(iterator.next());
 			}
-	*/
+	
 		
 		
 		

@@ -9,9 +9,8 @@
 <%@ page import="restHexoSkin.RestInvokerHexo"%>
 <%@ page import="java.util.Iterator, java.util.List, java.util.Date;"%>
 <% 	RestInvokerDatastore restMap = new RestInvokerDatastore(); %>
-<% String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
-   RestInvokerHexo restHexo = new RestInvokerHexo(s1); %>
-<% RestInvokerDatastore rest = new RestInvokerDatastore();%>
+<%  RestInvokerDatastore rest = new RestInvokerDatastore();%>
+<%	String lastDateWorkout = restMap.getLastDateWorkout("vincentpont@gmail.com"); %>
 
 <!-- LOGIN Google</body> -->
 <script type="text/javascript">
@@ -38,7 +37,25 @@
 </script>
 
 <%  
-List<String> listPulsations = restHexo.returnAllValueFromJson("2014-06-28", "19");
+String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
+RestInvokerHexo restHexo = new RestInvokerHexo(s1); 
+String restHexoDate = "" ;
+
+// Test if we have something in param 
+if(request.getParameter("date") != null){
+	restHexoDate = request.getParameter("date");
+	restHexoDate = restHexoDate.substring(0, 10);
+	restHexoDate = restHexoDate.replace('.', '-');
+	
+}
+ // If not we show the last workout
+else{
+	restHexoDate = restMap.getLastDateWorkout("vincentpont@gmail.com"); 
+	restHexoDate = restHexoDate.substring(0, 10);
+	restHexoDate = restHexoDate.replace('.', '-');
+}
+
+List<String> listPulsations = restHexo.returnAllValueFromJson(restHexoDate, "19"); // A CHANGER AVEC PARAM
 StringBuffer stringBufferPulsation = new StringBuffer();
 stringBufferPulsation = restMap.convertListToStringBufferInteger(listPulsations);
 
@@ -58,8 +75,6 @@ stringBufferPulsation = restMap.convertListToStringBufferInteger(listPulsations)
 	function drawChart() {
 		
 	  	var arrayPulsation = [ <%= stringBufferPulsation.toString() %> ];
-	  	var years = ['2001', '2002', '2003', '2004', '2005'];
-	    var sales = [1, 2, 3, 4, 5];
 		
 		var data = new google.visualization.DataTable();
 		data.addColumn('string', "temps");
@@ -127,11 +142,22 @@ function logout() {
 	src="https://maps.googleapis.com/maps/api/js?v=3?key={AIzaSyA9MSARpM9GdjunV4sR5mxpOuD3pfkyldc}">
 </script>
 
-
 	<% 
-	// Get the values from the map to recreate the path on google maps api v3
-	String lastDate = restMap.getLastDateWorkout("vincentpont@gmail.com");
-	restMap.getDataMap("vincentpont@gmail.com", lastDate);
+	
+	List listWorkouts  ;
+	String lastDateMap = "";
+	
+	// Test if we have something in param 
+	if(request.getParameter("date") != null){
+		lastDateMap = request.getParameter("date");
+		restMap.getDataMap("vincentpont@gmail.com", lastDateMap); 
+	}
+     // If not we show the last workout
+	else{
+		lastDateMap = restMap.getLastDateWorkout("vincentpont@gmail.com");
+		restMap.getDataMap("vincentpont@gmail.com", lastDateMap); 
+	}
+	
 	List<Double> listLatitude = restMap.getListLatitudes();
 	List<Double> listLongitude = restMap.getListLongitudes();
 	List<Double> listSpeed = restMap.getListVitesses();
@@ -179,8 +205,9 @@ function logout() {
 
 		
 		// Add markers to the path since each 20 locations point
-		for(var i = 0 ; i < arraySpeed.length ; i += 20 ){	
+		for(var i = 20 ; i < arraySpeed.length ; i += 20 ){	
 			
+		
 			// Now add the content of the popup
 			  var contentStrings = '<div id="content">'+
 		      '<div id="siteNotice">'+
@@ -201,11 +228,13 @@ function logout() {
 			      content: contentStrings
 			  });
 		      
-				var markerPosition = new google.maps.LatLng(arrayLat[i],arrayLong[i]);
-				var marker = new google.maps.Marker({
+			  var image = 'img/markerInfos.png';
+			  var markerPosition = new google.maps.LatLng(arrayLat[i],arrayLong[i]);
+			  var marker = new google.maps.Marker({
 					position: markerPosition,
 		    		animation: google.maps.Animation.DROP,
 					infowindow: myinfowindow ,
+					icon : image
 				});
 		      
 			  // Listener
@@ -216,8 +245,8 @@ function logout() {
 			  marker.setMap(map);
 		}
 		
-		// Last marker
-		  var contentString = '<div id="content">'+
+		// Marker end
+		  var contentStringEnd = '<div id="content">'+
 	      '<div id="siteNotice">'+
 	      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
 	      '<div id="bodyContent">'+
@@ -230,25 +259,61 @@ function logout() {
 	      '</div>'+
 	      '</div>'+
 	      '</div>';
+	      
+		  var contentStringStart = '<div id="content">'+
+	      '<div id="siteNotice">'+
+	      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
+	      '<div id="bodyContent">'+
+	      '<table class="table">' +
+	      '<TR>'+
+	      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[0].toString() +  '</span>' +'</TD>' +
+	      '<TD>' + '<span title="Altitude mètre" style="font-size:11pt;" class="glyphicon glyphicon-signal">' + '&nbsp;' + arrayAlti[0].toString()  +'</span>' +'</TD>' +
+	      '</TR>' +
+	      '</table>'+
+	      '</div>'+
+	      '</div>'+
+	      '</div>';
+	      
+	     var imageStart = 'img/markerStart.png';
+	     var imageEnd = 'img/markerEnd.png';
 
-	    // Add marker end
 	  	var endMarker = new google.maps.LatLng(arrayLat[arrayLat.length-1],arrayLong[arrayLong.length-1]);	
 		var markerEnd = new google.maps.Marker({
     		position: endMarker,
     		animation: google.maps.Animation.DROP,
-    		title:"END"
+    		title:"END",
+    		icon: imageEnd
+		});
+		
+	  	var startMarker = new google.maps.LatLng(arrayLat[0],arrayLong[0]);	
+		var markerStart = new google.maps.Marker({
+    		position: startMarker,
+    		animation: google.maps.Animation.DROP,
+    		title:"START",
+    		icon: imageStart
+		});
+		
+		var infowindowStart = new google.maps.InfoWindow({
+		      content: contentStringStart
 		});
 
-		var infowindow = new google.maps.InfoWindow({
-		      content: contentString
+		var infowindowEnd = new google.maps.InfoWindow({
+		      content: contentStringEnd
 		});
 
-	  	google.maps.event.addListener(markerEnd, 'click', function() {
-		    infowindow.open(map,markerEnd);
+	  	google.maps.event.addListener(markerStart, 'click', function() {
+	  		infowindowStart.open(map,markerStart);
 		  });
 	  	
+	  	google.maps.event.addListener(markerEnd, 'click', function() {
+	  		infowindowEnd.open(map,markerEnd);
+		  });
+	  	
+	  	// Add the two markers
 	  	markerEnd.setMap(map);
+	  	markerStart.setMap(map);
 
+	  	// Add path
 		var path = new google.maps.Polyline({
 			path : planCoordinates,
 			geodesic : true,
@@ -316,19 +381,19 @@ function logout() {
 				<ul class="nav nav-sidebar titreNavigation">
 					<li class="active"><a href="index.jsp">Dashboard</a></li>
 					<li><a href="compare.jsp">Comparer</a></li>
-					<li><a href="historique.jsp">Historiques</a></li>
+					<li><a href="historique.jsp">Historique</a></li>
 				</ul>
 			</div>
 
 			<%
 				List listWorkout  ;
-				String dateToShow ;
+				String dateToShow = "" ;
 			
 				// Test if we have something in param 
 				if(request.getParameter("date") != null){
-					listWorkout = rest.getDataWorkoutByEmailAndDate(request.getParameter("date"),
-							"vincentpont@gmail.com");
 					dateToShow = request.getParameter("date");
+					listWorkout = rest.getDataWorkoutByEmailAndDate(dateToShow,
+							"vincentpont@gmail.com");
 				}
 			     // If not we show the last workout
 				else{
@@ -339,7 +404,7 @@ function logout() {
 			%>
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h3 class="page-header">Dernière séance</h3>
+				<h3 class="page-header">Séance</h3>
 
 			    <span title="Date" style="font-size:20pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
 				<span title="Date" style="font-size:14pt;" > <% out.print(dateToShow.substring(0, 10));  %> à  <% out.print(dateToShow.substring(11, 16));  %>  </span>
@@ -374,24 +439,36 @@ function logout() {
 				</TR>
 		
 <br>
-			<%		
-			// Get lastdate from datastore to compare with hexoskin and substring because is not the same format
-			String lastDateWorkout = rest.getLastDateWorkout("vincentpont@gmail.com");
-			// A modifier lorsque que j'aurai une date synchro avec android
-			lastDateWorkout = lastDateWorkout.substring(0, 10);
-			lastDateWorkout = lastDateWorkout.replaceAll(".", "-");
-			System.out.println(lastDateWorkout);
-			List<String> listPulsation = restHexo.returnAllValueFromJson("2014-06-28", "19");
-			List<String> listSteps = restHexo.returnAllValueFromJson("2014-06-28", "52");
-			List<String> listBreathing = restHexo.returnAllValueFromJson("2014-06-28", "33");
-			List<String> listVentilation = restHexo.returnAllValueFromJson("2014-06-28", "36");
-			List<String> listVolumeTidal = restHexo.returnAllValueFromJson("2014-06-28", "37");
+			<%	
+			String s1s = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
+			RestInvokerHexo restHEXO = new RestInvokerHexo(s1s);
+			String dateHEXO = "" ;
+			
+			// Test if we have something in param 
+			if(request.getParameter("date") != null){
+				dateHEXO = request.getParameter("date");
+				dateHEXO = dateHEXO.substring(0, 10);
+				dateHEXO = dateHEXO.replace('.', '-');
+			}
+		     // If not we show the last workout
+			else{
+				dateHEXO = rest.getLastDateWorkout("vincentpont@gmail.com");
+				dateHEXO = dateHEXO.substring(0, 10);
+				dateHEXO = dateHEXO.replace('.', '-');
+			}
+			
+			List<String> listPulsation = restHEXO.returnAllValueFromJson(dateHEXO, "19");
+			List<String> listSteps = restHEXO.returnAllValueFromJson(dateHEXO, "52");
+			List<String> listBreathing = restHEXO.returnAllValueFromJson(dateHEXO, "33");
+			List<String> listVentilation = restHEXO.returnAllValueFromJson(dateHEXO, "36");
+			List<String> listVolumeTidal = restHEXO.returnAllValueFromJson(dateHEXO, "37");
+			
 			%>
 			
 				<TR>
 					<TD title="Pulsation moyenne" class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-heart"></span>						
-						<span style="font-size:14pt; font-family:Verdana;"><% out.print(restHexo.getAverageFromList(listPulsation));  %> </span>	
+						<span style="font-size:14pt; font-family:Verdana;"><% out.print(restHEXO.getAverageFromList(listPulsation));  %> </span>	
 					</TD> 
 					
 					<TD  title="Total pas"  class="info">				
@@ -401,17 +478,17 @@ function logout() {
 					
 					<TD title="Volume Tidal moyen" class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-stats"></span>						
-						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(restHexo.getAverageFromList(listVolumeTidal));   %> </span>	
+						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(restHEXO.getAverageFromList(listVolumeTidal));   %> </span>	
 					</TD>
 					
 					<TD title="Respiration rate moyenne" class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-transfer"></span>						
-						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(restHexo.getAverageFromList(listBreathing));   %> </span>	
+						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(restHEXO.getAverageFromList(listBreathing));   %> </span>	
 					</TD>
 					
 					<TD title="Ventilation/min moyenne" class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
-						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(restHexo.getAverageFromList(listVentilation));  %>  </span>	
+						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(restHEXO.getAverageFromList(listVentilation));  %>  </span>	
 					</TD>
 				</TR>
 				</table>
