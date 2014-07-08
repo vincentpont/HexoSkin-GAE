@@ -4,10 +4,13 @@ package restDatastore;
 
 import helper.DatesComparator;
 import helper.withComparator;
+
 import java.io.BufferedReader;
+
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
 import org.json.JSONException;
 
 /**
@@ -61,7 +65,7 @@ public class RestInvokerDatastore {
 	 * 
 	 * @Return: JSONObject containing the workout
 	 */
-	public List getDataWorkoutByEmailAndDate(String date, String email)
+	public List<String> getDataWorkoutByEmailAndDate(String date, String email)
 			throws UnsupportedEncodingException {
 
 		// Create url request and encode email and date
@@ -491,6 +495,29 @@ public class RestInvokerDatastore {
 
 		return listDouble;
 
+	}
+	
+	/**
+	 * Method to get the average of a list of altitude
+	 * 
+	 * @param List altitudes
+	 * @return String average 
+	 */
+	public String getAltitudeAverage(List<Double> altitudes){
+		
+		Double average = 0.0 ;
+		int count = 1;
+		DecimalFormat df = new DecimalFormat("####0.00");
+		
+		Iterator<Double> iterator = altitudes.iterator(); 
+		 
+		while (iterator.hasNext()) {
+		 average += iterator.next();
+		 count++;
+		}
+
+			
+		return df.format(average / count);
 	}
 
 	/**

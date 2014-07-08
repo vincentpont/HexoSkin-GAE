@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,6 +156,20 @@ function logout() {
 }
 </script>
 
+<script>
+
+// Not used bug
+function selectElement(values)
+{   
+	var values = values.value;
+	if(values != null){
+		document.getElementById("selecte1").value = values;
+		document.getElementsByName("date1").value = values;
+	}
+}
+
+</script>
+
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -220,11 +234,11 @@ function logout() {
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="row">
-					<h1 class="page-header">Comparatif séances
+					<h1 class="page-header">Comparatif sÃ©ances
 				    <span  style="font-size:30pt;" class="glyphicon glyphicon-eye-open"></span>
 					</h1>
 <br>
-					<h3>Choisissez deux séances à comparer</h3>
+					<h3>Choisissez deux sÃ©ances Ã  comparer</h3>
 <br>				
 				    <%
 					RestInvokerDatastore rest =  new RestInvokerDatastore();
@@ -232,42 +246,74 @@ function logout() {
 					Iterator iterator1 = listDates1.iterator();
 					%>
 
-					<div class="col-md-6">
-																
-				    <select name="listDates1" class="form-control" style="font-size:14pt;">
-					    <%while (iterator1.hasNext()){%>
-					        <option><%out.print(iterator1.next());%></option>
-					    <%}%>
+					<div class="col-md-6">	
+					<form action="compare.jsp" method="get">
+				    <select id="selecte1" name="date1" class="form-control" style="font-size:14pt;">
+					    <option value="">-- Choisissez une date-- </option>
+					    <%for(int i = 0 ; i<listDates1.size() ;i++){%>
+					        <option value="<% out.print(listDates1.get(i)); %>"> <%out.print(listDates1.get(i));%> </option>
+					    <%} %>
 					</select>
+					
 <br>
+<button type='submit' class="btn btn-success" > Afficher </button>
+<br>
+<br>
+
+				 <%
+					List listWorkout1 = null ;
+					String dateToShow1 = "" ;
+				
+					// Test if we have something in param 
+					if(request.getParameter("date1") != null){
+						dateToShow1 = request.getParameter("date1");
+						listWorkout1 = rest.getDataWorkoutByEmailAndDate(dateToShow1,
+								"vincentpont@gmail.com");
+						rest.getDataMap("vincentpont@gmail.com", dateToShow1); 
+					}
+				     // If not we show the last workout
+					else if(request.getParameter("date1") == null || request.getParameter("date1").isEmpty()){
+						dateToShow1 = rest.getLastDateWorkout("vincentpont@gmail.com");
+						listWorkout1 = rest.getDataWorkoutByEmailAndDate(dateToShow1,
+								"vincentpont@gmail.com");
+						// Get data for altitude
+						rest.getDataMap("vincentpont@gmail.com", dateToShow1); 
+					}
+					
+					List<Double> listAltitude = rest.getListAltitudes();
+				 
+				 %>   
+
 <br>		
- <br>				    
-				    
+			    <span title="Date" style="font-size:20pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
+			    <span title="Date" style="font-size:14pt;" > <% out.print(dateToShow1.substring(0, 10));  %> Ã   <% out.print(dateToShow1.substring(11, 16));  %>  </span>
+ <br>
+ <br>					    
 				<div class="row">
 				<div  title="Temps" class="col-md-2">
-					  <span  style="font-size:18pt;" class="glyphicon glyphicon-time"></span> 
-					  <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(0.0); %> </span>
+					  <span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
+					  <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout1.get(1)); %> </span>
 					 </div>
 
 					<div title="Distance" class="col-md-2">
-					<span  style="font-size:18pt;" class="glyphicon glyphicon-sort"></span> 
-					 <span style="font-size:14pt; font-family:Verdana;"> &nbsp;  <% out.print(0.0); %>  </span>
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
+					 <span style="font-size:12pt; font-family:Verdana;"> &nbsp;  <% out.print(listWorkout1.get(2)); %>  </span>
 					
 					</div>
 
-					<div title="Calories brûlées" class="col-md-2">
-					<span style="font-size:18pt;" class="glyphicon glyphicon-fire"></span>	
-					 <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(0.0); %> </span>
+					<div title="Calories brÃ»lÃ©es" class="col-md-2">
+					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
+					 <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout1.get(3)); %> </span>
 					</div>
 
 					<div title="Vitesse moyenne" class="col-md-2">
-					<span style="font-size:18pt;" class="glyphicon glyphicon-flash"></span>	
-					 <span style="font-size:14pt; font-family:Verdana;">  <% out.print(0.0); %> </span>	
+					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
+					 <span style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout1.get(4)); %> </span>	
 					</div>
 					
-				    <div title="Mètre/min moyen" class="col-md-2">
-					<span style="font-size:18pt;" class="glyphicon glyphicon-signal"></span>	
-				    <span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(0.0); %> </span>	
+				    <div title="Altitude moyenn" class="col-md-2">
+					<span style="font-size:14pt;" class="glyphicon glyphicon-signal"></span>	
+				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>	
 					</div>
 
        </div> 
@@ -311,46 +357,76 @@ function logout() {
 					<div class="col-md-6">
 					
 					
-					<% // Récupère une liste de ttes les dates
+					<% // RÃ©cupÃ¨re une liste de ttes les dates
 					List listDates2 = rest.getAllDatesWorkoutSorted("vincentpont@gmail.com");
 					Iterator iterator2 = listDates2.iterator();
 					%>
 				
 					
-					<select name="listDates2" class="form-control" style="font-size:14pt;">
-					    <%while (iterator2.hasNext()){%>
-					        <option><%out.print(iterator2.next());%></option>
-					    <%}%>
+					
+				    <select id="selecte2" name="date2" class="form-control" style="font-size:14pt;">
+					    <option value="">-- Choisissez une date -- </option>
+					    <%for(int i = 0 ; i<listDates2.size() ;i++){%>
+					        <option value="<% out.print(listDates2.get(i)); %>"> <%out.print(listDates2.get(i));%> </option>
+					    <%} %>
 					</select>
+					</form>
 <br>
-<br>							
-<br>				    
-				    
+<br>
+<br>				
+
+<% 
+					List listWorkout2 = null ;
+					String dateToShow2 = "" ;
+				
+					// Test if we have something in param 
+					if(request.getParameter("date2") != null){
+						dateToShow2 = request.getParameter("date2");
+						listWorkout2 = rest.getDataWorkoutByEmailAndDate(dateToShow2,
+								"vincentpont@gmail.com");
+						rest.getDataMap("vincentpont@gmail.com", dateToShow2); 
+					}
+				     // If not we show the last workout
+					else if(request.getParameter("date2") == null || request.getParameter("date2").isEmpty()){
+						dateToShow2 = rest.getLastDateWorkout("vincentpont@gmail.com");
+						listWorkout2 = rest.getDataWorkoutByEmailAndDate(dateToShow2,
+								"vincentpont@gmail.com");
+						// Get data for altitude
+						rest.getDataMap("vincentpont@gmail.com", dateToShow2); 
+					}
+				
+				%>  		
+<br>
+<br>
+			    <span title="Date" style="font-size:20pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
+			    <span title="Date" style="font-size:14pt;" > <% out.print(dateToShow2.substring(0, 10));  %> Ã   <% out.print(dateToShow2.substring(11, 16));  %>  </span>
+<br>	
+<br>		
 				<div class="row">
 				<div  title="Temps" class="col-md-2">
 					  <span style="font-size:18pt;" class="glyphicon glyphicon-time"></span> 
-					  <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(0.0); %> </span>
+					  <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout2.get(1)); %> </span>
 					 </div>
 
 					<div title="Distance" class="col-md-2">
 					 <span style="font-size:18pt;" class="glyphicon glyphicon-sort"></span> 
-					 <span style="font-size:14pt; font-family:Verdana;"> &nbsp;  <% out.print(0.0); %>  </span>
+					 <span style="font-size:14pt; font-family:Verdana;"> &nbsp;  <% out.print(listWorkout2.get(2)); %>  </span>
 					
 					</div>
 
-					<div title="Calories brûlées" class="col-md-2">
+					<div title="Calories brÃ»lÃ©es" class="col-md-2">
 					 <span style="font-size:18pt;" class="glyphicon glyphicon-fire"></span>	
-					 <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(0.0); %> </span>
+					 <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout2.get(3)); %> </span>
 					</div>
 
 					<div title="Vitesse moyenne" class="col-md-2">
 					 <span style="font-size:18pt;" class="glyphicon glyphicon-flash"></span>	
-					 <span style="font-size:14pt; font-family:Verdana;">  <% out.print(0.0); %> </span>	
+					 <span style="font-size:14pt; font-family:Verdana;">  <% out.print(listWorkout2.get(4)); %> </span>	
 					</div>
 					
-				    <div title="Mètre/min moyen" class="col-md-2">
+				    <div title="Altitude moyenne" class="col-md-2">
 					<span style="font-size:18pt;" class="glyphicon glyphicon-signal"></span>	
-				    <span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(0.0); %> </span>	
+				    <span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>	
 					</div>
 
        </div> 
@@ -402,8 +478,8 @@ function logout() {
 		<hr>
 		<footer>
 			<p>
-				<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
-					réservés.</b>
+				<b>Copyright Â©2014 HexoSkin Travail bachelor. Tous droits
+					rÃ©servÃ©s.</b>
 			</p>
 		</footer>
 		</div>

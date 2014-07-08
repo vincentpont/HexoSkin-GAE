@@ -151,8 +151,7 @@ function logout() {
 	if(request.getParameter("date") != null){
 		lastDateMap = request.getParameter("date");
 		restMap.getDataMap("vincentpont@gmail.com", lastDateMap); 
-	}
-     // If not we show the last workout
+	} // If not we show the last workout
 	else{
 		lastDateMap = restMap.getLastDateWorkout("vincentpont@gmail.com");
 		restMap.getDataMap("vincentpont@gmail.com", lastDateMap); 
@@ -173,10 +172,22 @@ function logout() {
 	stringBufferLong = restMap.convertListToStringBuffer(listLongitude);
 	stringBufferSpeed = restMap.convertListToStringBuffer(listSpeed);
 	stringBufferAlti = restMap.convertListToStringBuffer(listAltitude);
-
+	
+	// Get Average of speed
+	List<String> list = restMap.getDataWorkoutByEmailAndDate(lastDateMap, "vincentpont@gmail.com");
+	String speedAverage = list.get(4) ;
+	
+	String meterMarker = "" ;
+	
+	if(request.getParameter("meterMarker") != null){
+		meterMarker = request.getParameter("meterMarker");
+	} else {
+		meterMarker = "50"; // default
+	}
+	
+	
 	%>
 	
-
 <script>
 
     var arrayLat = [ <%= stringBufferLat.toString() %> ];
@@ -184,30 +195,148 @@ function logout() {
     var arraySpeed = [ <%= stringBufferSpeed.toString() %> ];
     var arrayAlti = [ <%= stringBufferAlti.toString() %> ];
     var size = arrayLat.length;
+    var meterMarker = '<%=meterMarker%>';
+    meterMarker = parseInt(meterMarker); //parse
+    var numberMarker ;
+    
+    switch(meterMarker) {
+    case 5:
+    	numberMarker = 1 ;
+        break;
+    case 10:
+    	numberMarker = 2 ;
+        break;
+    case 25:
+    	numberMarker = 5 ;
+        break;
+    case 50:
+    	numberMarker = 10 ;
+        break;
+    case 100:
+    	numberMarker = 20 ;
+        break;
+    case 250:
+    	numberMarker = 50 ;
+        break;
+    case 500:
+    	numberMarker = 100 ;
+        break;
+    case 1000:
+    	numberMarker = 200 ;
+        break;
+} 
+    // Calculate speeds
+    var speedAverage = '<%=speedAverage%>';
+    var speedNumber = Number(speedAverage.substring(0, speedAverage.search(' '))); 
+    var speedMin = 2.00 ;
+    var speedUp = 10.00 ;
+    
     
 	function initialize() {
-		var mapOptions = {
-			zoom : 11,
+		var mapOptions = {  
+			zoom : 16,
 			center : new google.maps.LatLng(arrayLat[0], arrayLong[0]),
 			mapTypeId : google.maps.MapTypeId.PLAN
-			
-			
 		};
 
 		var map = new google.maps.Map(document.getElementById('map-canvas'),
 				mapOptions);
 		
+		var colorRed  = '#EF0000';
+		var colorYellow = '#F3FA24';
+		var colorGreen= '#35F627';
+					
 		// Pass the value to the array of path
-		var planCoordinates = new Array() ;
-			for(var i = 0 ; i < arrayLat.length ;i++){	
-				planCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
+		var planCoordinatesGreen= new Array() ;	
+		var planCoordinatesYellow= new Array() ;	
+		var planCoordinatesRed= new Array() ;	
+		var planCoordinates= new Array() ;	
+		var pathStyleGreen ;
+		var pathStyleYellow ;
+		var pathStyleRed ;
+		var pathStyle ;
+			
+			// Path NORMAL
+			for( var i = 0 ; i < arrayLat.length; i++ ){
+					planCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
 			}
-
+			pathStyle= new google.maps.Polyline({
+				path : planCoordinates,
+				geodesic : true,
+				strokeColor : colorRed,
+				strokeOpacity : 1,
+				strokeWeight : 4
+			});
+			pathStyle.setMap(map);
+			
+			/*
+			// Path green 
+			var countGreen = 0 ;
+			var iGreen = 0 ;
+			for( var gr = 0 ; gr < arrayLat.length; gr++ ){
+				if(arraySpeed[gr] <= 5.0){
+					planCoordinatesGreen[iGreen] = new google.maps.LatLng(arrayLat[gr] , arrayLong[gr]);
+					iGreen++;
+					countGreen++;
+				}
+			}
+			
+			if(countGreen >= 2){
+				//alert(planCoordinatesGreen.join('\n'))
+				pathStyleGreen = new google.maps.Polyline({
+					path : planCoordinatesGreen,
+					geodesic : true,
+					strokeColor : colorGreen,
+					strokeOpacity : 1,
+					strokeWeight : 4
+				});
+				pathStyleGreen.setMap(map);
+			}
+			
+			var countYellow = 0 ;
+			var iYellow = 0 ;
+			// Path yellow
+			for( var ye = 0 ; ye < arrayLat.length; ye++ ){
+				 if(arraySpeed[ye] >= 5.0){
+					planCoordinatesYellow[iYellow] = new google.maps.LatLng(arrayLat[ye] , arrayLong[ye]);
+					iYellow++;
+					countYellow++;
+				}
+			}
+			if(countYellow >= 2){
+				//alert(planCoordinatesYellow.join('\n'))
+			pathStyleYellow = new google.maps.Polyline({
+				path : planCoordinatesYellow,
+				geodesic : true,
+				strokeColor : colorYellow,
+				strokeOpacity : 1,
+				strokeWeight : 4,
+				map : map
+			}); 
+			pathStyleYellow.setMap(map);
+			}
+			/*
+			// Path red
+			for( var re = 0 ; re < arrayLat.length; re++ ){
+				if(arraySpeed[re] >= speedUp){
+					planCoordinatesRed[re] = new google.maps.LatLng(arrayLat[re] , arrayLong[re]);						
+				}
+			}
+			 pathStyleRed = new google.maps.Polyline({
+					path : planCoordinatesRed,
+					geodesic : true,
+					strokeColor : colorRed,
+					strokeOpacity : 1.0,
+					strokeWeight : 4,
+					map : map
+				});
+			 pathStyleRed.setMap(map);
+			 */
+		
 		
 		// Add markers to the path since each 20 locations point
-		for(var i = 20 ; i < arraySpeed.length ; i += 20 ){	
+		for(var i = numberMarker ; i < arraySpeed.length ; i += numberMarker ){	
 			
-		
 			// Now add the content of the popup
 			  var contentStrings = '<div id="content">'+
 		      '<div id="siteNotice">'+
@@ -228,7 +357,7 @@ function logout() {
 			      content: contentStrings
 			  });
 		      
-			  var image = 'img/markerInfos.png';
+			  var image = 'img/info_marker.png';
 			  var markerPosition = new google.maps.LatLng(arrayLat[i],arrayLong[i]);
 			  var marker = new google.maps.Marker({
 					position: markerPosition,
@@ -274,8 +403,8 @@ function logout() {
 	      '</div>'+
 	      '</div>';
 	      
-	     var imageStart = 'img/markerStart.png';
-	     var imageEnd = 'img/markerEnd.png';
+	     var imageStart = 'img/dd-start.png';
+	     var imageEnd = 'img/dd-end.png';
 
 	  	var endMarker = new google.maps.LatLng(arrayLat[arrayLat.length-1],arrayLong[arrayLong.length-1]);	
 		var markerEnd = new google.maps.Marker({
@@ -290,7 +419,7 @@ function logout() {
     		position: startMarker,
     		animation: google.maps.Animation.DROP,
     		title:"START",
-    		icon: imageStart
+    		icon: imageStart,
 		});
 		
 		var infowindowStart = new google.maps.InfoWindow({
@@ -308,21 +437,20 @@ function logout() {
 	  	google.maps.event.addListener(markerEnd, 'click', function() {
 	  		infowindowEnd.open(map,markerEnd);
 		  });
+
+	  	
+	  	/* Listener to get long and lat
+	  	google.maps.event.addListener(markerStart, 'dragend', function (event) {
+	  	    document.getElementById("latbox").value = this.getPosition().lat();
+	  	    document.getElementById("lngbox").value = this.getPosition().lng();
+	  	});
+	  	*/
+	  	
 	  	
 	  	// Add the two markers
 	  	markerEnd.setMap(map);
 	  	markerStart.setMap(map);
 
-	  	// Add path
-		var path = new google.maps.Polyline({
-			path : planCoordinates,
-			geodesic : true,
-			strokeColor : '#FF0000',
-			strokeOpacity : 1.0,
-			strokeWeight : 4
-		});
-	  	
-		path.setMap(map);
 		
 	}
 	
@@ -434,7 +562,7 @@ function logout() {
 						
 					<TD title="Altitude moyenne en mètre" class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-signal"></span>	
-						 <span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(listAltitude.get(listAltitude.size()-1)); %> m </span>				
+						 <span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(rest.getAltitudeAverage(listAltitude)); %> m </span>				
 					</TD>
 				</TR>
 		
@@ -501,11 +629,42 @@ function logout() {
 
 				<br>
 				<div class="row placeholders">
-
-				<div id="map-canvas" style="width:800px;height:400px;"></div>
-
-			
+					<div id="map-canvas" style="width:800px;height:400px;"></div>
 				</div>
+				
+				
+				<h4>Filtres  </h4>
+			<table>
+			<TR>
+				<TD>
+					<form action="index.jsp" method="get">
+						    <label for="precision">Sélectionnez  </label>
+						    <select title ="Représente le nombre de mètres qui séparent chaque infos de la séance." name="meterMarker" id="precision" class="form-control"  style="max-width:80px;">
+								  <option value="5">5 m</option>
+								  <option value="10">10 m</option>
+								  <option value="25">25 m</option>
+								  <option value="50">50 m</option>
+								  <option value="100">100 m</option>
+								  <option value="200">200 m</option>
+								  <option value="500">500 m</option>
+								  <option value="1000">1000 m</option>
+							</select> 
+							 <label for="precision" style="font-size:8pt;">*Représente le nombre de mètres qui séparent chaque infos de la séance.</label>
+<br>
+<br>
+				     		<button type='submit' class="btn btn-success" > Filtrer </button>
+<br>
+					</form> 
+				</TD>
+			</TR>
+			</table>
+			
+			<div id="latlong">
+			    <p>Latitude: <input size="20" type="text" id="latbox" name="lat" ></p>
+			    <p>Longitude: <input size="20" type="text" id="lngbox" name="lng" ></p>
+  			</div>
+			
+			
 			</div>
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

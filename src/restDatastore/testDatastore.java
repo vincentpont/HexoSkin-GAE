@@ -42,14 +42,12 @@ public class testDatastore {
 		
 		String date = rest.getLastDateWorkout("vincentpont@gmail.com");
 		System.out.println(date);
-		rest.getDataMap("vincentpont@gmail.com", "2014.06.08.12:40");
+		rest.getDataMap("vincentpont@gmail.com", "2014.07.07.19:40");
 		Iterator<Double> iterator = rest.getListLatitudes().iterator(); 
 		while(iterator.hasNext()) {
 			System.out.println(iterator.next());
 			}
 	
-		
-		
 		
 	}
 

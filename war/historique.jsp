@@ -304,8 +304,7 @@
 							    // Number of rows
 							    for(int i = 0 ; i < countRows ; i++){	
 							     Iterator<String> iterator = list.iterator(); %>
-							     </TR>
-								<form action="index.jsp">
+							     <TR>
 
 								<% 
 								// Write data in rows, each time 5 data per rows
@@ -316,14 +315,16 @@
 								// Insert button for details
 									for(int l = 0 ; l < 1 ;l++) { %>
 									<TD>
+									<form action="index.jsp" method="get">
 							     	<input type='hidden' name='date' value='<%= list.get(dateCount) %>'>  
 									<button title="Détail" type="submit" class="btn btn-success">
 									<span style="font-size:14pt;" class="glyphicon glyphicon-search"></span>
 									</button>
+									</form> 
 							     	</TD>
 							     <%	}
 									dateCount += 5; //every 5 data we have the date
-								%> </form> 
+								%> 
 							     </TR>
 								<% } %>
 								
