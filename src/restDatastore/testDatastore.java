@@ -48,6 +48,13 @@ public class testDatastore {
 			System.out.println(iterator.next());
 			}
 	
+		List list = rest.getDataWorkoutByEmailAndDate("2014.07.07.19:40", "vincentpont@gmail.com");
+		
+		Iterator<String> iterator2 = list.iterator(); 
+		while(iterator2.hasNext()) {
+			System.out.println(iterator2.next());
+			}
+		
 		
 	}
 

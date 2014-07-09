@@ -34,8 +34,8 @@ import org.json.JSONException;
 
 public class RestInvokerDatastore {
 
-	private final String username = "vincentpont@gmail.com";
-	private final String password = "volcom888";
+	private String username = "vincentpont@gmail.com";
+	private String password = "volcom888";
 	private String userpass;
 	private String basicAuth;
 	private JSONObject json;
@@ -57,6 +57,14 @@ public class RestInvokerDatastore {
 		basicAuth = "Basic "
 				+ new String(new Base64().encode(userpass.getBytes()));
 	}
+	
+	// Constructor with param oauth
+	public RestInvokerDatastore(String username, String password) {
+
+		this.username = username;
+		this.password = password;
+	}
+
 
 	/**
 	 * Method to get in JSON one workout with the date and email
@@ -256,7 +264,6 @@ public class RestInvokerDatastore {
 		JSONArray jsonMainArr;
 		try {
 			jsonMainArr = json.getJSONArray("DataMap");
-			System.out.println(json.toString());
 
 			for (int i = 0; i < jsonMainArr.length(); i++) {
 				JSONObject childJSONObject = jsonMainArr.getJSONObject(i);
@@ -269,6 +276,7 @@ public class RestInvokerDatastore {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		System.out.println(StringVitesses);
 
 		// Substring and parse the values into Double
 		listLatitudes = substringLists(StringLatitudes);
@@ -469,7 +477,7 @@ public class RestInvokerDatastore {
 	 * 
 	 * @Return : List of Double
 	 */
-	private List<Double> substringLists(String list) {
+	public List<Double> substringLists(String list) {
 
 		List<Double> listDouble = new ArrayList<Double>();
 		int j = 0;
@@ -506,7 +514,7 @@ public class RestInvokerDatastore {
 	public String getAltitudeAverage(List<Double> altitudes){
 		
 		Double average = 0.0 ;
-		int count = 1;
+		int count = 0;
 		DecimalFormat df = new DecimalFormat("####0.00");
 		
 		Iterator<Double> iterator = altitudes.iterator(); 
@@ -516,6 +524,10 @@ public class RestInvokerDatastore {
 		 count++;
 		}
 
+		// Si on a pas de données pour pas qu'on divise par 0
+		if(count == 0){
+			count = 1 ;
+		}
 			
 		return df.format(average / count);
 	}

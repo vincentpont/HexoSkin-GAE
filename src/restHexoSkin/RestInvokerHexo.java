@@ -34,6 +34,11 @@ public class RestInvokerHexo {
 	private final String username = "bruno.alves@hevs.ch";
 	private final String password = "$hes-so2014!";
 
+	// Constructor emtpy
+	public RestInvokerHexo(){
+		
+	}
+	
 	public RestInvokerHexo(String url) {
 		this.url = url;
 		userpass = username + ":" + password;
@@ -68,7 +73,6 @@ public class RestInvokerHexo {
 
 			try {
 				json = new JSONObject(jsonText);
-
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -255,7 +259,7 @@ public class RestInvokerHexo {
 	public String getAverageFromList(List<String> list){
 		
 		Double average = 0.0 ;
-		int count = 1;
+		int count = 0;
 		DecimalFormat df = new DecimalFormat("####0.00");
 		
 		Iterator<String> iterator = list.iterator(); 
@@ -265,6 +269,10 @@ public class RestInvokerHexo {
 		 count++;
 		}
 
+		// Si on a pas de données pour pas qu'on divise par 0
+		if(count == 0 ){
+			count = 1; 
+		}
 			
 		return df.format(average / count);
 	}
