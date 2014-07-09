@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,62 +177,141 @@ function logout() {
 	List<String> list = restMap.getDataWorkoutByEmailAndDate(lastDateMap, "vincentpont@gmail.com");
 	String speedAverage = list.get(4) ;
 	
-	String meterMarker = "" ;
+	// Default values
+	String meterMarker = "50" ;
+	String booleanInfo = "No" ;
+	String booleanSpeed = "No" ;
+	String booleanPath = "Yes" ; 
+	String booleanStartStop = "Yes";
 	
-	if(request.getParameter("meterMarker") != null){
-		meterMarker = request.getParameter("meterMarker");
-	} else {
-		meterMarker = "50"; // default
+	// Test if the user want to show the info
+	String infoTest = request.getParameter("testInfo");
+	if(request.getParameter("testInfo") != null){
+		if(infoTest.equals("Yes")){
+			if(request.getParameter("meterMarker") != null){
+				meterMarker = request.getParameter("meterMarker");
+				booleanInfo = "Yes";
+			} else {
+				meterMarker = "50"; // default
+				booleanInfo = "Yes";
+			}
+		}
+		else{
+			booleanInfo = "No";
+		}
 	}
 	
+	
+	// Test show speeds
+	String speedTest = request.getParameter("testSpeed");
+	if(request.getParameter("testSpeed") != null){
+		if(speedTest.equals("Yes")){
+			if(request.getParameter("meterMarker") != null){
+				meterMarker = request.getParameter("meterMarker");
+				booleanSpeed = "Yes";
+			} else {
+				booleanSpeed = "Yes";
+				meterMarker = "50"; // default
+			}
+		}
+		else {
+			booleanSpeed = "No";
+		}
+	}
+	
+	// Test show path
+	String pathTest = request.getParameter("testPath");
+	if(request.getParameter("testPath") != null){
+		if(pathTest.equals("Yes")){
+			booleanPath = "Yes";
+		}
+		else {
+			booleanPath = "No";
+		}
+	}	
+	
+	// Test show path
+	String depStopTest = request.getParameter("testDepStop");
+	if(request.getParameter("testDepStop") != null){
+		if(depStopTest.equals("Yes")){
+			booleanStartStop = "Yes";
+		}
+		else {
+			booleanStartStop = "No";
+		}
+	}	
 	
 	%>
 	
 <script>
 
-    var arrayLat = [ <%= stringBufferLat.toString() %> ];
-    var arrayLong = [ <%= stringBufferLong.toString() %> ];
-    var arraySpeed = [ <%= stringBufferSpeed.toString() %> ];
-    var arrayAlti = [ <%= stringBufferAlti.toString() %> ];
-    var size = arrayLat.length;
-    var meterMarker = '<%=meterMarker%>';
-    meterMarker = parseInt(meterMarker); //parse
-    var numberMarker ;
-    
-    switch(meterMarker) {
-    case 5:
-    	numberMarker = 1 ;
-        break;
-    case 10:
-    	numberMarker = 2 ;
-        break;
-    case 25:
-    	numberMarker = 5 ;
-        break;
-    case 50:
-    	numberMarker = 10 ;
-        break;
-    case 100:
-    	numberMarker = 20 ;
-        break;
-    case 250:
-    	numberMarker = 50 ;
-        break;
-    case 500:
-    	numberMarker = 100 ;
-        break;
-    case 1000:
-    	numberMarker = 200 ;
-        break;
-} 
-    // Calculate speeds
-    var speedAverage = '<%=speedAverage%>';
-    var speedNumber = Number(speedAverage.substring(0, speedAverage.search(' '))); 
-    var speedMin = 2.00 ;
-    var speedUp = 10.00 ;
-    
-    
 	function initialize() {
+		
+		
+	    var arrayLat = [ <%= stringBufferLat.toString() %> ];
+	    var arrayLong = [ <%= stringBufferLong.toString() %> ];
+	    var arraySpeed = [ <%= stringBufferSpeed.toString() %> ];
+	    var arrayAlti = [ <%= stringBufferAlti.toString() %> ];
+	    var size = arrayLat.length;
+	    var meterMarker = '<%=meterMarker%>';
+	    meterMarker = parseInt(meterMarker); //parse
+	    var numberMarker ;
+	    
+	    var booleanInfo = '<%=booleanInfo%>';
+	    var booleanSpeed = '<%=booleanSpeed%>';
+	    var booleanPath = '<%=booleanPath%>';
+	    var booleanStartStop = '<%=booleanStartStop%>';
+	    
+	    // Set checked if the user already checked 
+	    if(booleanInfo == "Yes"){
+	    document.getElementById("testInfo").checked = true;
+	    }
+	    if(booleanSpeed == "Yes"){
+	    	document.getElementById("testSpeed").checked = true;
+	    }
+	    if(booleanPath == "Yes"){
+	    	document.getElementById("testPath").checked = true;
+	    }
+	    if(booleanStartStop == "Yes"){
+	    	document.getElementById("testDepStop").checked = true;
+	    }
+	    
+	    
+	    
+	    
+	    switch(meterMarker) {
+	    case 5:
+	    	numberMarker = 1 ;
+	        break;
+	    case 10:
+	    	numberMarker = 2 ;
+	        break;
+	    case 25:
+	    	numberMarker = 5 ;
+	        break;
+	    case 50:
+	    	numberMarker = 10 ;
+	        break;
+	    case 100:
+	    	numberMarker = 20 ;
+	        break;
+	    case 250:
+	    	numberMarker = 50 ;
+	        break;
+	    case 500:
+	    	numberMarker = 100 ;
+	        break;
+	    case 1000:
+	    	numberMarker = 200 ;
+	        break;
+	} 
+	    // Calculate speeds
+	    var speedAverage = '<%=speedAverage%>';
+	    var speedNumber = Number(speedAverage.substring(0, speedAverage.search(' '))); 
+	    var speedMin = 2.00 ;
+	    var speedUp = 10.00 ;
+		
+		
 		var mapOptions = {  
 			zoom : 16,
 			center : new google.maps.LatLng(arrayLat[0], arrayLong[0]),
@@ -247,7 +326,6 @@ function logout() {
 		var colorGreen= '#35F627';
 					
 		// Pass the value to the array of path
-		var planCoordinatesGreen= new Array() ;	
 		var planCoordinatesYellow= new Array() ;	
 		var planCoordinatesRed= new Array() ;	
 		var planCoordinates= new Array() ;	
@@ -257,42 +335,92 @@ function logout() {
 		var pathStyle ;
 			
 			// Path NORMAL
-			for( var i = 0 ; i < arrayLat.length; i++ ){
-					planCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
-			}
-			pathStyle= new google.maps.Polyline({
-				path : planCoordinates,
-				geodesic : true,
-				strokeColor : colorRed,
-				strokeOpacity : 1,
-				strokeWeight : 4
-			});
-			pathStyle.setMap(map);
-			
-			/*
-			// Path green 
-			var countGreen = 0 ;
-			var iGreen = 0 ;
-			for( var gr = 0 ; gr < arrayLat.length; gr++ ){
-				if(arraySpeed[gr] <= 5.0){
-					planCoordinatesGreen[iGreen] = new google.maps.LatLng(arrayLat[gr] , arrayLong[gr]);
-					iGreen++;
-					countGreen++;
+			if(booleanPath == "Yes"){
+				for( var i = 0 ; i < arrayLat.length; i++ ){
+						planCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
+				
 				}
-			}
-			
-			if(countGreen >= 2){
-				//alert(planCoordinatesGreen.join('\n'))
-				pathStyleGreen = new google.maps.Polyline({
-					path : planCoordinatesGreen,
+				
+				pathStyle= new google.maps.Polyline({
+					path : planCoordinates,
 					geodesic : true,
-					strokeColor : colorGreen,
+					strokeColor : "#000000",
 					strokeOpacity : 1,
 					strokeWeight : 4
 				});
-				pathStyleGreen.setMap(map);
+				pathStyle.setMap(map);
+			}
+			/*
+			
+			// Path green  DONT WORK
+			var planCoordinatesGreenWithBlank= new Array() ;
+			var planCoordinatesAllPath = new Array();
+			
+			// Add location with blanks (blanks = no value with the speed pass in the if)
+			for( var k = 0 ; k < arrayLat.length; k++ ){				
+					planCoordinatesAllPath[k] = new google.maps.LatLng(arrayLat[k] , arrayLong[k]);
+				}
+			
+			// Add location with blanks (blanks = no value with the speed pass in the if)
+			for( var grb = 0 ; grb < arrayLat.length; grb++ ){				
+				if(arraySpeed[grb] <= 5.0){	
+					planCoordinatesGreenWithBlank[grb] = new google.maps.LatLng(arrayLat[grb] , arrayLong[grb]);
+					}
+				}
+			
+			var countGreen = 0 ;
+			var posEnd = 0 ;
+			var positionDepart = 0;
+		
+			// Take the value without the blank
+			for( var gr = 0 ; gr < planCoordinatesGreenWithBlank.length; gr++ ){
+				
+				if(typeof planCoordinatesGreenWithBlank[gr] !== 'undefined'){ // NO BLANK
+					planCoordinatesGreen[countGreen] = new google.maps.LatLng(arrayLat[gr] , arrayLong[gr]);
+					countGreen++;
+				}	
+				
+				// On rentre que si on trouve un blanc et que avant yavait des valeurs ou apr√®s = 2 valeurs
+				else if (typeof planCoordinatesGreenWithBlank[gr] == 'undefined' && typeof planCoordinatesGreenWithBlank[gr-1] !== 'undefined'
+						|| typeof planCoordinatesGreenWithBlank[gr+1] !== 'undefined'){ 
+
+					    posEnd = gr; // position blank							
+						positionDepart = posEnd - countGreen;
+						if(positionDepart < 0){ // don't allow neg
+							positionDepart = 0;
+						}	
+						
+						alert("planCoordinatesGreen" + planCoordinatesGreen.join('\n'));
+						alert("Position d√©part :" +positionDepart);
+						alert("Position jusqu'√† :" +posEnd); 
+						// de 0 √† position on cr√©e un nousveau array et on dessine
+					    var planCoordinatesTEMP = new Array() ;
+					    planCoordinatesTEMP.length = 0 ; // r√©initialise le array
+						var reinitialize = 0 ;
+						for(var l = positionDepart ; l < posEnd ; l++){
+							planCoordinatesTEMP[reinitialize] = planCoordinatesGreen[l]; 
+							reinitialize++;
+						}
+						
+						alert("planCoordinatesTEMP" + planCoordinatesTEMP.join('\n'));
+						alert("countGreen :" + countGreen);
+						if(countGreen >= 2){ // mini two position
+							pathStyleGreen = new google.maps.Polyline({
+								path : planCoordinatesTEMP,
+								geodesic : true,
+								strokeColor : colorGreen,
+								strokeOpacity : 1,
+								strokeWeight : 4
+							});
+							pathStyleGreen.setMap(map);
+						}
+					}
+
 			}
 			
+			*/
+			
+			/*
 			var countYellow = 0 ;
 			var iYellow = 0 ;
 			// Path yellow
@@ -333,56 +461,131 @@ function logout() {
 			 pathStyleRed.setMap(map);
 			 */
 		
-		
-		// Add markers to the path since each 20 locations point
-		for(var i = numberMarker ; i < arraySpeed.length ; i += numberMarker ){	
-			
-			// Now add the content of the popup
-			  var contentStrings = '<div id="content">'+
-		      '<div id="siteNotice">'+
-		      '<h5 id="firstHeading" class="firstHeading">DonnÈes</h5>'+
-		      '<div id="bodyContent">'+
-		      '<table class="table">' + 
-		      '<TR>'+
-		      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[i].toString() +  '</span>' +'</TD>' +
-		      '<TD>' + '<span title="Altitude mËtre" style="font-size:11pt;" class="glyphicon glyphicon-signal">'+ '&nbsp;'  +  arrayAlti[i].toString()  +'</span>' +'</TD>' +
-		      '</TR>' +
-		      '</table>'+
-		      '</div>'+
-		      '</div>'+
-		      '</div>';
-		      
-		      // add content text html
-			  var myinfowindow  = new google.maps.InfoWindow({
-			      content: contentStrings
-			  });
-		      
-			  var image = 'img/info_marker.png';
-			  var markerPosition = new google.maps.LatLng(arrayLat[i],arrayLong[i]);
-			  var marker = new google.maps.Marker({
-					position: markerPosition,
-		    		animation: google.maps.Animation.DROP,
-					infowindow: myinfowindow ,
-					icon : image
-				});
-		      
-			  // Listener
-			  google.maps.event.addListener(marker, 'click', function() {
-				  this.infowindow.open(map, this);
-			  });
+		var marker ;
+			 
+	    // Add speed marker if the user want it
+	    if(booleanSpeed == "Yes"){
+			for(var j = numberMarker ; j < arraySpeed.length ; j += numberMarker){	
+		 
+				// Now add the content of the popup
+				  var contentStringSpeeds = '<div id="content">'+
+			      '<div id="siteNotice">'+
+			      '<h5 id="firstHeading" class="firstHeading">Donn√©es</h5>'+
+			      '<div id="bodyContent">'+
+			      '<table class="table">' + 
+			      '<TR>'+
+			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[j].toString() +  '</span>' +'</TD>' +
+			      '</TR>' +
+			      '</table>'+
+			      '</div>'+
+			      '</div>'+
+			      '</div>';
+			      
+			      // add content text html
+				  var myinfowindow  = new google.maps.InfoWindow({
+				      content: contentStringSpeeds
+				  });
+			      
+				
+				  if (arraySpeed[j] <= 5 ){
+					  var speedLowImg = 'img/SpeedSlow.png';
+					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
+					  marker = new google.maps.Marker({
+							position: markerPosition,
+				    		animation: google.maps.Animation.DROP,
+							infowindow: myinfowindow ,
+							icon : speedLowImg
+						});
+					  
+				  }
+				  else if (arraySpeed[j] > 5 && arraySpeed[j] <= 8){
+					  var speedMidImg = 'img/SpeedMiddle.png';
+					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
+					   marker = new google.maps.Marker({
+							position: markerPosition,
+				    		animation: google.maps.Animation.DROP,
+							infowindow: myinfowindow ,
+							icon : speedMidImg
+						});
+	
+				  }
+				  
+				  else if (arraySpeed[j] > 8){
+					  var speedFastImg = 'img/SpeedMax.png';
+					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
+					  	marker = new google.maps.Marker({
+							position: markerPosition,
+				    		animation: google.maps.Animation.DROP,
+							infowindow: myinfowindow ,
+							icon : speedFastImg
+						});	
+				  }
+				  // Listener
+				  google.maps.event.addListener(marker, 'click', function() {
+					  this.infowindow.open(map, this);
+				  });
+				  
+				  marker.setMap(map);
+			}
+	    }
 			  
-			  marker.setMap(map);
-		}
+			  
+		// WORK
+		
+	 	// Add info marker if the user want it
+	    if(booleanInfo == "Yes"){
+			// Add markers to the path since each 20 locations point
+			for(var i = numberMarker ; i < arraySpeed.length ; i += numberMarker ){	
+				
+				// Now add the content of the popup
+				  var contentStrings = '<div id="content">'+
+			      '<div id="siteNotice">'+
+			      '<h5 id="firstHeading" class="firstHeading">Donn√©es</h5>'+
+			      '<div id="bodyContent">'+
+			      '<table class="table">' + 
+			      '<TR>'+
+			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[i].toString() +  '</span>' +'</TD>' +
+			      '<TD>' + '<span title="Altitude m√®tre" style="font-size:11pt;" class="glyphicon glyphicon-signal">'+ '&nbsp;'  +  arrayAlti[i].toString()  +'</span>' +'</TD>' +
+			      '</TR>' +
+			      '</table>'+
+			      '</div>'+
+			      '</div>'+
+			      '</div>';
+			      
+			      // add content text html
+				  var myinfowindow  = new google.maps.InfoWindow({
+				      content: contentStrings
+				  });
+			      
+				  var image = 'img/info_marker.png';
+				  var markerPosition = new google.maps.LatLng(arrayLat[i],arrayLong[i]);
+				  var marker = new google.maps.Marker({
+						position: markerPosition,
+			    		animation: google.maps.Animation.DROP,
+						infowindow: myinfowindow ,
+						icon : image
+					});
+			      
+				  // Listener
+				  google.maps.event.addListener(marker, 'click', function() {
+					  this.infowindow.open(map, this);
+				  });
+				  
+				  marker.setMap(map);
+			}
+	    }
+		
+		
 		
 		// Marker end
 		  var contentStringEnd = '<div id="content">'+
 	      '<div id="siteNotice">'+
-	      '<h5 id="firstHeading" class="firstHeading">DonnÈes</h5>'+
+	      '<h5 id="firstHeading" class="firstHeading">Donn√©es</h5>'+
 	      '<div id="bodyContent">'+
 	      '<table class="table">' +
 	      '<TR>'+
 	      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[arraySpeed.length-1].toString() +  '</span>' +'</TD>' +
-	      '<TD>' + '<span title="Altitude mËtre" style="font-size:11pt;" class="glyphicon glyphicon-signal">' + '&nbsp;' + arrayAlti[arrayAlti.length-1].toString()  +'</span>' +'</TD>' +
+	      '<TD>' + '<span title="Altitude m√®tre" style="font-size:11pt;" class="glyphicon glyphicon-signal">' + '&nbsp;' + arrayAlti[arrayAlti.length-1].toString()  +'</span>' +'</TD>' +
 	      '</TR>' +
 	      '</table>'+
 	      '</div>'+
@@ -391,12 +594,12 @@ function logout() {
 	      
 		  var contentStringStart = '<div id="content">'+
 	      '<div id="siteNotice">'+
-	      '<h5 id="firstHeading" class="firstHeading">DonnÈes</h5>'+
+	      '<h5 id="firstHeading" class="firstHeading">Donn√©es</h5>'+
 	      '<div id="bodyContent">'+
 	      '<table class="table">' +
 	      '<TR>'+
 	      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[0].toString() +  '</span>' +'</TD>' +
-	      '<TD>' + '<span title="Altitude mËtre" style="font-size:11pt;" class="glyphicon glyphicon-signal">' + '&nbsp;' + arrayAlti[0].toString()  +'</span>' +'</TD>' +
+	      '<TD>' + '<span title="Altitude m√®tre" style="font-size:11pt;" class="glyphicon glyphicon-signal">' + '&nbsp;' + arrayAlti[0].toString()  +'</span>' +'</TD>' +
 	      '</TR>' +
 	      '</table>'+
 	      '</div>'+
@@ -430,14 +633,20 @@ function logout() {
 		      content: contentStringEnd
 		});
 
-	  	google.maps.event.addListener(markerStart, 'click', function() {
-	  		infowindowStart.open(map,markerStart);
-		  });
-	  	
-	  	google.maps.event.addListener(markerEnd, 'click', function() {
-	  		infowindowEnd.open(map,markerEnd);
-		  });
-
+		// Only if the user ask for it
+		if(booleanStartStop == "Yes"){
+		  	google.maps.event.addListener(markerStart, 'click', function() {
+		  		infowindowStart.open(map,markerStart);
+			  });
+		  	
+		  	google.maps.event.addListener(markerEnd, 'click', function() {
+		  		infowindowEnd.open(map,markerEnd);
+			  });
+		  	
+		  	// Add the two markers
+		  	markerEnd.setMap(map);
+		  	markerStart.setMap(map);
+		}
 	  	
 	  	/* Listener to get long and lat
 	  	google.maps.event.addListener(markerStart, 'dragend', function (event) {
@@ -447,17 +656,20 @@ function logout() {
 	  	*/
 	  	
 	  	
-	  	// Add the two markers
-	  	markerEnd.setMap(map);
-	  	markerStart.setMap(map);
+
 
 		
 	}
 	
 	google.maps.event.addDomListener(window, 'resize', initialize);
 	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	function reloadMap(map){
+		google.maps.event.trigger(map, 'resize');
+	}
 
 </script>
+
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -532,10 +744,10 @@ function logout() {
 			%>
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h3 class="page-header">SÈance</h3>
+				<h3 class="page-header">S√©ance</h3>
 
 			    <span title="Date" style="font-size:20pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
-				<span title="Date" style="font-size:14pt;" > <% out.print(dateToShow.substring(0, 10));  %> ‡  <% out.print(dateToShow.substring(11, 16));  %>  </span>
+				<span title="Date" style="font-size:14pt;" > <% out.print(dateToShow.substring(0, 10));  %> √†  <% out.print(dateToShow.substring(11, 16));  %>  </span>
 
 				<table class="table">
 				<TR>
@@ -544,12 +756,12 @@ function logout() {
 						<span style="font-size:14pt; font-family:Verdana;"> <% out.print(listWorkout.get(1)); %> </span>
 					</TD> 
 						
-					<TD  title="Distance en mËtre"  class="success">				
+					<TD  title="Distance en m√®tre"  class="success">				
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-sort"></span> 
 						 <span style="font-size:14pt; font-family:Verdana;">  <% out.print(listWorkout.get(2)); %> </span>
 					</TD>
 						
-					<TD title="Calories br˚lÈes" class="success">
+					<TD title="Calories br√ªl√©es" class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-fire"></span>	
 						 <span style="font-size:14pt; font-family:Verdana;">&nbsp;  <% out.print(listWorkout.get(3)); %></span>
 					</TD>
@@ -560,7 +772,7 @@ function logout() {
 											
 					</TD>
 						
-					<TD title="Altitude moyenne en mËtre" class="success">
+					<TD title="Altitude moyenne en m√®tre" class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-signal"></span>	
 						 <span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(rest.getAltitudeAverage(listAltitude)); %> m </span>				
 					</TD>
@@ -628,43 +840,104 @@ function logout() {
 				</h3>
 
 				<br>
-				<div class="row placeholders">
-					<div id="map-canvas" style="width:800px;height:400px;"></div>
-				</div>
 				
 				
-				<h4>Filtres  </h4>
+				<div class="row">
+  					<div class="col-xs-12 col-md-8">			
+				  		<div id="map-canvas" style="width:100%;height:350px;"></div>			  		
+  					</div>
+  							
+  					<div class="col-xs-6 col-md-4">
+  
+  					<h5> <b> Filtres </b> </h5> 
+  						<table>
+						<TR>
+							<TD>
+								<form  method="post" action="" onsubmit="reloadMap();">
+									    <select title ="Repr√©sente le nombre de m√®tres qui s√©parent chaque infos de la s√©ance." name="meterMarker" id="precision" class="form-control"  style="max-width:100px;">
+											  <option value="5">5 m</option>
+											  <option value="10">10 m</option>
+											  <option value="25">25 m</option>
+											  <option value="50">50 m</option>
+											  <option value="100">100 m</option>
+											  <option value="200">200 m</option>
+											  <option value="500">500 m</option>
+											  <option value="1000">1000 m</option>
+										</select> 
+							
+											<div title="Afficher le trajet enregistr√©." class="checkbox">
+											<span>
+												   <input id='testPath' type='checkbox' value='Yes' name='testPath'>
+												    Chemin
+												   <input id='testPathHidden' type='hidden' value='No' name='testPath'>
+												  
+											</span>
+											</div>
+											<div title="Afficher point d√©part et stop" class="checkbox">
+											<span>
+												  <input id='testDepStop' type='checkbox' value='Yes' name='testDepStop'>
+												  Point d√©part/stop
+												  <input id='testDepStopHidden' type='hidden' value='No' name='testDepStop'>
+											</span>
+											</div>
+											<div title="Afficher les vitesses sur trajet." class="checkbox">
+											<span>
+												   <input id='testSpeed' type='checkbox' value='Yes' name='testSpeed'>
+												    	Vitesses
+												   <input id='testSpeedHidden' type='hidden' value='No' name='testSpeed'>
+											</span>
+											 </div>
+											<div title="Afficher les donn√©es enregistr√©es." class="checkbox">
+											<span>
+												  <input id='testInfo' type='checkbox' value='Yes' name='testInfo'>
+												  D√©tails s√©ances
+												  <input id='testInfoHidden' type='hidden' value='No' name='testInfo'>
+											</span>
+											</div>		
+<br>
+							     		<button type='submit' class="btn btn-success" onClick="reloadMap();"> Filtrer </button>
+<br>
+								</form> 
+							</TD>
+						</TR>
+					</table>
+  </div>
+
+				</div>	
+<br>				
+			<h5> <b> L√©gendes </b>  </h5>
+<br>				
 			<table>
 			<TR>
-				<TD>
-					<form action="index.jsp" method="get">
-						    <label for="precision">SÈlectionnez  </label>
-						    <select title ="ReprÈsente le nombre de mËtres qui sÈparent chaque infos de la sÈance." name="meterMarker" id="precision" class="form-control"  style="max-width:80px;">
-								  <option value="5">5 m</option>
-								  <option value="10">10 m</option>
-								  <option value="25">25 m</option>
-								  <option value="50">50 m</option>
-								  <option value="100">100 m</option>
-								  <option value="200">200 m</option>
-								  <option value="500">500 m</option>
-								  <option value="1000">1000 m</option>
-							</select> 
-							 <label for="precision" style="font-size:8pt;">*ReprÈsente le nombre de mËtres qui sÈparent chaque infos de la sÈance.</label>
+			
+				<TD> <span style="font-style:italic; font-size:10pt;"> Chemin du trajet. &nbsp; </span>
+				<img title="Trac√© du chemin de la s√©ance parcourue." src="img/path.png"/> 
+				
 <br>
-<br>
-				     		<button type='submit' class="btn btn-success" > Filtrer </button>
-<br>
-					</form> 
-				</TD>
+			    
+			    <span style="font-style:italic; font-size:10pt;"> Point d√©but/stop s√©ance.  </span>
+				<img title="Point de d√©part." src="img/dd-start.png"/> 
+				<img title="Point d'arriv√©e." src="img/dd-end.png"/> 
+				
+ <br>
+			
+				 <span style="font-style:italic; font-size:10pt;"> Degr√© vitesse. (faible √† fort)  </span>
+
+				<img title="Vitesse basse" src="img/SpeedSlow.png"/> 
+				<img title="Vitesse moyenne" src="img/SpeedMiddle.png"/> 
+				<img title="Vitesse haute" src="img/SpeedMax.png"/> 
+ <br>				
+				
+				 <span style="font-style:italic; font-size:10pt;"> D√©tails s√©ance.  </span>
+				<img title="Donn√©es de la s√©ance." src="img/info_marker.png"/> 
+    
+		    
+			    </TD>
+			    
 			</TR>
-			</table>
-			
-			<div id="latlong">
-			    <p>Latitude: <input size="20" type="text" id="latbox" name="lat" ></p>
-			    <p>Longitude: <input size="20" type="text" id="lngbox" name="lng" ></p>
-  			</div>
-			
-			
+			</table>	
+				
+					
 			</div>
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -680,7 +953,7 @@ function logout() {
 					<div class="col-xs-6">
 						<div id="chart_div2" style="width: 500px; height: 350px;"></div>
 
-						<h4>AccÈlÈration</h4>
+						<h4>Acc√©l√©ration</h4>
 						<span class="text-muted"></span>
 					</div>
 
@@ -694,8 +967,8 @@ function logout() {
 		<hr>
 		<footer>
 			<p>
-				<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
-					rÈservÈs.</b>
+				<b>Copyright ¬©2014 HexoSkin Travail bachelor. Tous droits
+					r√©serv√©s.</b>
 			</p>
 		</footer>
 		</div>
