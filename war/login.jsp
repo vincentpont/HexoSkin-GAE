@@ -30,7 +30,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="bootstrap-3.1.1/docs/assets/ico/favicon.ico">
+	<link rel="shortcut icon" href="img/icoFav.png">
+
 
     <title>HexoSkin-TB</title>
 

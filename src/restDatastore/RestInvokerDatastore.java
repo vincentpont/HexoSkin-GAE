@@ -448,7 +448,7 @@ public class RestInvokerDatastore {
 	}
 	
 	/**
-	 * Method that return a string buffer to pass it in an array of javascript in integer
+	 * Method that return a string buffer to pass it in an array of javascript in integer (so number)
 	 * JSP->JS
 	 * 
 	 * @param List

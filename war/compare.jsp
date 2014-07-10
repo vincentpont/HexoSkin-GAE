@@ -34,61 +34,54 @@
 <!-- Google charts </body> -->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-	google.load("visualization", "1", {
-		packages : [ "corechart" ]
-	});
-	google.setOnLoadCallback(drawChart);
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-				[ 'Year', 'Sales', 'Expenses' ], [ '2013', 1000, 400 ],
-				[ '2014', 1170, 460 ], [ '2015', 660, 1120 ],
-				[ '2016', 1030, 540 ] ]);
+		google.load("visualization", "1", {packages:["corechart"]});
+		google.setOnLoadCallback(drawChart);
+		function drawChart() {
+		  var data = google.visualization.arrayToDataTable([
+		    ['Year', 'Sales', 'Expenses'],
+		    ['2004',  1000,      400],
+		    ['2005',  1170,      460],
+		    ['2006',  660,       1120],
+		    ['2007',  1030,      540]
+		  ]);
+		  var options = {
+		    title: 'Company Performance'
+		    
+		  };
+		  var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+		
+		  chart.draw(data, options);
+		
+		
+		 var hideSal = document.getElementById("hideSales");
+		 hideSal.onclick = function()
+		 {
+		    view = new google.visualization.DataView(data);
+		    view.hideColumns([1]); 
+		    chart.draw(view, options);
+		 }
+		 
+		 var hideExp = document.getElementById("hideExpenses");
+		 hideExp.onclick = function()
+		 {
+		    view = new google.visualization.DataView(data);
+		    view.hideColumns([2]); 
+		    chart.draw(view, options);
+		 }		 
+		 
+		 // See all
+		 var seeAll = document.getElementById("seeAll");
+		 seeAll.onclick = function()
+		 {
+		    view = new google.visualization.DataView(data);
+		    view.setColumns([0,1,2]);
+		    chart.draw(view, options);
+		 }
+		 
 
-		var options = {
-			title : 'Company Performance',
-			hAxis : {
-				title : 'Year',
-				titleTextStyle : {
-					color : '#333'
-				}
-			},
-			vAxis : {
-				minValue : 0
-			},
-		};
-
-		var chart = new google.visualization.AreaChart(document
-				.getElementById('chart_div1'));
-		chart.draw(data, options);
-	}
+}
 </script>
 
-<script type="text/javascript">
-	google.load("visualization", "1", {
-		packages : [ "corechart" ]
-	});
-	google.setOnLoadCallback(drawChart);
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-				[ 'Director (Year)', 'Rotten Tomatoes', 'IMDB' ],
-				[ 'Alfred Hitchcock (1935)', 8.4, 7.9 ],
-				[ 'Ralph Thomas (1959)', 6.9, 6.5 ],
-				[ 'Don Sharp (1978)', 6.5, 6.4 ],
-				[ 'James Hawes (2008)', 4.4, 6.2 ] ]);
-
-		var options = {
-			title : 'The decline of \'The 39 Steps\'',
-			vAxis : {
-				title : 'Accumulated Rating'
-			},
-			isStacked : true
-		};
-
-		var chart = new google.visualization.SteppedAreaChart(document
-				.getElementById('chart_div2'));
-		chart.draw(data, options);
-	}
-</script>
 
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -122,32 +115,7 @@
 	}
 </script>
 
-<script type="text/javascript">
-	google.load("visualization", "1", {
-		packages : [ "corechart" ]
-	});
-	google.setOnLoadCallback(drawChart);
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-				[ 'Director (Year)', 'Rotten Tomatoes', 'IMDB' ],
-				[ 'Alfred Hitchcock (1935)', 8.4, 7.9 ],
-				[ 'Ralph Thomas (1959)', 6.9, 6.5 ],
-				[ 'Don Sharp (1978)', 6.5, 6.4 ],
-				[ 'James Hawes (2008)', 4.4, 6.2 ] ]);
 
-		var options = {
-			title : 'The decline of \'The 39 Steps\'',
-			vAxis : {
-				title : 'Accumulated Rating'
-			},
-			isStacked : true
-		};
-
-		var chart = new google.visualization.SteppedAreaChart(document
-				.getElementById('chart_div4'));
-		chart.draw(data, options);
-	}
-</script>
 
 
 <script>
@@ -176,8 +144,8 @@ function selectElement(values)
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="shortcut icon"
-	href="bootstrap-3.1.1/docs/assets/ico/favicon.ico">
+<link rel="shortcut icon" href="img/icoFav.png">
+
 
 <title>HexoSkin-TB</title>
 
@@ -233,9 +201,9 @@ function selectElement(values)
 			</div>
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<div class="row">
-					<h1 class="page-header">Comparatif séances
-				    <span  style="font-size:30pt;" class="glyphicon glyphicon-eye-open"></span>
+
+					<h1 class="page-header">Comparatif séances &nbsp;
+				   	<img src="img/compare.png" width="50px" height="50px"/> 
 					</h1>
 <br>
 					<h3>Choisissez deux séances à comparer</h3>
@@ -281,89 +249,103 @@ function selectElement(values)
 					}
 					
 					List<Double> listAltitude = rest.getListAltitudes();
-				 
+
 				 %>   
 
 <br>		
 			    <span title="Date" style="font-size:20pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
 			    <span title="Date" style="font-size:14pt;" > <% out.print(dateToShow1.substring(0, 10));  %> à  <% out.print(dateToShow1.substring(11, 16));  %>  </span>
  <br>
- <br>					    
-				<div class="row">
-				<div  title="Temps" class="col-md-2">
-					  <span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
+ <br>			
+ 
+ 
+ <table class="table">
+				<TR>
+					<TD title="Temps" class="success">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
 					  <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout1.get(1)); %> </span>
-					 </div>
-
-					<div title="Distance" class="col-md-2">
+					
+					</TD> 
+						
+					<TD  title="Distance en mètre"  class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
 					 <span style="font-size:12pt; font-family:Verdana;"> &nbsp;  <% out.print(listWorkout1.get(2)); %>  </span>
-					
-					</div>
-
-					<div title="Calories brûlées" class="col-md-2">
+								
+					</TD>
+						
+					<TD title="Calories brûlées" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
 					 <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout1.get(3)); %> </span>
-					</div>
-
-					<div title="Vitesse moyenne" class="col-md-2">
+					
+					</TD>
+						
+					<TD title="Vitesse moyenne en km/h" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
 					 <span style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout1.get(4)); %> </span>	
-					</div>
 					
-				    <div title="Altitude moyenn" class="col-md-2">
+					</TD>
+						
+					<TD title="Altitude moyenne en mètre" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-signal"></span>	
 				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>	
-					</div>
+					
+					</TD>
+				</TR>
+ 		    
+		<TR>
 
-       </div> 
- <br>      
-       				<div class="row" >
+					<TD title="Pulsation moyenne" class="info">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-heart"></span>						
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);  %> </span>	
+					
+					</TD> 
+					
+					<TD  title="Total pas"  class="info">
+					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
+				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(0.0);  %> </span>	
+								
+					</TD>
+					
+					<TD title="Volume Tidal moyen en mL/inspiration" class="info">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %> </span>	
+					
+					</TD>
+					
+					<TD title="Respiration min moyenne" class="info">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);   %> </span>	
+					
+					</TD>
+					
+					<TD title="Ventilation moyenne mL/min)" class="info">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %>  </span>	
+					
+					</TD>
+				</TR>
+				</table>
+		
+					
+
 				
-					<div title="Pulsation" class="col-md-2">
-					<span  style="font-size:18pt;" class="glyphicon glyphicon-heart"></span>						
-					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);  %> </span>	
-					</div>
-
-					<div title="Steps" class="col-md-2">
-					<span style="font-size:18pt;" class="glyphicon glyphicon-road"></span>						
-				    <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(0.0);  %> </span>	
-					</div>
-					
-					<div title="Cadence Steps/min" class="col-md-2">
-					<span  style="font-size:18pt;" class="glyphicon glyphicon-stats"></span>						
-					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %> </span>	
-					</div>
-					
-					<div title="Breathing Rate" class="col-md-2">
-					<span  style="font-size:18pt;" class="glyphicon glyphicon-transfer"></span>						
-					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);   %> </span>	
-					</div>
-					
-				    <div title="Minute Ventilation " class="col-md-2">
-					<span  style="font-size:18pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
-					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %>  </span>	
-					</div>
-					
-
-				</div>
 <br>
 <br>
 				    <h3>Graphiques </h3>
 <br>
-						<div id="chart_div1" style="width: 500px; height: 400px;"></div>
-						<div id="chart_div2" style="width: 500px; height: 400px;"></div>
-					</div>
+						   <div id="chart_div" style="width: 400px; height: 300px;"></div>
+						 <button title="Cacher sales" class="btn btn-default" type="button" id="hideSales"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Sales</button>
+   						<button title="Cacher expense" class="btn btn-default" type="button" id="hideExpenses"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Expence</button>
+   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
+
+				</div>	
 					<div class="col-md-6">
-					
-					
+										
 					<% // Récupère une liste de ttes les dates
 					List listDates2 = rest.getAllDatesWorkoutSorted("vincentpont@gmail.com");
 					Iterator iterator2 = listDates2.iterator();
 					%>
-				
-					
-					
+
 				    <select id="selecte2" name="date2" class="form-control" style="font-size:14pt;">
 					    <option value="">-- Choisissez une date -- </option>
 					    <%for(int i = 0 ; i<listDates2.size() ;i++){%>
@@ -372,6 +354,7 @@ function selectElement(values)
 					</select>
 					</form>
 <br>
+<div style="height: 14px; width:74px"> </div>
 <br>
 <br>				
 
@@ -395,82 +378,94 @@ function selectElement(values)
 						rest.getDataMap("vincentpont@gmail.com", dateToShow2); 
 					}
 				
+					List<Double> listAltitude2 = rest.getListAltitudes();
 				%>  		
-<br>
+
 <br>
 			    <span title="Date" style="font-size:20pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
 			    <span title="Date" style="font-size:14pt;" > <% out.print(dateToShow2.substring(0, 10));  %> à  <% out.print(dateToShow2.substring(11, 16));  %>  </span>
 <br>	
 <br>		
-				<div class="row">
-				<div  title="Temps" class="col-md-2">
-					  <span style="font-size:18pt;" class="glyphicon glyphicon-time"></span> 
-					  <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout2.get(1)); %> </span>
-					 </div>
 
-					<div title="Distance" class="col-md-2">
-					 <span style="font-size:18pt;" class="glyphicon glyphicon-sort"></span> 
-					 <span style="font-size:14pt; font-family:Verdana;"> &nbsp;  <% out.print(listWorkout2.get(2)); %>  </span>
+ <table class="table">
+				<TR>
+					<TD title="Temps" class="success">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
+					  <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout2.get(1)); %> </span>
 					
-					</div>
-
-					<div title="Calories brûlées" class="col-md-2">
-					 <span style="font-size:18pt;" class="glyphicon glyphicon-fire"></span>	
-					 <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout2.get(3)); %> </span>
-					</div>
-
-					<div title="Vitesse moyenne" class="col-md-2">
-					 <span style="font-size:18pt;" class="glyphicon glyphicon-flash"></span>	
-					 <span style="font-size:14pt; font-family:Verdana;">  <% out.print(listWorkout2.get(4)); %> </span>	
-					</div>
+					</TD> 
+						
+					<TD  title="Distance en mètre"  class="success">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
+					 <span style="font-size:12pt; font-family:Verdana;"> &nbsp;  <% out.print(listWorkout2.get(2)); %>  </span>
+								
+					</TD>
+						
+					<TD title="Calories brûlées" class="success">
+					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
+					 <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout2.get(3)); %> </span>
 					
-				    <div title="Altitude moyenne" class="col-md-2">
-					<span style="font-size:18pt;" class="glyphicon glyphicon-signal"></span>	
-				    <span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>	
-					</div>
-
-       </div> 
- <br>      
-       				<div class="row" >
-				
-					<div title="Pulsation" class="col-md-2">
-					<span  style="font-size:18pt;" class="glyphicon glyphicon-heart"></span>						
-					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);  %> </span>	
-					</div>
-
-					<div title="Steps" class="col-md-2">
-					<span style="font-size:18pt;" class="glyphicon glyphicon-road"></span>						
-				    <span style="font-size:14pt; font-family:Verdana;"> &nbsp; <% out.print(0.0);  %> </span>	
-					</div>
+					</TD>
+						
+					<TD title="Vitesse moyenne en km/h" class="success">
+					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
+					 <span style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout2.get(4)); %> </span>	
 					
-					<div title="Cadence Steps/min" class="col-md-2">
-					<span  style="font-size:18pt;" class="glyphicon glyphicon-stats"></span>						
-					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %> </span>	
-					</div>
+					</TD>
+						
+					<TD title="Altitude moyenne en mètre" class="success">
+					<span style="font-size:14pt;" class="glyphicon glyphicon-signal"></span>	
+				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(rest.getAltitudeAverage(listAltitude2)); %> </span>	
 					
-					<div title="Breathing Rate" class="col-md-2">
-					<span  style="font-size:18pt;" class="glyphicon glyphicon-transfer"></span>						
-					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);   %> </span>	
-					</div>
+					</TD>
+				</TR>
+ 		    
+		<TR>
+					<TD title="Pulsation moyenne" class="info">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-heart"></span>						
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);  %> </span>	
 					
-				    <div title="Minute Ventilation " class="col-md-2">
-					<span  style="font-size:18pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
-					<span style="font-size:14pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %>  </span>	
-					</div>
-				</div>
+					</TD> 
+					
+					<TD  title="Total pas"  class="info">
+					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
+				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(0.0);  %> </span>	
+								
+					</TD>
+					
+					<TD title="Volume Tidal moyen en mL/inspiration" class="info">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %> </span>	
+					
+					</TD>
+					
+					<TD title="Respiration min moyenne" class="info">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);   %> </span>	
+					
+					</TD>
+					
+					<TD title="Ventilation moyenne mL/min)" class="info">
+					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %>  </span>	
+					
+					</TD>
+				</TR>
+				</table>
+						
 <br>
 <br>	
+
 				
-				    <h3>Graphiques </h3>
+				    <h3 >Graphiques </h3>
 					
 <br>
 
-					<div id="chart_div3" style="width: 500px; height: 400px;"></div>
-					<div id="chart_div4" style="width: 500px; height: 400px;"></div>
+						<div id="chart_div3" style="width: 400px; height: 300px;"> </div>
+						
 					</div>
 				</div>
-			</div>
-			
+				
 		</div>
 		
 		<div class="row">
@@ -485,7 +480,7 @@ function selectElement(values)
 		</div>
 	</div>
 		
-	</div>	
+
 	
 			
 

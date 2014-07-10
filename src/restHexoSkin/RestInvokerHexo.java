@@ -47,6 +47,7 @@ public class RestInvokerHexo {
 		getJSONObjectData();
 
 	}
+	
 
 	// Get data in JSON
 	public JSONObject getJSONObjectData() {
@@ -275,6 +276,40 @@ public class RestInvokerHexo {
 		}
 			
 		return df.format(average / count);
+	}
+	
+	/**
+	 * Method to delete a workout by passing an ID
+	 * 
+	 * 
+	 */
+	public void deleteWorkoutById(String id){
+		
+		// Delete une séance
+		try {
+
+			URL url = new URL("https://api.hexoskin.com/api/v1/record/"+id+"/");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("DELETE");
+			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("Authorization", basicAuth);
+
+
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed, HTTP error code : "
+						+ conn.getResponseCode() + " "
+						+ conn.getResponseMessage());
+			}
+
+			// Disconnect
+			conn.disconnect();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		}
+		
 	}
 
 	/**
