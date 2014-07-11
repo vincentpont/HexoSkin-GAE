@@ -7,7 +7,7 @@
 <!-- Import restInvoker class -->
 <%@ page import="restDatastore.RestInvokerDatastore"%>
 <%@ page import="restHexoSkin.RestInvokerHexo"%>
-<%@ page import="java.util.Iterator, java.util.List, java.util.Date;"%>
+<%@ page import="java.util.Iterator, java.util.List, java.util.Date, java.text.DecimalFormat;"%>
 
 
 <!-- LOGIN Google</body> -->
@@ -798,6 +798,12 @@ function logout() {
 			List<String> listVentilation = restHEXO.returnAllValueFromJson(dateHEXO, "36");
 			List<String> listVolumeTidal = restHEXO.returnAllValueFromJson(dateHEXO, "37");
 			
+			String avgTidal  = restHEXO.getAverageFromList(listVolumeTidal);
+			String volumTidal = restHEXO.changeMltoLwith2Decimals(avgTidal);
+			
+			String avgVentilation  = restHEXO.getAverageFromList(listVentilation);
+			String ventilation = restHEXO.changeMltoLwith2Decimals(avgVentilation);
+
 			%>
 			
 				<TR>
@@ -806,14 +812,14 @@ function logout() {
 						<span style="font-size:14pt; font-family:Verdana;"><% out.print(restHEXO.getAverageFromList(listPulsation));  %> </span>	
 					</TD> 
 					
-					<TD  title="Total pas"  class="info">				
+					<TD  title="Total pas" class="info">				
 						<span style="font-size:21pt;" class="glyphicon glyphicon-road"></span>						
 					    <span style="font-size:14pt; font-family:Verdana;"><% out.print(listSteps.get(listSteps.size()-1));  %> </span>	
 					</TD>
 					
-					<TD title="Volume Tidal moyen en mL/inspiration" class="info">
+					<TD title="Volume Tidal moyen l/inspiration" class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-stats"></span>						
-						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(restHEXO.getAverageFromList(listVolumeTidal));   %> </span>	
+						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(volumTidal);   %> </span>	
 					</TD>
 					
 					<TD title="Respiration min moyenne" class="info">
@@ -821,9 +827,9 @@ function logout() {
 						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(restHEXO.getAverageFromList(listBreathing));   %> </span>	
 					</TD>
 					
-					<TD title="Ventilation moyenne mL/min)" class="info">
+					<TD title="Ventilation moyenne l/min)" class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
-						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(restHEXO.getAverageFromList(listVentilation));  %>  </span>	
+						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(ventilation);  %>  </span>	
 					</TD>
 				</TR>
 				</table>

@@ -220,6 +220,23 @@ public class RestInvokerHexo {
 		return list;
 
 	}
+	
+	/**
+	 * Method to convert ml to l and with two decimals
+	 * 
+	 * @param String average from a list
+	 * @return String convert
+	 */
+	public String changeMltoLwith2Decimals(String average){
+
+		
+		DecimalFormat df = new DecimalFormat("####0.00");
+		double valueDouble = Double.parseDouble(average);
+		valueDouble = valueDouble/1000 ;
+		
+		return df.format(valueDouble) ;
+		
+	}
 
 	/**
 	 * Method that with a string return the last value

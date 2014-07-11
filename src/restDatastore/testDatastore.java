@@ -39,7 +39,7 @@ public class testDatastore {
 		
 		// Get listofDouble data map, Get average speed
 		
-		
+		/*
 		String date = rest.getLastDateWorkout("vincentpont@gmail.com");
 		System.out.println(date);
 		rest.getDataMap("vincentpont@gmail.com", "2014.07.07.19:40");
@@ -55,7 +55,12 @@ public class testDatastore {
 			System.out.println(iterator2.next());
 			}
 		
+		*/
 		
+		
+		String se = "6 km/h";
+		se.substring(se.length()-1, se.length()-4);
+		System.out.println(se);
 	}
 
 }

@@ -6,6 +6,7 @@
 
 <!-- Import restInvoker class -->
 <%@ page import="restDatastore.RestInvokerDatastore"%>
+<%@ page import="restHexoSkin.RestInvokerHexo"%>
 <%@ page import="java.util.Iterator, java.util.List"%>
 
 <!-- Placez ce script JavaScript asynchrone juste devant votre balise </body> -->
@@ -21,6 +22,10 @@
 </script>
 
 <script>
+	
+	/**
+	 * Method to check if the user is loged or not if not redirect to login page
+	 */
 	function signinCallback(authResult) {
     	  if (authResult['access_token']) {
         		// Logged
@@ -83,7 +88,6 @@
 </script>
 
 
-
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 	google.load("visualization", "1", {
@@ -115,25 +119,52 @@
 	}
 </script>
 
-
-
-
 <script>
+
+/**
+ * Method ot logout the user from the site.
+ */
 function logout() {
 	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://8-dot-logical-light-564.appspot.com/login.jsp";
 }
-</script>
 
-<script>
-
-// Not used bug
-function selectElement(values)
+/**
+ * Method that test if the user select two dates to compare them if not we don't allow submit form.
+ */
+function testChoice()
 {   
-	var values = values.value;
-	if(values != null){
-		document.getElementById("selecte1").value = values;
-		document.getElementsByName("date1").value = values;
+		var test1 = document.getElementById("selecte1").value ;
+		var test2 = document.getElementById("selecte2").value ;
+		if  (test1 != '' &&  test2 !== ''){
+			return true ;	
+		}
+		else{
+			alert("Veuillez sélectionner 2 séances svp.");
+			return false;
+		}
+}
+
+/**
+ * Method that change de color of a <TD> workout if he is more or less than the value of the other workout.
+ */
+function changeColor()
+{   
+	var value1 ;
+	var value2 ;
+
+	// We compare the value and change the color
+	// Pulsation
+	value1 = parseFloat(document.getElementById('puls1SP').innerHTML);
+	value2  = parseFloat(document.getElementById('puls2SP').innerHTML);
+	if(value1 > value2){
+		document.getElementById('puls1TD').style.color = "rgb(255,69,0)";
 	}
+	else if (value2 > value1){
+		document.getElementById('puls2TD').style.color = "rgb(255,69,0)";
+	}
+	
+	// Vitesse
+
 }
 
 </script>
@@ -155,14 +186,6 @@ function selectElement(values)
 <!-- Custom styles for this template -->
 <link href="bootstrap-3.1.1/dist/css/dashboard.css" rel="stylesheet">
 
-<!-- Just for debugging purposes. Don't actually copy this line! -->
-<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 
 <body>
@@ -205,6 +228,7 @@ function selectElement(values)
 					<h1 class="page-header">Comparatif séances &nbsp;
 				   	<img src="img/compare.png" width="50px" height="50px"/> 
 					</h1>
+					
 <br>
 					<h3>Choisissez deux séances à comparer</h3>
 <br>				
@@ -215,20 +239,22 @@ function selectElement(values)
 					%>
 
 					<div class="col-md-6">	
-					<form action="compare.jsp" method="get">
+					<form action="compare.jsp" method="get" onSubmit="return testChoice();">
 				    <select id="selecte1" name="date1" class="form-control" style="font-size:14pt;">
-					    <option value="">-- Choisissez une date-- </option>
+					    <option value="">-- Choisissez une date -- </option>
 					    <%for(int i = 0 ; i<listDates1.size() ;i++){%>
 					        <option value="<% out.print(listDates1.get(i)); %>"> <%out.print(listDates1.get(i));%> </option>
 					    <%} %>
 					</select>
 					
 <br>
-<button type='submit' class="btn btn-success" > Afficher </button>
+<button type='submit' class="btn btn-success"> Afficher </button>
+<button type='button'  class="btn btn-success" onClick="changeColor();"> Comparer </button>
 <br>
 <br>
-
 				 <%
+				 	// Données datastore (android)
+				 
 					List listWorkout1 = null ;
 					String dateToShow1 = "" ;
 				
@@ -261,15 +287,15 @@ function selectElement(values)
  
  <table class="table">
 				<TR>
-					<TD title="Temps" class="success">
+					<TD id="time1TD"" title="Temps" class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
-					  <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout1.get(1)); %> </span>
+					 <span id="time1SP"  style="font-size:12pt; font-family:Verdana;"> <% out.print(listWorkout1.get(1)); %> </span>
 					
 					</TD> 
 						
-					<TD  title="Distance en mètre"  class="success">
+					<TD  id="dist1TD" title="Distance en mètre"  class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
-					 <span style="font-size:12pt; font-family:Verdana;"> &nbsp;  <% out.print(listWorkout1.get(2)); %>  </span>
+					 <span id="dist1SP" style="font-size:12pt; font-family:Verdana;"> <% out.print(listWorkout1.get(2)); %>  </span>
 								
 					</TD>
 						
@@ -293,42 +319,69 @@ function selectElement(values)
 				</TR>
  		    
 		<TR>
+				<%
+					// Donnée hexoskin
+					String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
+					RestInvokerHexo restHEXO = new RestInvokerHexo(s1);
+					String dateHEXO = "" ;
+					
+					// Test if we have something in param 
+					if(request.getParameter("date1") != null){
+						dateHEXO = request.getParameter("date1");
+						dateHEXO = dateHEXO.substring(0, 10);
+						dateHEXO = dateHEXO.replace('.', '-');
+					}
+				     // If not we show the last workout
+					else{
+						dateHEXO = dateToShow1;
+						dateHEXO = dateHEXO.substring(0, 10);
+						dateHEXO = dateHEXO.replace('.', '-');
+					}
+					// Get data from hexoskin API with datatype
+					List<String> listPulsation1 = restHEXO.returnAllValueFromJson(dateHEXO, "19");
+					List<String> listSteps1 = restHEXO.returnAllValueFromJson(dateHEXO, "52");
+					List<String> listBreathing1 = restHEXO.returnAllValueFromJson(dateHEXO, "33");
+					List<String> listVentilation1 = restHEXO.returnAllValueFromJson(dateHEXO, "36");
+					List<String> listVolumeTidal1 = restHEXO.returnAllValueFromJson(dateHEXO, "37");
+					
+					String avgTidal1  = restHEXO.getAverageFromList(listVolumeTidal1);
+					String volumTidal1 = restHEXO.changeMltoLwith2Decimals(avgTidal1);
+					
+					String avgVentilation1  = restHEXO.getAverageFromList(listVentilation1);
+					String ventilation1 = restHEXO.changeMltoLwith2Decimals(avgVentilation1); %>
 
-					<TD title="Pulsation moyenne" class="info">
+					<TD  id="puls1TD" title="Pulsation moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-heart"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);  %> </span>	
+					<span id="puls1SP" style="font-size:12pt; font-family:Verdana;"> <% out.print(restHEXO.getAverageFromList(listPulsation1));   %> </span>	
 					
 					</TD> 
 					
 					<TD  title="Total pas"  class="info">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
-				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(0.0);  %> </span>	
+				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listSteps1.get(listSteps1.size()-1));  %> </span>	
 								
 					</TD>
 					
-					<TD title="Volume Tidal moyen en mL/inspiration" class="info">
+					<TD title="Volume Tidal moyen en l/inspiration" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %> </span>	
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(volumTidal1);   %> </span>	
 					
 					</TD>
 					
 					<TD title="Respiration min moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);   %> </span>	
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(restHEXO.getAverageFromList(listBreathing1));   %> </span>	
 					
 					</TD>
 					
-					<TD title="Ventilation moyenne mL/min)" class="info">
+					<TD title="Ventilation moyenne l/min)" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %>  </span>	
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(ventilation1);  %>  </span>	
 					
 					</TD>
 				</TR>
 				</table>
-		
-					
-
-				
+			
 <br>
 <br>
 				    <h3>Graphiques </h3>
@@ -339,8 +392,10 @@ function selectElement(values)
    						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
 
 				</div>	
+
 					<div class="col-md-6">
-										
+
+								
 					<% // Récupère une liste de ttes les dates
 					List listDates2 = rest.getAllDatesWorkoutSorted("vincentpont@gmail.com");
 					Iterator iterator2 = listDates2.iterator();
@@ -358,7 +413,7 @@ function selectElement(values)
 <br>
 <br>				
 
-<% 
+<% 					// Donnée datastore (android)
 					List listWorkout2 = null ;
 					String dateToShow2 = "" ;
 				
@@ -378,8 +433,7 @@ function selectElement(values)
 						rest.getDataMap("vincentpont@gmail.com", dateToShow2); 
 					}
 				
-					List<Double> listAltitude2 = rest.getListAltitudes();
-				%>  		
+					List<Double> listAltitude2 = rest.getListAltitudes(); %>  		
 
 <br>
 			    <span title="Date" style="font-size:20pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
@@ -389,15 +443,15 @@ function selectElement(values)
 
  <table class="table">
 				<TR>
-					<TD title="Temps" class="success">
+					<TD id="time2TD" title="Temps" class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
-					  <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout2.get(1)); %> </span>
+					  <span id="time2SP" style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout2.get(1)); %> </span>
 					
 					</TD> 
 						
-					<TD  title="Distance en mètre"  class="success">
+					<TD id="dist2TD" title="Distance en mètre"  class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
-					 <span style="font-size:12pt; font-family:Verdana;"> &nbsp;  <% out.print(listWorkout2.get(2)); %>  </span>
+					 <span id="dist2SP" style="font-size:12pt; font-family:Verdana;"> &nbsp;  <% out.print(listWorkout2.get(2)); %>  </span>
 								
 					</TD>
 						
@@ -421,33 +475,61 @@ function selectElement(values)
 				</TR>
  		    
 		<TR>
-					<TD title="Pulsation moyenne" class="info">
+		
+					<%		
+					// Données Hexoskin
+					// Test if we have something in param 
+					if(request.getParameter("date2") != null){
+						dateHEXO = request.getParameter("date2");
+						dateHEXO = dateHEXO.substring(0, 10);
+						dateHEXO = dateHEXO.replace('.', '-');
+					}
+				     // If not we show the last workout
+					else{
+						dateHEXO = dateToShow2;
+						dateHEXO = dateHEXO.substring(0, 10);
+						dateHEXO = dateHEXO.replace('.', '-');
+					}
+					// Get data from hexoskin API with datatype
+					List<String> listPulsation2 = restHEXO.returnAllValueFromJson(dateHEXO, "19");
+					List<String> listSteps2 = restHEXO.returnAllValueFromJson(dateHEXO, "52");
+					List<String> listBreathing2 = restHEXO.returnAllValueFromJson(dateHEXO, "33");
+					List<String> listVentilation2 = restHEXO.returnAllValueFromJson(dateHEXO, "36");
+					List<String> listVolumeTidal2 = restHEXO.returnAllValueFromJson(dateHEXO, "37");
+					
+					String avgTidal2  = restHEXO.getAverageFromList(listVolumeTidal2);
+					String volumTidal2 = restHEXO.changeMltoLwith2Decimals(avgTidal2);
+					
+					String avgVentilation2  = restHEXO.getAverageFromList(listVentilation2);
+					String ventilation2 = restHEXO.changeMltoLwith2Decimals(avgVentilation2);%>
+		
+					<TD id="puls2TD" title="Pulsation moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-heart"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);  %> </span>	
+					<span id="puls2SP"  style="font-size:12pt; font-family:Verdana;"><% out.print(restHEXO.getAverageFromList(listPulsation2));  %> </span>	
 					
 					</TD> 
 					
 					<TD  title="Total pas"  class="info">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
-				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(0.0);  %> </span>	
+				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listSteps2.get(listSteps2.size()-1));   %> </span>	
 								
 					</TD>
 					
 					<TD title="Volume Tidal moyen en mL/inspiration" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %> </span>	
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(volumTidal2);  %> </span>	
 					
 					</TD>
 					
 					<TD title="Respiration min moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(0.0);   %> </span>	
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(restHEXO.getAverageFromList(listBreathing2));   %> </span>	
 					
 					</TD>
 					
 					<TD title="Ventilation moyenne mL/min)" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(0.0);  %>  </span>	
+					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(ventilation2);  %>  </span>	
 					
 					</TD>
 				</TR>
@@ -456,11 +538,8 @@ function selectElement(values)
 <br>
 <br>	
 
-				
-				    <h3 >Graphiques </h3>
-					
+				    <h3 >Graphiques </h3>					
 <br>
-
 						<div id="chart_div3" style="width: 400px; height: 300px;"> </div>
 						
 					</div>
