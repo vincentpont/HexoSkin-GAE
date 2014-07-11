@@ -36,91 +36,373 @@
 	}
 </script>
 
-<!-- Google charts </body> -->
+
+<%
+String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
+RestInvokerHexo restHEXO = new RestInvokerHexo(s1); 
+RestInvokerDatastore restMap = new RestInvokerDatastore(); 
+String lastDateWorkout = restMap.getLastDateWorkout("vincentpont@gmail.com"); 
+String hexoDate1 = "" ;
+
+// Test if we have something in param 
+if(request.getParameter("date1") != null){
+	hexoDate1 = request.getParameter("date1");
+	restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
+	hexoDate1 = hexoDate1.substring(0, 10);
+	hexoDate1 = hexoDate1.replace('.', '-');
+	
+}
+ // If not we show the last workout
+else if (request.getParameter("date1") == null){
+	hexoDate1 = lastDateWorkout; 
+	restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
+	hexoDate1 = hexoDate1.substring(0, 10);
+	hexoDate1 = hexoDate1.replace('.', '-');
+}
+
+List<String> listPulsations1 = restHEXO.returnAllValueFromJson(hexoDate1, "19"); 
+List<Double> listVitesses1 = restMap.getListVitesses();
+
+StringBuffer stringBufferPulsation1 = new StringBuffer();
+StringBuffer stringBufferVitesses1 = new StringBuffer();
+
+stringBufferPulsation1 = restMap.convertListToStringBufferInteger(listPulsations1);
+stringBufferVitesses1 = restMap.convertListToStringBufferInteger(listVitesses1);
+
+%>
+
+<!-- Google charts Pulsation/Vitesse trajet 1-->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
+
+	var arrayPulsation1 = [ <%= stringBufferPulsation1.toString() %> ];
+    var arrayVitesses1 = [ <%= stringBufferVitesses1.toString() %> ];
+
+
 		google.load("visualization", "1", {packages:["corechart"]});
 		google.setOnLoadCallback(drawChart);
+		
 		function drawChart() {
-		  var data = google.visualization.arrayToDataTable([
-		    ['Year', 'Sales', 'Expenses'],
-		    ['2004',  1000,      400],
-		    ['2005',  1170,      460],
-		    ['2006',  660,       1120],
-		    ['2007',  1030,      540]
-		  ]);
+
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', "Enregistrements");
+			data.addColumn('number', 'Pulsations');
+			data.addColumn('number', 'Vitesses');
+	
+		 	// Add values and converte it ml to l
+		   for(var i = 0; i < arrayVitesses1.length ; i++){
+		   	data.addRow([i.toString(), arrayPulsation1[i], arrayVitesses1[i]]);
+		   }
+			
 		  var options = {
-		    title: 'Company Performance'
-		    
+		    colors: ['#FF0007', '#FFF800'],
+		    title: 'Vitesse / Pulsation'
 		  };
-		  var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+		  
+		  var chart = new google.visualization.AreaChart(document.getElementById('chart_div1'));
 		
 		  chart.draw(data, options);
+		  
+			 
+			 var hidePuls1 = document.getElementById("hidePulsation1");
+			 hidePuls1.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.hideColumns([1]); 
+			    chart.draw(view, options);
+			 }		
+			 
+			 var hideSpeed1 = document.getElementById("hideSpeed1");
+			 hideSpeed1.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.hideColumns([2]); 
+			    chart.draw(view, options);
+			 }
+			 
+			 // See all
+			 var seeAll1 = document.getElementById("seeAll1");
+			 seeAll1.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.setColumns([0,1,2]);
+			    chart.draw(view, options);
+			 }
+}
 		
+
+</script>
+
+
+<%
+
+List<String> listVolumeTidals1 = restHEXO.returnAllValueFromJson(hexoDate1, "37"); 
+List<String> listRespirationFreqs1 = restHEXO.returnAllValueFromJson(hexoDate1, "33"); 
+List<String> listVentilations1 = restHEXO.returnAllValueFromJson(hexoDate1, "36"); 
+
+StringBuffer stringBufferVolumeTidal1 = new StringBuffer();
+StringBuffer stringBufferRespirationFreq1 = new StringBuffer();
+StringBuffer stringBufferVentilations1 = new StringBuffer();
+
+stringBufferVolumeTidal1 = restMap.convertListToStringBufferInteger(listVolumeTidals1);
+stringBufferRespirationFreq1 = restMap.convertListToStringBufferInteger(listRespirationFreqs1);
+stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentilations1);
+
+%>
+
+<!-- Google charts Respiration/Ventilation/Tidal trajet 1  -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+		var arrayVolumeTidal1 = [ <%= stringBufferVolumeTidal1.toString() %> ];
+		var arrayRespiration1 = [ <%= stringBufferRespirationFreq1.toString() %> ];
+		var arrayVentilation1 = [ <%= stringBufferVentilations1.toString() %> ];
+
+
+		google.load("visualization", "1", {packages:["corechart"]});
+		google.setOnLoadCallback(drawChart);
 		
-		 var hideSal = document.getElementById("hideSales");
-		 hideSal.onclick = function()
+		function drawChart() {
+
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', "Enregistrements");
+			data.addColumn('number', 'Respiration');
+			data.addColumn('number', 'Ventilation');
+			data.addColumn('number', 'Volume tidal');
+	
+		 	// Add values and converte it ml to l
+		   for(var i = 0; i < arrayVitesses1.length ; i++){
+		   	data.addRow([i.toString(), arrayRespiration1[i], arrayVentilation1[i]/1000, arrayVolumeTidal1[i]/1000]);
+		   }
+		 	
+		  var options = {
+		    colors: ['#960DF9', '#0C1A69' ,'#46FDCF'],
+		    title: 'Respiration'
+		  };
+		  
+		  var chart = new google.visualization.AreaChart(document.getElementById('chart_div3'));
+		
+		  chart.draw(data, options);
+		  
+			 
+			 var hideRespi1 = document.getElementById("hideRespiration1");
+			 hideRespi1.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.hideColumns([1]); 
+			    chart.draw(view, options);
+			 }		
+			 
+			 var hideVenti1 = document.getElementById("hideVentilation1");
+			 hideVenti1.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.hideColumns([2]); 
+			    chart.draw(view, options);
+			 }
+			 
+			 var hideVolumT1 = document.getElementById("hideVolumeTidal1");
+			 hideVolumT1.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.hideColumns([3]); 
+			    chart.draw(view, options);
+			 }
+			 
+			 // See all
+			 var seeAll3 = document.getElementById("seeAll3");
+			 seeAll3.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.setColumns([0,1,2,3]);
+			    chart.draw(view, options);
+			 }
+}
+		
+
+</script>
+
+<%
+	String hexoDate2 = "";
+	// Test if we have something in param 
+	if(request.getParameter("date2") != null){
+		hexoDate2 = request.getParameter("date2");
+		restMap.getDataMap("vincentpont@gmail.com", hexoDate2); 
+		hexoDate2 = hexoDate2.substring(0, 10);
+		hexoDate2 = hexoDate2.replace('.', '-');
+		
+	}
+	 // If not we show the last workout
+	else if (request.getParameter("date2") == null)	{
+		hexoDate2 = lastDateWorkout; 
+		restMap.getDataMap("vincentpont@gmail.com", hexoDate2); 
+		hexoDate2 = hexoDate2.substring(0, 10);
+		hexoDate2 = hexoDate2.replace('.', '-');
+	}
+
+	List<String> listPulsations2 = restHEXO.returnAllValueFromJson(hexoDate2, "19"); 
+	List<Double> listVitesses2 = restMap.getListVitesses();
+	
+	StringBuffer stringBufferPulsation2 = new StringBuffer();
+	StringBuffer stringBufferVitesses2 = new StringBuffer();
+	
+	stringBufferPulsation2 = restMap.convertListToStringBufferInteger(listPulsations2);
+	stringBufferVitesses2 = restMap.convertListToStringBufferInteger(listVitesses2);
+
+%>
+
+<!-- Google chart Pulsation/Vitesse trajet 2 -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+var arrayPulsation2 = [ <%= stringBufferPulsation2.toString() %> ];
+var arrayVitesses2 = [ <%= stringBufferVitesses2.toString() %> ];
+
+	google.load("visualization", "1", {
+		packages : [ "corechart" ]
+	});
+	google.setOnLoadCallback(drawChart);
+	
+	function drawChart() {
+		
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', "Enregistrements");
+		data.addColumn('number', 'Pulsations');
+		data.addColumn('number', 'Vitesses');
+
+		
+	 // Add values and converte it ml to l
+	  for(var i = 0; i < arrayVitesses2.length ; i++){
+	   data.addRow([i.toString(), arrayPulsation2[i], arrayVitesses2[i]]);
+	  }
+		
+
+	  var options = {
+				colors: ['#FF0007', '#FFF800'],
+			    title: 'Vitesse / Pulsation'
+			  };
+
+		var chart = new google.visualization.AreaChart(document
+				.getElementById('chart_div2'));
+		chart.draw(data, options);
+		
+		 var hidePuls2 = document.getElementById("hidePulsation2");
+		 hidePuls2.onclick = function()
 		 {
 		    view = new google.visualization.DataView(data);
 		    view.hideColumns([1]); 
 		    chart.draw(view, options);
-		 }
-		 
-		 var hideExp = document.getElementById("hideExpenses");
-		 hideExp.onclick = function()
+		 }	
+		
+		 var hideSpeed2 = document.getElementById("hideSpeed2");
+		 hideSpeed2.onclick = function()
 		 {
 		    view = new google.visualization.DataView(data);
 		    view.hideColumns([2]); 
 		    chart.draw(view, options);
-		 }		 
-		 
+		 }
+		 	 
 		 // See all
-		 var seeAll = document.getElementById("seeAll");
-		 seeAll.onclick = function()
+		 var seeAll2 = document.getElementById("seeAll2");
+		 seeAll2.onclick = function()
 		 {
 		    view = new google.visualization.DataView(data);
 		    view.setColumns([0,1,2]);
 		    chart.draw(view, options);
 		 }
-		 
+	}
+	
 
-}
 </script>
 
+<%
 
+List<String> listVolumeTidals2 = restHEXO.returnAllValueFromJson(hexoDate2, "37"); 
+List<String> listRespirationFreqs2 = restHEXO.returnAllValueFromJson(hexoDate2, "33"); 
+List<String> listVentilations2 = restHEXO.returnAllValueFromJson(hexoDate2, "36"); 
+
+StringBuffer stringBufferVolumeTidal2 = new StringBuffer();
+StringBuffer stringBufferRespirationFreq2 = new StringBuffer();
+StringBuffer stringBufferVentilations2 = new StringBuffer();
+
+stringBufferVolumeTidal2 = restMap.convertListToStringBufferInteger(listVolumeTidals2);
+stringBufferRespirationFreq2 = restMap.convertListToStringBufferInteger(listRespirationFreqs2);
+stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentilations2);
+
+%>
+
+<!-- Google charts Respiration/Ventilation/Tidal trajet 2 -->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-	google.load("visualization", "1", {
-		packages : [ "corechart" ]
-	});
-	google.setOnLoadCallback(drawChart);
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-				[ 'Year', 'Sales', 'Expenses' ], [ '2013', 1000, 400 ],
-				[ '2014', 1170, 460 ], [ '2015', 660, 1120 ],
-				[ '2016', 1030, 540 ] ]);
 
-		var options = {
-			title : 'Company Performance',
-			hAxis : {
-				title : 'Year',
-				titleTextStyle : {
-					color : '#333'
-				}
-			},
-			vAxis : {
-				minValue : 0
-			},
-		};
+		var arrayVolumeTidal2 = [ <%= stringBufferVolumeTidal2.toString() %> ];
+		var arrayRespiration2 = [ <%= stringBufferRespirationFreq2.toString() %> ];
+		var arrayVentilation2 = [ <%= stringBufferVentilations2.toString() %> ];
 
-		var chart = new google.visualization.AreaChart(document
-				.getElementById('chart_div3'));
-		chart.draw(data, options);
-	}
+
+		google.load("visualization", "1", {packages:["corechart"]});
+		google.setOnLoadCallback(drawChart);
+		
+		function drawChart() {
+
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', "Enregistrements");
+			data.addColumn('number', 'Respiration');
+			data.addColumn('number', 'Ventilation');
+			data.addColumn('number', 'Volume tidal');
+	
+		 	// Add values and converte it ml to l
+		   for(var i = 0; i < arrayVitesses2.length ; i++){
+		   	data.addRow([i.toString(), arrayRespiration2[i], arrayVentilation2[i]/1000, arrayVolumeTidal2[i]/1000]);
+		   }
+		 	
+		  var options = {
+			colors: ['#960DF9', '#0C1A69' ,'#46FDCF'],
+		    title: 'Respiration'
+		  };
+		  
+		  var chart = new google.visualization.AreaChart(document.getElementById('chart_div4'));
+		
+		  chart.draw(data, options);
+		  
+			 
+			 var hideRespi2 = document.getElementById("hideRespiration2");
+			 hideRespi2.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.hideColumns([1]); 
+			    chart.draw(view, options);
+			 }		
+			 
+			 var hideVent2 = document.getElementById("hideVentilation2");
+			 hideVent2.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.hideColumns([2]); 
+			    chart.draw(view, options);
+			 }
+			 
+			 var hideVoluT2 = document.getElementById("hideVolumeTidal2");
+			 hideVoluT2.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.hideColumns([3]); 
+			    chart.draw(view, options);
+			 }
+			 
+			 // See all
+			 var seeAll4 = document.getElementById("seeAll4");
+			 seeAll4.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.setColumns([0,1,2,3]);
+			    chart.draw(view, options);
+			 }
+}
+
 </script>
 
 <script>
-
 /**
  * Method ot logout the user from the site.
  */
@@ -164,10 +446,41 @@ function changeColor()
 	}
 	
 	// Vitesse
+	value1 = document.getElementById('speed1SP').innerHTML;
+	value2  = document.getElementById('speed2SP').innerHTML;
+	
+	if(value1 > value2){
+		document.getElementById('speed2SP').style.color = "rgb(0,255,17)"; // vert
+		document.getElementById('speed1SP').style.color = "rgb(255,69,0)"; // rouge
+	}
+	else if (value2 > value1){
+		document.getElementById('speed1SP').style.color = "rgb(0,255,17)"; // vert
+		document.getElementById('speed2SP').style.color = "rgb(255,69,0)";
+	}
+	
+	// Calories
+	value1 = document.getElementById('ca1TD').innerHTML;
+	value2  = document.getElementById('ca2TD').innerHTML;
+	
+	if(value1 > value2){
+		document.getElementById('ca2TD').style.color = "rgb(0,255,17)"; // vert
+		document.getElementById('ca1TD').style.color = "rgb(255,69,0)"; 
+	}
+	else if (value2 > value1){
+		document.getElementById('ca1TD').style.color = "rgb(0,255,17)"; // vert
+		document.getElementById('ca2TD').style.color = "rgb(255,69,0)";
+	}
 
 }
 
 </script>
+
+<!-- Google MAPS -->
+<script
+	src="https://maps.googleapis.com/maps/api/js?v=3?key={AIzaSyA9MSARpM9GdjunV4sR5mxpOuD3pfkyldc}">
+</script>
+
+<!-- ... -->
 
 
 <meta charset="utf-8">
@@ -266,7 +579,7 @@ function changeColor()
 						rest.getDataMap("vincentpont@gmail.com", dateToShow1); 
 					}
 				     // If not we show the last workout
-					else if(request.getParameter("date1") == null || request.getParameter("date1").isEmpty()){
+					else if(request.getParameter("date1") == null){
 						dateToShow1 = rest.getLastDateWorkout("vincentpont@gmail.com");
 						listWorkout1 = rest.getDataWorkoutByEmailAndDate(dateToShow1,
 								"vincentpont@gmail.com");
@@ -299,15 +612,15 @@ function changeColor()
 								
 					</TD>
 						
-					<TD title="Calories brûlées" class="success">
+					<TD id="ca1TD" title="Calories brûlées" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
-					 <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout1.get(3)); %> </span>
+					 <span id="ca1SP" style="font-size:12pt; font-family:Verdana;"> <% out.print(listWorkout1.get(3)); %> </span>
 					
 					</TD>
 						
-					<TD title="Vitesse moyenne en km/h" class="success">
+					<TD  id="speed1TD" title="Vitesse moyenne en km/h" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
-					 <span style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout1.get(4)); %> </span>	
+					 <span id="speed1SP" style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout1.get(4)); %> </span>	
 					
 					</TD>
 						
@@ -321,8 +634,6 @@ function changeColor()
 		<TR>
 				<%
 					// Donnée hexoskin
-					String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
-					RestInvokerHexo restHEXO = new RestInvokerHexo(s1);
 					String dateHEXO = "" ;
 					
 					// Test if we have something in param 
@@ -358,25 +669,25 @@ function changeColor()
 					
 					<TD  title="Total pas"  class="info">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
-				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listSteps1.get(listSteps1.size()-1));  %> </span>	
+				    <span style="font-size:12pt; font-family:Verdana;">  <% out.print(listSteps1.get(listSteps1.size()-1));  %> </span>	
 								
 					</TD>
 					
 					<TD title="Volume Tidal moyen en l/inspiration" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(volumTidal1);   %> </span>	
+					<span style="font-size:12pt; font-family:Verdana;"> <%  out.print(volumTidal1);   %> </span>	
 					
 					</TD>
 					
 					<TD title="Respiration min moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(restHEXO.getAverageFromList(listBreathing1));   %> </span>	
+					<span style="font-size:12pt; font-family:Verdana;"> <% out.print(restHEXO.getAverageFromList(listBreathing1));   %> </span>	
 					
 					</TD>
 					
 					<TD title="Ventilation moyenne l/min)" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(ventilation1);  %>  </span>	
+					<span style="font-size:12pt; font-family:Verdana;"> <%  out.print(ventilation1);  %>  </span>	
 					
 					</TD>
 				</TR>
@@ -386,11 +697,16 @@ function changeColor()
 <br>
 				    <h3>Graphiques </h3>
 <br>
-						   <div id="chart_div" style="width: 400px; height: 300px;"></div>
-						 <button title="Cacher sales" class="btn btn-default" type="button" id="hideSales"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Sales</button>
-   						<button title="Cacher expense" class="btn btn-default" type="button" id="hideExpenses"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Expence</button>
-   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
-
+						<div id="chart_div1" style="width: 100%; height: 400px;"></div>
+						<button title="Cacher la vitesse" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideSpeed1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Vitesses</button>
+   						<button title="Cacher la pulsation" class="btn btn-default" type="button" id="hidePulsation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll1"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
+<br>
+						<div id="chart_div3" style="width: 100%; height: 400px;"></div>
+						<button title="Cacher la respiration" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respiration</button>
+   						<button title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Ventilation</button>
+   						<button title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Volume Tidal</button>
+   						<button title="Voir tout" class="btn btn-default" type="button" id="seeAll3"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
 				</div>	
 
 					<div class="col-md-6">
@@ -425,7 +741,7 @@ function changeColor()
 						rest.getDataMap("vincentpont@gmail.com", dateToShow2); 
 					}
 				     // If not we show the last workout
-					else if(request.getParameter("date2") == null || request.getParameter("date2").isEmpty()){
+					else if(request.getParameter("date2") == null){
 						dateToShow2 = rest.getLastDateWorkout("vincentpont@gmail.com");
 						listWorkout2 = rest.getDataWorkoutByEmailAndDate(dateToShow2,
 								"vincentpont@gmail.com");
@@ -445,31 +761,31 @@ function changeColor()
 				<TR>
 					<TD id="time2TD" title="Temps" class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
-					  <span id="time2SP" style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout2.get(1)); %> </span>
+					  <span id="time2SP" style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout2.get(1)); %> </span>
 					
 					</TD> 
 						
 					<TD id="dist2TD" title="Distance en mètre"  class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
-					 <span id="dist2SP" style="font-size:12pt; font-family:Verdana;"> &nbsp;  <% out.print(listWorkout2.get(2)); %>  </span>
+					 <span id="dist2SP" style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout2.get(2)); %>  </span>
 								
 					</TD>
 						
-					<TD title="Calories brûlées" class="success">
+					<TD id="ca2TD" title="Calories brûlées" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
-					 <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listWorkout2.get(3)); %> </span>
+					 <span id="ca2SP" style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout2.get(3)); %> </span>
 					
 					</TD>
 						
-					<TD title="Vitesse moyenne en km/h" class="success">
+					<TD id="speed2TD" title="Vitesse moyenne en km/h" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
-					 <span style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout2.get(4)); %> </span>	
+					 <span id="speed2SP" style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout2.get(4)); %> </span>	
 					
 					</TD>
 						
 					<TD title="Altitude moyenne en mètre" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-signal"></span>	
-				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(rest.getAltitudeAverage(listAltitude2)); %> </span>	
+				    <span style="font-size:12pt; font-family:Verdana;"> <% out.print(rest.getAltitudeAverage(listAltitude2)); %> </span>	
 					
 					</TD>
 				</TR>
@@ -540,9 +856,23 @@ function changeColor()
 
 				    <h3 >Graphiques </h3>					
 <br>
-						<div id="chart_div3" style="width: 400px; height: 300px;"> </div>
-						
+						<div id="chart_div2" style="width: 100%; height: 400px;"> </div>
+						<button title="Cacher la vitesse" class="btn btn-default"  style="margin-left:90px;" type="button" id="hideSpeed2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Vitesses</button>
+   						<button title="Cacher la pulsation" class="btn btn-default" type="button" id="hidePulsation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll2"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
+<br>
+						<div id="chart_div4" style="width: 100%; height: 400px;"></div>	
+						<button title="Cacher la respiration" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respiration</button>
+   						<button title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Ventilation</button>
+   						<button title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Volume Tidal</button>
+   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll4"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
+				
+											
 					</div>
+					
+<br>					
+					 <h3 >Cartes  </h3>	
+					
 				</div>
 				
 		</div>

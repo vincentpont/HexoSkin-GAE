@@ -44,6 +44,7 @@ String restHexoDate = "" ;
 // Test if we have something in param 
 if(request.getParameter("date") != null){
 	restHexoDate = request.getParameter("date");
+	restMap.getDataMap("vincentpont@gmail.com", restHexoDate); 
 	restHexoDate = restHexoDate.substring(0, 10);
 	restHexoDate = restHexoDate.replace('.', '-');
 	
@@ -51,11 +52,12 @@ if(request.getParameter("date") != null){
  // If not we show the last workout
 else{
 	restHexoDate = lastDateWorkout; 
+	restMap.getDataMap("vincentpont@gmail.com", restHexoDate); 
 	restHexoDate = restHexoDate.substring(0, 10);
 	restHexoDate = restHexoDate.replace('.', '-');
 }
 
-restMap.getDataMap("vincentpont@gmail.com", lastDateWorkout); 
+
 List<String> listPulsations = restHexo.returnAllValueFromJson(restHexoDate, "19"); 
 List<String> listVolumeTidals = restHexo.returnAllValueFromJson(restHexoDate, "37"); 
 List<String> listRespirationFreqs = restHexo.returnAllValueFromJson(restHexoDate, "33"); 
@@ -77,7 +79,7 @@ stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilat
 
 
 %>
-<!-- Google charts Pulsation -->
+<!-- Google CHART  -->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 
@@ -95,17 +97,6 @@ stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilat
 	    var arrayVolumeTidal = [ <%= stringBufferVolumeTidal.toString() %> ];
 	    var arrayRespiration = [ <%= stringBufferRespirationFreq.toString() %> ];
 	    var arrayVentilation = [ <%= stringBufferVentilations.toString() %> ];
-
-		//alert("arrayVolumeTidal" + arrayVolumeTidal.join('\n'));
-		//alert("arrayPulsation length :" + arrayPulsation.length);
-		var arrayVolumeTidalParse = new Array();
-		for(var i = 0 ; i <arrayVolumeTidal.length;i++){
-			arrayVolumeTidalParse[i] = parseFloat(arrayVolumeTidal[i].toFixed(2));
-		}
-		var arrayVentilationParse = new Array();
-		for(var i = 0 ; i <arrayVentilation.length;i++){
-			arrayVentilationParse[i] = parseFloat(arrayVentilation[i].toFixed(2));
-		}
 		
 		var data = new google.visualization.DataTable();
 		data.addColumn('string', "Enregistrements");
@@ -119,8 +110,8 @@ stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilat
 
 		 // Add values and converte it ml to l
 		  for(var i = 0; i < arrayVitesses.length ; i++){
-		   data.addRow([i.toString(), arrayPulsation[i], arrayVitesses[i], (arrayVolumeTidalParse[i]/1000), 
-		                arrayRespiration[i], (arrayVentilationParse[i]/1000)]);
+		   data.addRow([i.toString(), arrayPulsation[i], arrayVitesses[i], (arrayVolumeTidal[i]/1000), 
+		                arrayRespiration[i], (arrayVentilation[i]/1000)]);
 		  }
 
 		var options = {
@@ -216,15 +207,7 @@ function logout() {
 }
 </script>
 
-
-
-<script
-	src="https://maps.googleapis.com/maps/api/js?v=3?key={AIzaSyA9MSARpM9GdjunV4sR5mxpOuD3pfkyldc}">
-</script>
-
-	<% 
-	
-	List listWorkouts  ;
+	<%
 	String lastDateMap = "";
 	
 	// Test if we have something in param 
@@ -310,7 +293,7 @@ function logout() {
 		}
 	}	
 	
-	// Test show path
+	// Test show start/stop point
 	String depStopTest = request.getParameter("testDepStop");
 	if(request.getParameter("testDepStop") != null){
 		if(depStopTest.equals("Yes")){
@@ -323,9 +306,16 @@ function logout() {
 	
 	%>
 	
+	<!-- Google MAPS -->
+<script
+	src="https://maps.googleapis.com/maps/api/js?v=3?key={AIzaSyA9MSARpM9GdjunV4sR5mxpOuD3pfkyldc}">
+</script>
 	
 <script>
 
+   /**
+    * Method to initalize the map
+    */
 	function initialize() {
 		
 		// Android data
@@ -341,9 +331,7 @@ function logout() {
 	   	var arrayRespirationFreq = [ <%= stringBufferRespirationFreq.toString() %> ];
 	   	var arrayVentilations = [ <%= stringBufferVentilations.toString() %> ];
 
-	   
-	    
-	    // Param post
+	    // Param
 	    var meterMarker = '<%=meterMarker%>';
 	    meterMarker = parseInt(meterMarker); //parse
 	    var numberMarker ;
@@ -366,8 +354,7 @@ function logout() {
 	    if(booleanStartStop == "Yes"){
 	    	document.getElementById("testDepStop").checked = true;
 	    }
-	    
-	    
+	    	    
 	    switch(meterMarker) {
 	    case 2:
 	    	numberMarker = 1 ;
@@ -396,8 +383,7 @@ function logout() {
 	    var speedNumber = Number(speedAverage.substring(0, speedAverage.search(' '))); 
 	    var speedMin = 2.00 ;
 	    var speedUp = 10.00 ;
-		
-		
+				
 		var mapOptions = {  
 			zoom : 16,
 			center : new google.maps.LatLng(arrayLat[0], arrayLong[0]),
@@ -436,8 +422,7 @@ function logout() {
 				});
 				pathStyle.setMap(map);
 			}
-			
-		
+					
 		var marker ;
 			 
 	    // Add speed marker if the user want it
@@ -462,8 +447,7 @@ function logout() {
 				  var myinfowindow  = new google.maps.InfoWindow({
 				      content: contentStringSpeeds
 				  });
-			      
-				
+			      				
 				  if (arraySpeed[j] <= 5 ){
 					  var speedLowImg = 'img/Speedlow.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
@@ -472,8 +456,7 @@ function logout() {
 				    		animation: google.maps.Animation.DROP,
 							infowindow: myinfowindow ,
 							icon : speedLowImg
-						});
-					  
+						});  
 				  }
 				  else if (arraySpeed[j] > 5 && arraySpeed[j] <= 8){
 					  var speedMidImg = 'img/SpeedMiddle.png';
@@ -484,7 +467,6 @@ function logout() {
 							infowindow: myinfowindow ,
 							icon : speedMidImg
 						});
-	
 				  }
 				  
 				  else if (arraySpeed[j] > 8){
@@ -506,7 +488,7 @@ function logout() {
 			}
 	    }
 	    
-	      var arrayMarkers = new Array();
+	    var arrayMarkers = new Array();
 	    
 	 	// Add info marker if the user want it
 	    if(booleanInfo == "Yes"){
@@ -546,27 +528,21 @@ function logout() {
 		    		animation: google.maps.Animation.DROP,
 			        map: map
 			      });
-			      
-			      
+			      		      
 			      arrayMarkers[i].infowindow = new google.maps.InfoWindow({
 			    	  content: contentStrings,
 			    	  maxWidth: 120
 			    	});
-				  			  
-			      
+				  			  		      
 				  // Listener
 				  google.maps.event.addListener(arrayMarkers[i], 'mouseover', function() {
 					  this.infowindow.open(map, this);
 				  });
 				  
 				  arrayMarkers[i].setMap(map);
-
-			}
-			
+			}	
 	    }
-		
-		
-		
+				
 		// Marker end
 		  var contentStringEnd = '<div id="content">'+
 	      '<div id="siteNotice">'+
@@ -660,6 +636,10 @@ function logout() {
 	google.maps.event.addDomListener(window, 'resize', initialize);
 	google.maps.event.addDomListener(window, 'load', initialize);
 	
+	
+	/**
+	*Method to reload the map NOT USED
+	*/
 	function reloadMap(map){
 		google.maps.event.trigger(map, 'resize');
 	}
@@ -682,11 +662,9 @@ function logout() {
 <!-- Custom styles for this template -->
 <link href="bootstrap-3.1.1/dist/css/dashboard.css" rel="stylesheet">
 
-
 </head>
 
 <body>
-
 
 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
@@ -769,7 +747,7 @@ function logout() {
 						
 					<TD title="Altitude moyenne en mètre" class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-signal"></span>	
-						 <span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(rest.getAltitudeAverage(listAltitude)); %> m </span>				
+						 <span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>				
 					</TD>
 				</TR>
 		
