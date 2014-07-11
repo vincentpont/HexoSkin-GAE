@@ -244,6 +244,7 @@ function logout() {
 	String meterMarker = "50" ;
 	String booleanInfo = "No" ;
 	String booleanSpeed = "No" ;
+	String booleanPulsation = "No" ;
 	String booleanPath = "Yes" ; 
 	String booleanStartStop = "Yes";
 	
@@ -274,6 +275,23 @@ function logout() {
 				booleanSpeed = "Yes";
 			} else {
 				booleanSpeed = "Yes";
+				meterMarker = "50"; // default
+			}
+		}
+		else {
+			booleanSpeed = "No";
+		}
+	}
+	
+	// Test show pulsation
+	String pulsationTest = request.getParameter("testPulsation");
+	if(request.getParameter("testSpeed") != null){
+		if(pulsationTest.equals("Yes")){
+			if(request.getParameter("meterMarker") != null){
+				meterMarker = request.getParameter("meterMarker");
+				booleanPulsation = "Yes";
+			} else {
+				booleanPulsation = "Yes";
 				meterMarker = "50"; // default
 			}
 		}
@@ -340,6 +358,7 @@ function logout() {
 	    var booleanSpeed = '<%=booleanSpeed%>';
 	    var booleanPath = '<%=booleanPath%>';
 	    var booleanStartStop = '<%=booleanStartStop%>';
+	    var booleanPulsation = '<%= booleanPulsation%>';
 	    
 	    // Set checked if the user already checked 
 	    if(booleanInfo == "Yes"){
@@ -347,6 +366,9 @@ function logout() {
 	    }
 	    if(booleanSpeed == "Yes"){
 	    	document.getElementById("testSpeed").checked = true;
+	    }
+	    if(booleanPulsation== "Yes"){
+	    	document.getElementById("testPulsation").checked = true;
 	    }
 	    if(booleanPath == "Yes"){
 	    	document.getElementById("testPath").checked = true;
@@ -425,7 +447,7 @@ function logout() {
 					
 		var marker ;
 			 
-	    // Add speed marker if the user want it
+	    // Add SPEED markers if the user want it
 	    if(booleanSpeed == "Yes"){
 			for(var j = numberMarker ; j < arraySpeed.length ; j += numberMarker){	
 		 
@@ -488,9 +510,73 @@ function logout() {
 			}
 	    }
 	    
+	    // Add HEART RATE markers if the user want it
+	    if(booleanPulsation == "Yes"){
+			for(var j = numberMarker ; j < arraySpeed.length ; j += numberMarker){	
+		 
+				// Now add the content of the popup
+				  var contentStringSpeeds = '<div id="content">'+
+			      '<div id="siteNotice">'+
+			      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
+			      '<div id="bodyContent">'+
+			      '<table class="table">' + 
+			      '<TR>'+
+			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arrayPulsation[j].toString() +  '</span>' +'</TD>' +
+			      '</TR>' +
+			      '</table>'+
+			      '</div>'+
+			      '</div>'+
+			      '</div>';
+			      
+			      // add content text html
+				  var myinfowindow  = new google.maps.InfoWindow({
+				      content: contentStringSpeeds
+				  });
+			      				
+				  if (arrayPulsation[j] <= 80 ){
+					  var hhlow = 'img/h1.png';
+					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
+					  marker = new google.maps.Marker({
+							position: markerPosition,
+				    		animation: google.maps.Animation.DROP,
+							infowindow: myinfowindow ,
+							icon : hhlow
+						});  
+				  }
+				  else if (arrayPulsation[j] > 80 && arraySpeed[j] <= 120){
+					  var hhmid = 'img/h2.png';
+					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
+					   marker = new google.maps.Marker({
+							position: markerPosition,
+				    		animation: google.maps.Animation.DROP,
+							infowindow: myinfowindow ,
+							icon : hhmid
+						});
+				  }
+				  
+				  else if (arrayPulsation[j] > 120){
+					  var hhfast = 'img/h3.png';
+					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
+					  	marker = new google.maps.Marker({
+							position: markerPosition,
+				    		animation: google.maps.Animation.DROP,
+							infowindow: myinfowindow ,
+							icon : hhfast
+						});	
+				  }
+				  // Listener
+				  google.maps.event.addListener(marker, 'click', function() {
+					  this.infowindow.open(map, this);
+				  });
+				  
+				  marker.setMap(map);
+			}
+	    }
+	    
+	    
 	    var arrayMarkers = new Array();
 	    
-	 	// Add info marker if the user want it
+	 	// Add INFOS markers if the user want it
 	    if(booleanInfo == "Yes"){
 			// Add markers to the path 
 			for(var i = numberMarker ; i < arraySpeed.length ; i += numberMarker ){	
@@ -865,6 +951,13 @@ function logout() {
 												   <input id='testSpeedHidden' type='hidden' value='No' name='testSpeed'>
 											</span>
 											 </div>
+											<div title="Afficher point départ et stop" class="checkbox">
+											<span>
+												  <input id='testPulsation' type='checkbox' value='Yes' name='testPulsation'>
+												  Pulsations
+												  <input id='testPulsationHidden' type='hidden' value='No' name='testPulsation'>
+											</span>
+											</div>
 											<div title="Afficher les données enregistrées." class="checkbox">
 											<span>
 												  <input id='testInfo' type='checkbox' value='Yes' name='testInfo'>
@@ -898,7 +991,12 @@ function logout() {
 				<img title="Point d'arrivée." src="img/dd-end.png"/> 
 				
  <br>
-			
+ 				
+				 <span style="font-style:italic; font-size:10pt;"> Degré pulsation. (faible à fort) </span>
+				<img title="Vitesse basse" src="img/h1.png"/> 
+				<img title="Vitesse moyenne" src="img/h2.png"/> 
+				<img title="Vitesse haute" src="img/h3.png"/> 
+ <br>			
 				 <span style="font-style:italic; font-size:10pt;"> Degré vitesse. (faible à fort)  </span>
 
 				<img title="Vitesse basse" src="img/Speedlow.png"/> 
@@ -908,6 +1006,7 @@ function logout() {
 				
 				 <span style="font-style:italic; font-size:10pt;"> Détails séance.  </span>
 				<img title="Données de la séance." src="img/info_marker.png"/> 
+
     
 		    
 			    </TD>
