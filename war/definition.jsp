@@ -105,8 +105,6 @@ function logout() {
 				<h1 class="page-header">Définitions </h1>
 
 <br>
-<br>
-
 				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-stats"></span> <b>Volume tidal</b> :  0.5 L au repos et 3.0 L pendant effort </p>
 				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-transfer"></span>	<b>Respiration</b> :  12-20 respi/min et 30 respi/min pendant effort  </p>
 				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-sort-by-attributes"></span> <b>Ventilation</b> :  6.0 L/min au repos et 90 L/min pendant effort</p>

@@ -1107,31 +1107,31 @@ if(request.getParameter("testDepStop") != null){
 				<TR>
 					<TD id="time1TD"" title="Temps" class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
-					 <span id="time1SP"  style="font-size:12pt; font-family:Verdana;"> <% out.print(listWorkout1.get(1)); %> </span>
+					 <span id="time1SP"  style="font-size:11pt; font-family:Verdana;"> <% out.print(listWorkout1.get(1)); %> </span>
 					
 					</TD> 
 						
 					<TD  id="dist1TD" title="Distance en mètre"  class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
-					 <span id="dist1SP" style="font-size:12pt; font-family:Verdana;"> <% out.print(listWorkout1.get(2)); %>  </span>
+					 <span id="dist1SP" style="font-size:11pt; font-family:Verdana;"> <% out.print(listWorkout1.get(2)); %>  </span>
 								
 					</TD>
 						
 					<TD id="ca1TD" title="Calories brûlées" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
-					 <span id="ca1SP" style="font-size:12pt; font-family:Verdana;"> <% out.print(listWorkout1.get(3)); %> </span>
+					 <span id="ca1SP" style="font-size:10pt; font-family:Verdana;"> <% out.print(listWorkout1.get(3)); %> </span>
 					
 					</TD>
 						
 					<TD  id="speed1TD" title="Vitesse moyenne en km/h" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
-					 <span id="speed1SP" style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout1.get(4)); %> </span>	
+					 <span id="speed1SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout1.get(4)); %> </span>	
 					
 					</TD>
 						
 					<TD title="Altitude moyenne en mètre" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-signal"></span>	
-				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>	
+				    <span style="font-size:11pt; font-family:Verdana;"> &nbsp;<% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>	
 					
 					</TD>
 				</TR>
@@ -1168,31 +1168,31 @@ if(request.getParameter("testDepStop") != null){
 
 					<TD  id="puls1TD" title="Pulsation moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-heart"></span>						
-					<span id="puls1SP" style="font-size:12pt; font-family:Verdana;"> <% out.print(restHEXO.getAverageFromList(listPulsation1));   %> </span>	
+					<span id="puls1SP" style="font-size:11pt; font-family:Verdana;"> <% out.print(restHEXO.getAverageFromList(listPulsation1));   %> </span>	
 					
 					</TD> 
 					
 					<TD  title="Total pas"  class="info">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
-				    <span style="font-size:12pt; font-family:Verdana;">  <% out.print(listSteps1.get(listSteps1.size()-1));  %> </span>	
+				    <span style="font-size:11pt; font-family:Verdana;">  <% out.print(listSteps1.get(listSteps1.size()-1));  %> </span>	
 								
 					</TD>
 					
 					<TD title="Volume Tidal moyen en l/inspiration" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> <%  out.print(volumTidal1);   %> </span>	
+					<span style="font-size:11pt; font-family:Verdana;"> <%  out.print(volumTidal1);   %> </span>	
 					
 					</TD>
 					
 					<TD title="Respiration min moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> <% out.print(restHEXO.getAverageFromList(listBreathing1));   %> </span>	
+					<span style="font-size:11pt; font-family:Verdana;"> <% out.print(restHEXO.getAverageFromList(listBreathing1));   %> </span>	
 					
 					</TD>
 					
 					<TD title="Ventilation moyenne l/min)" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> <%  out.print(ventilation1);  %>  </span>	
+					<span style="font-size:11pt; font-family:Verdana;"> <%  out.print(ventilation1);  %>  </span>	
 					
 					</TD>
 				</TR>
@@ -1234,7 +1234,7 @@ if(request.getParameter("testDepStop") != null){
 					</select>
 					</form>
 <br>
-<div style="height: 14px; width:74px"> </div>
+<div style="height: 14px;"> </div>
 <br>
 <br>				
 
@@ -1270,31 +1270,31 @@ if(request.getParameter("testDepStop") != null){
 				<TR>
 					<TD id="time2TD" title="Temps" class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
-					  <span id="time2SP" style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout2.get(1)); %> </span>
+					  <span id="time2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(1)); %> </span>
 					
 					</TD> 
 						
 					<TD id="dist2TD" title="Distance en mètre"  class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
-					 <span id="dist2SP" style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout2.get(2)); %>  </span>
+					 <span id="dist2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(2)); %>  </span>
 								
 					</TD>
 						
 					<TD id="ca2TD" title="Calories brûlées" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
-					 <span id="ca2SP" style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout2.get(3)); %> </span>
+					 <span id="ca2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(3)); %> </span>
 					
 					</TD>
 						
 					<TD id="speed2TD" title="Vitesse moyenne en km/h" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
-					 <span id="speed2SP" style="font-size:12pt; font-family:Verdana;">  <% out.print(listWorkout2.get(4)); %> </span>	
+					 <span id="speed2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(4)); %> </span>	
 					
 					</TD>
 						
 					<TD title="Altitude moyenne en mètre" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-signal"></span>	
-				    <span style="font-size:12pt; font-family:Verdana;"> <% out.print(rest.getAltitudeAverage(listAltitude2)); %> </span>	
+				    <span style="font-size:11pt; font-family:Verdana;"> <% out.print(rest.getAltitudeAverage(listAltitude2)); %> </span>	
 					
 					</TD>
 				</TR>
@@ -1330,42 +1330,42 @@ if(request.getParameter("testDepStop") != null){
 		
 					<TD id="puls2TD" title="Pulsation moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-heart"></span>						
-					<span id="puls2SP"  style="font-size:12pt; font-family:Verdana;"><% out.print(restHEXO.getAverageFromList(listPulsation2));  %> </span>	
+					<span id="puls2SP"  style="font-size:11pt; font-family:Verdana;"><% out.print(restHEXO.getAverageFromList(listPulsation2));  %> </span>	
 					
 					</TD> 
 					
 					<TD  title="Total pas"  class="info">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
-				    <span style="font-size:12pt; font-family:Verdana;"> &nbsp; <% out.print(listSteps2.get(listSteps2.size()-1));   %> </span>	
+				    <span style="font-size:11pt; font-family:Verdana;"> &nbsp; <% out.print(listSteps2.get(listSteps2.size()-1));   %> </span>	
 								
 					</TD>
 					
 					<TD title="Volume Tidal moyen en mL/inspiration" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(volumTidal2);  %> </span>	
+					<span style="font-size:11pt; font-family:Verdana;"> &nbsp;<% out.print(volumTidal2);  %> </span>	
 					
 					</TD>
 					
 					<TD title="Respiration min moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<% out.print(restHEXO.getAverageFromList(listBreathing2));   %> </span>	
+					<span style="font-size:11pt; font-family:Verdana;"> &nbsp;<% out.print(restHEXO.getAverageFromList(listBreathing2));   %> </span>	
 					
 					</TD>
 					
 					<TD title="Ventilation moyenne mL/min)" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
-					<span style="font-size:12pt; font-family:Verdana;"> &nbsp;<%  out.print(ventilation2);  %>  </span>	
+					<span style="font-size:11pt; font-family:Verdana;"> &nbsp;<%  out.print(ventilation2);  %>  </span>	
 					
 					</TD>
 				</TR>
 				</table>
 						
 <br>
-<div style="height: 14px; width:74px"> </div>
+<div style="height: 14px"> </div>
 <br>
 <br>	
 
-				    <h3 >Graphiques </h3>					
+<div style="height: 56px;"> </div>			   				
 <br>
 						<div id="chart_div2" style="width: 100%; height: 400px;"> </div>
 <br>
@@ -1418,18 +1418,18 @@ if(request.getParameter("testDepStop") != null){
 											</div>
 <br>											
 									
-											<div title="Afficher les différences de pulsation" class="checkbox">
+											<div title="Afficher les différences de pulsation entre les séances." class="checkbox">
 											<span>
 												  <input id='testDifPuls' type='checkbox' value='Yes' name='testDifPuls'>
-												  Calcule différences pulsation
+												  Calculer  pulsations
 												  <input id='testDifPulsHidden' type='hidden' value='No' name='testDifPuls'>
 											</span>
 											</div>
 											
-										    <div title="Afficher les différences de vitesse" class="checkbox">
+										    <div title="Afficher les différences de vitesse entre les séances." class="checkbox">
 											<span>
 												  <input id='testDiffSpeed' type='checkbox' value='Yes' name='testDiffSpeed'>
-												  Calcule différences vitesse
+												  Calculer vitesses
 												  <input id='testDiffSpeedHidden' type='hidden' value='No' name='testDiffSpeed'>
 											</span>
 											</div>
