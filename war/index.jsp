@@ -285,7 +285,7 @@ function logout() {
 	
 	// Test show pulsation
 	String pulsationTest = request.getParameter("testPulsation");
-	if(request.getParameter("testSpeed") != null){
+	if(request.getParameter("testPulsation") != null){
 		if(pulsationTest.equals("Yes")){
 			if(request.getParameter("meterMarker") != null){
 				meterMarker = request.getParameter("meterMarker");
@@ -296,7 +296,7 @@ function logout() {
 			}
 		}
 		else {
-			booleanSpeed = "No";
+			booleanPulsation = "No";
 		}
 	}
 	
@@ -366,7 +366,7 @@ function logout() {
 	    }
 	    if(booleanSpeed == "Yes"){
 	    	document.getElementById("testSpeed").checked = true;
-	    }
+	    } 
 	    if(booleanPulsation== "Yes"){
 	    	document.getElementById("testPulsation").checked = true;
 	    }
@@ -376,7 +376,7 @@ function logout() {
 	    if(booleanStartStop == "Yes"){
 	    	document.getElementById("testDepStop").checked = true;
 	    }
-	    	    
+	    
 	    switch(meterMarker) {
 	    case 2:
 	    	numberMarker = 1 ;
@@ -400,12 +400,7 @@ function logout() {
 	    	numberMarker = 250 ;
 	        break;
 	} 
-	    // Calculate speeds
-	    var speedAverage = '<%=speedAverage%>';
-	    var speedNumber = Number(speedAverage.substring(0, speedAverage.search(' '))); 
-	    var speedMin = 2.00 ;
-	    var speedUp = 10.00 ;
-				
+
 		var mapOptions = {  
 			zoom : 16,
 			center : new google.maps.LatLng(arrayLat[0], arrayLong[0]),
@@ -415,24 +410,15 @@ function logout() {
 		var map = new google.maps.Map(document.getElementById('map-canvas'),
 				mapOptions);
 		
-		var colorRed  = '#EF0000';
-		var colorYellow = '#F3FA24';
-		var colorGreen= '#35F627';
 					
 		// Pass the value to the array of path
-		var planCoordinatesYellow= new Array() ;	
-		var planCoordinatesRed= new Array() ;	
 		var planCoordinates= new Array() ;	
-		var pathStyleGreen ;
-		var pathStyleYellow ;
-		var pathStyleRed ;
 		var pathStyle ;
 			
 			// Path NORMAL
 			if(booleanPath == "Yes"){
 				for( var i = 0 ; i < arrayLat.length; i++ ){
 						planCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
-				
 				}
 				
 				pathStyle= new google.maps.Polyline({
@@ -445,12 +431,13 @@ function logout() {
 				pathStyle.setMap(map);
 			}
 					
-		var marker ;
 			 
 	    // Add SPEED markers if the user want it
 	    if(booleanSpeed == "Yes"){
-			for(var j = numberMarker ; j < arraySpeed.length ; j += numberMarker){	
+			for(var k = numberMarker ; k < arraySpeed.length ; k += numberMarker){	
 		 
+				var markerSpeed ;
+				
 				// Now add the content of the popup
 				  var contentStringSpeeds = '<div id="content">'+
 			      '<div id="siteNotice">'+
@@ -458,7 +445,7 @@ function logout() {
 			      '<div id="bodyContent">'+
 			      '<table class="table">' + 
 			      '<TR>'+
-			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[j].toString() +  '</span>' +'</TD>' +
+			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[k].toString() +  '</span>' +'</TD>' +
 			      '</TR>' +
 			      '</table>'+
 			      '</div>'+
@@ -470,20 +457,20 @@ function logout() {
 				      content: contentStringSpeeds
 				  });
 			      				
-				  if (arraySpeed[j] <= 5 ){
+				  if (arraySpeed[k] <= 5 ){
 					  var speedLowImg = 'img/Speedlow.png';
-					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
-					  marker = new google.maps.Marker({
+					  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
+					  markerSpeed = new google.maps.Marker({
 							position: markerPosition,
 				    		animation: google.maps.Animation.DROP,
 							infowindow: myinfowindow ,
 							icon : speedLowImg
 						});  
 				  }
-				  else if (arraySpeed[j] > 5 && arraySpeed[j] <= 8){
+				  else if (arraySpeed[k] > 5 && arraySpeed[k] <= 8){
 					  var speedMidImg = 'img/SpeedMiddle.png';
-					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
-					   marker = new google.maps.Marker({
+					  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
+					  markerSpeed = new google.maps.Marker({
 							position: markerPosition,
 				    		animation: google.maps.Animation.DROP,
 							infowindow: myinfowindow ,
@@ -491,10 +478,10 @@ function logout() {
 						});
 				  }
 				  
-				  else if (arraySpeed[j] > 8){
+				  else if (arraySpeed[k] > 8){
 					  var speedFastImg = 'img/SpeedMax.png';
-					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
-					  	marker = new google.maps.Marker({
+					  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
+					  markerSpeed = new google.maps.Marker({
 							position: markerPosition,
 				    		animation: google.maps.Animation.DROP,
 							infowindow: myinfowindow ,
@@ -502,17 +489,19 @@ function logout() {
 						});	
 				  }
 				  // Listener
-				  google.maps.event.addListener(marker, 'click', function() {
+				  google.maps.event.addListener(markerSpeed, 'click', function() {
 					  this.infowindow.open(map, this);
 				  });
 				  
-				  marker.setMap(map);
+				  markerSpeed.setMap(map);
 			}
 	    }
 	    
 	    // Add HEART RATE markers if the user want it
 	    if(booleanPulsation == "Yes"){
 			for(var j = numberMarker ; j < arraySpeed.length ; j += numberMarker){	
+				
+				var markerPuls ;
 		 
 				// Now add the content of the popup
 				  var contentStringSpeeds = '<div id="content">'+
@@ -536,7 +525,7 @@ function logout() {
 				  if (arrayPulsation[j] <= 80 ){
 					  var hhlow = 'img/h1.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
-					  marker = new google.maps.Marker({
+					  markerPuls = new google.maps.Marker({
 							position: markerPosition,
 				    		animation: google.maps.Animation.DROP,
 							infowindow: myinfowindow ,
@@ -546,7 +535,7 @@ function logout() {
 				  else if (arrayPulsation[j] > 80 && arraySpeed[j] <= 120){
 					  var hhmid = 'img/h2.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
-					   marker = new google.maps.Marker({
+					  markerPuls = new google.maps.Marker({
 							position: markerPosition,
 				    		animation: google.maps.Animation.DROP,
 							infowindow: myinfowindow ,
@@ -557,7 +546,7 @@ function logout() {
 				  else if (arrayPulsation[j] > 120){
 					  var hhfast = 'img/h3.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
-					  	marker = new google.maps.Marker({
+					  markerPuls = new google.maps.Marker({
 							position: markerPosition,
 				    		animation: google.maps.Animation.DROP,
 							infowindow: myinfowindow ,
@@ -565,21 +554,22 @@ function logout() {
 						});	
 				  }
 				  // Listener
-				  google.maps.event.addListener(marker, 'click', function() {
+				  google.maps.event.addListener(markerPuls, 'click', function() {
 					  this.infowindow.open(map, this);
 				  });
 				  
-				  marker.setMap(map);
+				  markerPuls.setMap(map);
 			}
 	    }
 	    
 	    
-	    var arrayMarkers = new Array();
 	    
 	 	// Add INFOS markers if the user want it
 	    if(booleanInfo == "Yes"){
 			// Add markers to the path 
 			for(var i = numberMarker ; i < arraySpeed.length ; i += numberMarker ){	
+				
+			    var arrayMarkers = new Array();
 				
 				// Now add the content of the popup
 				  var contentStrings = '<div id="content">'+
@@ -629,34 +619,7 @@ function logout() {
 			}	
 	    }
 				
-		// Marker end
-		  var contentStringEnd = '<div id="content">'+
-	      '<div id="siteNotice">'+
-	      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
-	      '<div id="bodyContent">'+
-	      '<table class="table">' +
-	      '<TR>'+
-	      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[arraySpeed.length-1].toString() +  '</span>' +'</TD>' +
-	      '<TD>' + '<span title="Altitude mètre" style="font-size:11pt;" class="glyphicon glyphicon-signal">' + '&nbsp;' + arrayAlti[arrayAlti.length-1].toString()  +'</span>' +'</TD>' +
-	      '</TR>' +
-	      '</table>'+
-	      '</div>'+
-	      '</div>'+
-	      '</div>';
-	      
-		  var contentStringStart = '<div id="content">'+
-	      '<div id="siteNotice">'+
-	      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
-	      '<div id="bodyContent">'+
-	      '<table class="table">' +
-	      '<TR>'+
-	      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[0].toString() +  '</span>' +'</TD>' +
-	      '<TD>' + '<span title="Altitude mètre" style="font-size:11pt;" class="glyphicon glyphicon-signal">' + '&nbsp;' + arrayAlti[0].toString()  +'</span>' +'</TD>' +
-	      '</TR>' +
-	      '</table>'+
-	      '</div>'+
-	      '</div>'+
-	      '</div>';
+
 	      
 	     var imageStart = 'img/dd-start.png';
 	     var imageEnd = 'img/dd-end.png';
@@ -677,24 +640,10 @@ function logout() {
     		icon: imageStart,
 		});
 		
-		var infowindowStart = new google.maps.InfoWindow({
-		      content: contentStringStart
-		});
-
-		var infowindowEnd = new google.maps.InfoWindow({
-		      content: contentStringEnd
-		});
 
 		// Only if the user ask for it
 		if(booleanStartStop == "Yes"){
-		  	google.maps.event.addListener(markerStart, 'click', function() {
-		  		infowindowStart.open(map,markerStart);
-			  });
-		  	
-		  	google.maps.event.addListener(markerEnd, 'click', function() {
-		  		infowindowEnd.open(map,markerEnd);
-			  });
-		  	
+	  	
 		  	// Add the two markers
 		  	markerEnd.setMap(map);
 		  	markerStart.setMap(map);
@@ -918,16 +867,7 @@ function logout() {
   						<table>
 						<TR>
 							<TD>
-								<form  method="post" action="" onsubmit="reloadMap();">
-									    <select title ="Représente le nombre de mètres qui séparent chaque infos de la séance." name="meterMarker" id="precision" class="form-control"  style="max-width:100px;">
-											  <option value="2">2 m</option>
-											  <option value="10">10 m</option>
-											  <option value="50">50 m</option>
-											  <option value="100">100 m</option>
-											  <option value="200">200 m</option>
-											  <option value="500">500 m</option>
-											  <option value="1000">1000 m</option>
-										</select> 
+								<form  method="post" action="">
 							
 											<div title="Afficher le trajet enregistré." class="checkbox">
 											<span>
@@ -944,13 +884,16 @@ function logout() {
 												  <input id='testDepStopHidden' type='hidden' value='No' name='testDepStop'>
 											</span>
 											</div>
-											<div title="Afficher les vitesses sur trajet." class="checkbox">
+<br>									
+										
+											<div title="Afficher les vitesses" class="checkbox">
 											<span>
-												   <input id='testSpeed' type='checkbox' value='Yes' name='testSpeed'>
-												    	Vitesses
-												   <input id='testSpeedHidden' type='hidden' value='No' name='testSpeed'>
+												  <input id='testSpeed' type='checkbox' value='Yes' name='testSpeed'>
+												  Vitesses
+												  <input id='testSpeedHidden' type='hidden' value='No' name='testSpeed'>
 											</span>
-											 </div>
+											</div>
+	
 											<div title="Afficher point départ et stop" class="checkbox">
 											<span>
 												  <input id='testPulsation' type='checkbox' value='Yes' name='testPulsation'>
@@ -958,15 +901,26 @@ function logout() {
 												  <input id='testPulsationHidden' type='hidden' value='No' name='testPulsation'>
 											</span>
 											</div>
+											
 											<div title="Afficher les données enregistrées." class="checkbox">
 											<span>
 												  <input id='testInfo' type='checkbox' value='Yes' name='testInfo'>
 												  Détails séances
 												  <input id='testInfoHidden' type='hidden' value='No' name='testInfo'>
 											</span>
-											</div>		
+											</div>	
+											
+										<select title ="Représente le nombre de mètres qui séparent chaques filtres de la séance." name="meterMarker" id="precision" class="form-control"  style="max-width:100px;">
+											  <option value="2">2 m</option>
+											  <option value="10">10 m</option>
+											  <option value="50">50 m</option>
+											  <option value="100">100 m</option>
+											  <option value="200">200 m</option>
+											  <option value="500">500 m</option>
+											  <option value="1000">1000 m</option>
+										</select> 	
 <br>
-							     		<button type='submit' class="btn btn-success" onClick="reloadMap();"> Filtrer </button>
+							     		<button type='submit' class="btn btn-success"> <b> Filtrer </b></button>
 <br>
 								</form> 
 							</TD>
@@ -1037,7 +991,7 @@ function logout() {
 <br>									<button style="margin-top:8px;" title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideTidal"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Volume tidal l</button>
 <br>									<button style="margin-top:8px;" title="Cacher la respiration" class="btn btn-default" type="button" id="hideRespiration"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Repiration min</button>
 <br>									<button style="margin-top:8px;" title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Ventilation</button>
-<br>				   					<button style="margin-top:8px;" style="margin-top:8px;" title="Voir tout" class="btn btn-default" type="button" id="seeAll"> <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
+<br>				   					<button style="margin-top:8px;" style="margin-top:8px;" title="Voir tout" class="btn btn-default" type="button" id="seeAll"> &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 										</TD>
 									</TR>
 								</table>

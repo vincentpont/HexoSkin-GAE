@@ -43,24 +43,25 @@ RestInvokerHexo restHEXO = new RestInvokerHexo(s1);
 RestInvokerDatastore restMap = new RestInvokerDatastore(); 
 String lastDateWorkout = restMap.getLastDateWorkout("vincentpont@gmail.com"); 
 String hexoDate1 = "" ;
+String hexoDateSub1 = "";
 
 // Test if we have something in param 
 if(request.getParameter("date1") != null){
 	hexoDate1 = request.getParameter("date1");
 	restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
-	hexoDate1 = hexoDate1.substring(0, 10);
-	hexoDate1 = hexoDate1.replace('.', '-');
+	hexoDateSub1 = hexoDate1.substring(0, 10);
+	hexoDateSub1 = hexoDateSub1.replace('.', '-');
 	
 }
  // If not we show the last workout
 else if (request.getParameter("date1") == null){
 	hexoDate1 = lastDateWorkout; 
 	restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
-	hexoDate1 = hexoDate1.substring(0, 10);
-	hexoDate1 = hexoDate1.replace('.', '-');
+	hexoDateSub1 = hexoDate1.substring(0, 10);
+	hexoDateSub1 = hexoDateSub1.replace('.', '-');
 }
 
-List<String> listPulsations1 = restHEXO.returnAllValueFromJson(hexoDate1, "19"); 
+List<String> listPulsations1 = restHEXO.returnAllValueFromJson(hexoDateSub1, "19"); 
 List<Double> listVitesses1 = restMap.getListVitesses();
 
 StringBuffer stringBufferPulsation1 = new StringBuffer();
@@ -96,7 +97,13 @@ stringBufferVitesses1 = restMap.convertListToStringBufferInteger(listVitesses1);
 			
 		  var options = {
 		    colors: ['#FF0007', '#FFF800'],
-		    title: 'Vitesse / Pulsation'
+			hAxis : {
+				title: 'Enregistrements'
+				},
+			vAxis : {
+				title: 'Valeurs'
+			},
+		    title: 'Vitesses / Pulsations'
 		  };
 		  
 		  var chart = new google.visualization.AreaChart(document.getElementById('chart_div1'));
@@ -136,9 +143,9 @@ stringBufferVitesses1 = restMap.convertListToStringBufferInteger(listVitesses1);
 
 <%
 
-List<String> listVolumeTidals1 = restHEXO.returnAllValueFromJson(hexoDate1, "37"); 
-List<String> listRespirationFreqs1 = restHEXO.returnAllValueFromJson(hexoDate1, "33"); 
-List<String> listVentilations1 = restHEXO.returnAllValueFromJson(hexoDate1, "36"); 
+List<String> listVolumeTidals1 = restHEXO.returnAllValueFromJson(hexoDateSub1, "37"); 
+List<String> listRespirationFreqs1 = restHEXO.returnAllValueFromJson(hexoDateSub1, "33"); 
+List<String> listVentilations1 = restHEXO.returnAllValueFromJson(hexoDateSub1, "36"); 
 
 StringBuffer stringBufferVolumeTidal1 = new StringBuffer();
 StringBuffer stringBufferRespirationFreq1 = new StringBuffer();
@@ -177,7 +184,13 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 		 	
 		  var options = {
 		    colors: ['#960DF9', '#0C1A69' ,'#46FDCF'],
-		    title: 'Respiration'
+			hAxis : {
+				title: 'Enregistrements'
+				},
+			vAxis : {
+				title: 'Valeurs'
+			},
+		    title: 'Capacité respiratoire'
 		  };
 		  
 		  var chart = new google.visualization.AreaChart(document.getElementById('chart_div3'));
@@ -224,23 +237,24 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 
 <%
 	String hexoDate2 = "";
+	String hexoDateSub2 = "";
 	// Test if we have something in param 
 	if(request.getParameter("date2") != null){
 		hexoDate2 = request.getParameter("date2");
 		restMap.getDataMap("vincentpont@gmail.com", hexoDate2); 
-		hexoDate2 = hexoDate2.substring(0, 10);
-		hexoDate2 = hexoDate2.replace('.', '-');
+		hexoDateSub2 = hexoDate2.substring(0, 10);
+		hexoDateSub2 = hexoDateSub2.replace('.', '-');
 		
 	}
 	 // If not we show the last workout
 	else if (request.getParameter("date2") == null)	{
 		hexoDate2 = lastDateWorkout; 
 		restMap.getDataMap("vincentpont@gmail.com", hexoDate2); 
-		hexoDate2 = hexoDate2.substring(0, 10);
-		hexoDate2 = hexoDate2.replace('.', '-');
+		hexoDateSub2 = hexoDate2.substring(0, 10);
+		hexoDateSub2 = hexoDateSub2.replace('.', '-');
 	}
 
-	List<String> listPulsations2 = restHEXO.returnAllValueFromJson(hexoDate2, "19"); 
+	List<String> listPulsations2 = restHEXO.returnAllValueFromJson(hexoDateSub2, "19"); 
 	List<Double> listVitesses2 = restMap.getListVitesses();
 	
 	StringBuffer stringBufferPulsation2 = new StringBuffer();
@@ -279,7 +293,13 @@ var arrayVitesses2 = [ <%= stringBufferVitesses2.toString() %> ];
 
 	  var options = {
 				colors: ['#FF0007', '#FFF800'],
-			    title: 'Vitesse / Pulsation'
+				hAxis : {
+					title: 'Enregistrements'
+					},
+				vAxis : {
+					title: 'Valeurs'
+				},
+			    title: 'Vitesses / Pulsations'
 			  };
 
 		var chart = new google.visualization.AreaChart(document
@@ -317,9 +337,9 @@ var arrayVitesses2 = [ <%= stringBufferVitesses2.toString() %> ];
 
 <%
 
-List<String> listVolumeTidals2 = restHEXO.returnAllValueFromJson(hexoDate2, "37"); 
-List<String> listRespirationFreqs2 = restHEXO.returnAllValueFromJson(hexoDate2, "33"); 
-List<String> listVentilations2 = restHEXO.returnAllValueFromJson(hexoDate2, "36"); 
+List<String> listVolumeTidals2 = restHEXO.returnAllValueFromJson(hexoDateSub2, "37"); 
+List<String> listRespirationFreqs2 = restHEXO.returnAllValueFromJson(hexoDateSub2, "33"); 
+List<String> listVentilations2 = restHEXO.returnAllValueFromJson(hexoDateSub2, "36"); 
 
 StringBuffer stringBufferVolumeTidal2 = new StringBuffer();
 StringBuffer stringBufferRespirationFreq2 = new StringBuffer();
@@ -358,7 +378,13 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 		 	
 		  var options = {
 			colors: ['#960DF9', '#0C1A69' ,'#46FDCF'],
-		    title: 'Respiration'
+			hAxis : {
+				title: 'Enregistrements'
+				},
+			vAxis : {
+				title: 'Valeurs'
+			},
+		    title: 'Capacité respiratoire'
 		  };
 		  
 		  var chart = new google.visualization.AreaChart(document.getElementById('chart_div4'));
@@ -480,7 +506,360 @@ function changeColor()
 	src="https://maps.googleapis.com/maps/api/js?v=3?key={AIzaSyA9MSARpM9GdjunV4sR5mxpOuD3pfkyldc}">
 </script>
 
-<!-- ... -->
+
+
+<%
+
+// Trajet 1
+restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
+List<Double> listLatitude1 = restMap.getListLatitudes();
+List<Double> listLongitude1 = restMap.getListLongitudes();
+
+StringBuffer stringBufferLat1 = new StringBuffer();
+StringBuffer stringBufferLong1 = new StringBuffer();
+
+stringBufferLat1 = restMap.convertListToStringBuffer(listLatitude1);
+stringBufferLong1 = restMap.convertListToStringBuffer(listLongitude1);
+
+// trajet 2
+restMap.getDataMap("vincentpont@gmail.com", hexoDate2); 
+List<Double> listLatitude2 = restMap.getListLatitudes();
+List<Double> listLongitude2 = restMap.getListLongitudes();
+
+StringBuffer stringBufferLat2 = new StringBuffer();
+StringBuffer stringBufferLong2 = new StringBuffer();
+
+stringBufferLat2 = restMap.convertListToStringBuffer(listLatitude2);
+stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
+
+String booleanPath = "Yes" ; 
+String booleanStartStop = "Yes";
+String booleanDiff = "No" ;
+String meterMarker = "50" ;
+
+
+// Test if the user want to show the info
+String diffTest = request.getParameter("testDiffSpeed");
+if(request.getParameter("testDiffSpeed") != null){
+	if(diffTest.equals("Yes")){
+		if(request.getParameter("meterMarker") != null){
+			meterMarker = request.getParameter("meterMarker");
+			booleanDiff = "Yes";
+		} else {
+			meterMarker = "50"; // default
+			booleanDiff = "Yes";
+		}
+	}
+	else{
+		booleanDiff = "No";
+	}
+}
+
+// Test show path
+String pathTest = request.getParameter("testPath");
+if(request.getParameter("testPath") != null){
+	if(pathTest.equals("Yes")){
+		booleanPath = "Yes";
+	}
+	else {
+		booleanPath = "No";
+	}
+}	
+
+// Test show start/stop point
+String depStopTest = request.getParameter("testDepStop");
+if(request.getParameter("testDepStop") != null){
+	if(depStopTest.equals("Yes")){
+		booleanStartStop = "Yes";
+	}
+	else {
+		booleanStartStop = "No";
+	}
+}	
+
+
+%>
+
+<script>
+
+   /**
+    * Method to initalize the map
+    */
+	function initialize() {
+		
+	   // Path 1
+	    var arrayLat1 = [ <%= stringBufferLat1.toString() %> ];
+	    var arrayLong1 = [ <%= stringBufferLong1.toString() %> ];
+	    var arraySpeed1 = [ <%= stringBufferVitesses1.toString() %> ];
+	    
+	    // Path 2
+	    var arrayLat2 = [ <%= stringBufferLat2.toString() %> ];
+	    var arrayLong2 = [ <%= stringBufferLong2.toString() %> ];
+	    var arraySpeed2 = [ <%= stringBufferVitesses2.toString() %> ];
+	    
+	    var booleanPath = '<%=booleanPath%>';
+	    var booleanStartStop = '<%=booleanStartStop%>';
+	    var booleanDiff = '<%= booleanDiff%>';
+	    
+	    // Param
+	    var meterMarker = '<%=meterMarker%>';
+	    meterMarker = parseInt(meterMarker); //parse
+	    var numberMarker ;
+	    
+	    // Set checked if the user already checked 
+	    if(booleanDiff == "Yes"){
+	    document.getElementById("testDiffSpeed").checked = true;
+	    }
+	    if(booleanPath == "Yes"){
+	    	document.getElementById("testPath").checked = true;
+	    }
+	    if(booleanStartStop == "Yes"){
+	    	document.getElementById("testDepStop").checked = true;
+	    }
+	    
+	    switch(meterMarker) {
+	    case 2:
+	    	numberMarker = 1 ;
+	        break;
+	    case 10:
+	    	numberMarker = 3 ;
+	        break;
+	    case 50:
+	    	numberMarker = 11 ;
+	        break;
+	    case 100:
+	    	numberMarker = 25;
+	        break;
+	    case 200:
+	    	numberMarker = 50 ;
+	        break;
+	    case 500:
+	    	numberMarker = 125 ;
+	        break;
+	    case 1000:
+	    	numberMarker = 250 ;
+	        break;
+	} 
+	    
+		var mapOptions = {  
+			zoom : 16,
+			center : new google.maps.LatLng(arrayLat1[0], arrayLong1[0]),
+			mapTypeId : google.maps.MapTypeId.PLAN
+		};
+
+		var map = new google.maps.Map(document.getElementById('map-canvas'),
+				mapOptions);
+				
+		
+		// Path 1
+		var planCoordinates1 = new Array() ;	
+		var pathStyle1 ;
+			
+
+				for( var j = 0 ; j < arrayLat1.length; j++ ){
+					planCoordinates1[j] = new google.maps.LatLng(arrayLat1[j] , arrayLong1[j]);
+				}
+			    
+				pathStyle1= new google.maps.Polyline({
+					path : planCoordinates1,
+					geodesic : true,
+					strokeColor : "#000000",
+					strokeOpacity : 1,
+					strokeWeight : 4
+				});
+
+				
+				pathStyle1.setMap(map);
+			
+			// Path 2	
+			var planCoordinates2 = new Array() ;	
+			var pathStyle2 ;
+			
+					for( var i = 0 ; i < arrayLat2.length; i++ ){
+						planCoordinates2[i] = new google.maps.LatLng(arrayLat2[i] , arrayLong2[i]);
+					}
+					
+					pathStyle2= new google.maps.Polyline({
+						path : planCoordinates2,
+						geodesic : true,
+						strokeColor : "#1201FD",
+						strokeOpacity : 1,
+						strokeWeight : 4
+					});
+					
+					
+					pathStyle2.setMap(map);
+							
+					
+					
+			// Differences séance
+		    if(booleanDiff == "Yes"){
+
+				for(var k = numberMarker ; k < arraySpeed1.length ; k += numberMarker){	
+			 
+					var markerDiffSpeed ;
+					var markerPosition;
+					var speedImg;
+					var namePath;
+					
+					// Test the differences vitesses
+					var diffSpeeds ;
+					var diffSpeedStr;
+
+					if(arraySpeed1[k] >arraySpeed2[k]){
+						
+						// Set position
+					 	markerPosition = new google.maps.LatLng(arrayLat1[k],arrayLong1[k]);
+					 	diffSpeeds = arraySpeed1[k] - arraySpeed2[k];
+					 	diffSpeeds = diffSpeeds.toFixed(2);
+					 	
+					 	// Test value of the differences to add the right icon img
+					 	if(diffSpeeds <= 3.0){
+					 	 speedImg = 'img/Speedlow.png';
+					 	}
+					 	else if(diffSpeeds > 3.0 && diffSpeeds <= 6.0 ){
+						 speedImg = 'img/SpeedMiddle.png';
+					 	}
+					 	else if(diffSpeeds > 6.0 ){
+						 speedImg = 'img/SpeedMax.png';
+					 	}
+		 	
+					 	diffSpeedStr = "+" + diffSpeeds.toString() + " km/h";
+					 	namePath = " trajet 1";
+					}
+					else{
+						
+						markerPosition = new google.maps.LatLng(arrayLat2[k],arrayLong2[k]);
+						diffSpeeds = arraySpeed2[k] - arraySpeed1[k] ;
+					 	diffSpeeds = diffSpeeds.toFixed(2);
+					 	
+					 	// Test value of the differences to add the right icon img
+					 	if(diffSpeeds <= 3.0){
+					 	 speedImg = 'img/Speedlow.png';
+					 	}
+					 	else if(diffSpeeds > 3.0 && diffSpeeds <= 6.0 ){
+						 speedImg = 'img/SpeedMiddle.png';
+					 	}
+					 	else if(diffSpeeds > 6.0 ){
+						 speedImg = 'img/SpeedMax.png';
+					 	}
+					 	
+						diffSpeedStr = '+' + diffSpeeds.toString() + ' km/h';
+					 	namePath = " trajet 2";
+					}
+							
+					
+					// Now add the content of the popup
+					  var contentStringSpeeds = '<div id="content">'+
+				      '<div id="siteNotice">'+
+				      '<h5 id="firstHeading" class="firstHeading">Données' +namePath.toString() + '</h5>'+
+				      '<div id="bodyContent">'+
+				      '<table class="table">' + 
+				      '<TR>'+
+				      '<TD align="left">' + '<span title="Différence vitesses" style="font-size:11pt;">' + diffSpeedStr.toString() +  '</span>' +'</TD>' +
+				      '</TR>' +
+				      '</table>'+
+				      '</div>'+
+				      '</div>'+
+				      '</div>';
+				      
+				      // add content text html
+					  var myinfowindow  = new google.maps.InfoWindow({
+					      content: contentStringSpeeds
+					  });
+				      				
+					  markerDiffSpeed = new google.maps.Marker({
+							position: markerPosition,
+				    		animation: google.maps.Animation.DROP,
+							infowindow: myinfowindow ,
+							icon : speedImg
+						});  
+
+					  
+					  // Listener
+					  google.maps.event.addListener(markerDiffSpeed, 'click', function() {
+						  this.infowindow.open(map, this);
+					  });
+					  
+					  markerDiffSpeed.setMap(map);
+				}
+		    }
+				
+		// Marker end
+		  var contentStringEnd = '<div id="content">'+
+	      '<div id="siteNotice">'+
+	      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
+	      '<div id="bodyContent">'+
+	      '<table class="table">' +
+	      '<TR>'+
+	      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed1[arraySpeed1.length-1].toString() +  '</span>' +'</TD>' +
+	      '</TR>' +
+	      '</table>'+
+	      '</div>'+
+	      '</div>'+
+	      '</div>';
+	      
+		  var contentStringStart = '<div id="content">'+
+	      '<div id="siteNotice">'+
+	      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
+	      '<div id="bodyContent">'+
+	      '<table class="table">' +
+	      '<TR>'+
+	      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed1[0].toString() +  '</span>' +'</TD>' +
+	      '</TR>' +
+	      '</table>'+
+	      '</div>'+
+	      '</div>'+
+	      '</div>';
+	      
+	    var imageStart = 'img/dd-start.png';
+	     var imageEnd = 'img/dd-end.png';
+
+	  	var endMarker = new google.maps.LatLng(arrayLat1[arrayLat1.length-1],arrayLong1[arrayLong1.length-1]);	
+		var markerEnd = new google.maps.Marker({
+    		position: endMarker,
+    		animation: google.maps.Animation.DROP,
+    		title:"END",
+    		icon: imageEnd
+		});
+		
+	  	var startMarker = new google.maps.LatLng(arrayLat1[0],arrayLong1[0]);	
+		var markerStart = new google.maps.Marker({
+    		position: startMarker,
+    		animation: google.maps.Animation.DROP,
+    		title:"START",
+    		icon: imageStart,
+		});
+		
+		var infowindowStart = new google.maps.InfoWindow({
+		      content: contentStringStart
+		});
+
+		var infowindowEnd = new google.maps.InfoWindow({
+		      content: contentStringEnd
+		});
+
+	  	google.maps.event.addListener(markerStart, 'click', function() {
+	  		infowindowStart.open(map,markerStart);
+		  });
+	  	
+	  	google.maps.event.addListener(markerEnd, 'click', function() {
+	  		infowindowEnd.open(map,markerEnd);
+		  });
+	  	
+	  	if(booleanStartStop == "Yes"){
+	  	// Add the two markers
+	  	markerEnd.setMap(map);
+	  	markerStart.setMap(map);
+	  	}
+	  	
+	}
+	
+	google.maps.event.addDomListener(window, 'resize', initialize);
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+
+</script>
 
 
 <meta charset="utf-8">
@@ -561,8 +940,7 @@ function changeColor()
 					</select>
 					
 <br>
-<button type='submit' class="btn btn-success"> Afficher </button>
-<button type='button'  class="btn btn-success" onClick="changeColor();"> Comparer </button>
+<button type='submit' class="btn btn-success"> <b> Afficher</b> </button>
 <br>
 <br>
 				 <%
@@ -692,21 +1070,25 @@ function changeColor()
 					</TD>
 				</TR>
 				</table>
-			
+
+<button type='button'  class="btn btn-success" onClick="changeColor();"> <b> Comparer </b> </button>	
+<br>		
 <br>
 <br>
 				    <h3>Graphiques </h3>
 <br>
 						<div id="chart_div1" style="width: 100%; height: 400px;"></div>
+<br>
 						<button title="Cacher la vitesse" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideSpeed1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Vitesses</button>
    						<button title="Cacher la pulsation" class="btn btn-default" type="button" id="hidePulsation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll1"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
+   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll1"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 <br>
 						<div id="chart_div3" style="width: 100%; height: 400px;"></div>
-						<button title="Cacher la respiration" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respiration</button>
-   						<button title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Ventilation</button>
-   						<button title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Volume Tidal</button>
-   						<button title="Voir tout" class="btn btn-default" type="button" id="seeAll3"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
+<br>
+						<button title="Cacher la respiration" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
+   						<button title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
+   						<button title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
+   						<button title="Voir tout" class="btn btn-default" type="button" id="seeAll3"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 				</div>	
 
 					<div class="col-md-6">
@@ -852,32 +1234,131 @@ function changeColor()
 				</table>
 						
 <br>
+<div style="height: 14px; width:74px"> </div>
+<br>
 <br>	
 
 				    <h3 >Graphiques </h3>					
 <br>
 						<div id="chart_div2" style="width: 100%; height: 400px;"> </div>
+<br>
 						<button title="Cacher la vitesse" class="btn btn-default"  style="margin-left:90px;" type="button" id="hideSpeed2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Vitesses</button>
    						<button title="Cacher la pulsation" class="btn btn-default" type="button" id="hidePulsation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll2"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
+   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll2"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 <br>
 						<div id="chart_div4" style="width: 100%; height: 400px;"></div>	
-						<button title="Cacher la respiration" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respiration</button>
-   						<button title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Ventilation</button>
-   						<button title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Volume Tidal</button>
-   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll4"  > <span class="glyphicon glyphicon-eye-open"></span> &nbsp;Tout</button>
+<br>
+						<button title="Cacher la respiration" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
+   						<button title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
+   						<button title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
+   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll4"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 				
 											
 					</div>
-					
 <br>					
-					 <h3 >Cartes  </h3>	
-					
-				</div>
-				
-		</div>
+
+		  				 <div class="col-xs-12 col-md-8">	
+<br>
+<br>
+		  				 <h3> Cartes </h3>		
+<br>
+				  		    <div id="map-canvas" style="width:100%;height:400px;"></div>	
+				  		 </div>  				  		 
+						 <div class="col-xs-12 col-md-4">
+
+<div style="height: 125px;"> </div>
+
+						 <h5> <b> Filtres </b> </h5> 
+  						<table>
+						<TR>
+							<TD>
+								<form  method="post" action="">
+							
+											<div title="Afficher le trajet enregistré." class="checkbox">
+											<span>
+												   <input id='testPath' type='checkbox' value='Yes' name='testPath'>
+												    Chemin
+												   <input id='testPathHidden' type='hidden' value='No' name='testPath'>
+												  
+											</span>
+											</div>
+											<div title="Afficher point départ et stop" class="checkbox">
+											<span>
+												  <input id='testDepStop' type='checkbox' value='Yes' name='testDepStop'>
+												  Point départ/stop
+												  <input id='testDepStopHidden' type='hidden' value='No' name='testDepStop'>
+											</span>
+											</div>
+<br>											
+									
+											<div title="Afficher les différences" class="checkbox">
+											<span>
+												  <input id='testDiffSpeed' type='checkbox' value='Yes' name='testDiffSpeed'>
+												  Calcule Différences vitesses
+												  <input id='testDiffSpeedHidden' type='hidden' value='No' name='testDiffSpeed'>
+											</span>
+											</div>
+											
+										<select title ="Représente le nombre de mètres qui séparent chaques filtres de la séance." name="meterMarker" id="precision" class="form-control"  style="max-width:100px;">
+											  <option value="2">2 m</option>
+											  <option value="10">10 m</option>
+											  <option value="50">50 m</option>
+											  <option value="100">100 m</option>
+											  <option value="200">200 m</option>
+											  <option value="500">500 m</option>
+											  <option value="1000">1000 m</option>
+										</select> 
+<br>
+
+							     		<button type='submit' class="btn btn-success"> <b>  Filtrer </b> </button>
+<br>
+								</form> 
+							</TD>
+						</TR>
+					</table>
+						 </div>
+						</div> 
+<br>
+
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		
-		<div class="row">
+			<h5> <b> Légendes </b>  </h5>
+<br>				
+			<table>
+			<TR>
+			
+				<TD> <span style="font-style:italic; font-size:10pt;"> Première séance. &nbsp; </span>
+				<img title="Tracé du chemin de la séance parcourue." src="img/path.png"/> 
+				
+<br>
+
+				<span style="font-style:italic; font-size:10pt;"> Deuxième séance. &nbsp; </span>
+				<img title="Tracé du chemin de la séance parcourue." src="img/path2.png"/> 
+				
+<br>
+			    
+			    <span style="font-style:italic; font-size:10pt;"> Point début/stop séance.  </span>
+				<img title="Point de départ." src="img/dd-start.png"/> 
+				<img title="Point d'arrivée." src="img/dd-end.png"/> 
+						
+ <br>			
+				<span style="font-style:italic; font-size:10pt;"> Différences de vitesse entre les deux séances. (faible à fort)   </span>
+				<img title="Vitesse basse" src="img/Speedlow.png"/> 
+				<img title="Vitesse moyenne" src="img/SpeedMiddle.png"/> 
+				<img title="Vitesse haute" src="img/SpeedMax.png"/> 
+    
+		    
+			    </TD>
+			    
+			</TR>
+			</table>
+					 
+			</div>
+
+		
+				
+		
+<div class="row">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<hr>
 		<footer>
