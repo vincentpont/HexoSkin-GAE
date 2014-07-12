@@ -92,23 +92,24 @@ function logout() {
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li class="active"><a href="index.jsp">Dashboard</a></li>
+					<li><a href="index.jsp">Dashboard</a></li>
 					<li><a href="compare.jsp">Comparer</a></li>
 					<li><a href="historique.jsp">Historique</a></li>
-				    <li><a href="definition.jsp">Définitions</a></li>
+				    <li class="active"><a href="definition.jsp">Définitions</a></li>
 				</ul>
 			</div>
 
 
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="font-size:12pt;" >
-				<h1 class="page-header">A propos</h1>
+				<h1 class="page-header">Définitions </h1>
 
-				<p> Mapper l'effort grâce à HexoSkin.</p>
-				<p> Travail de bachelor 2014  </p>
-				<p> Étudiant : Vincent Point </p>
-				<p> Professeur responsable : Monsieur Michael Schumacher</p>
-				<p> HES-SO Valais </p>
+<br>
+<br>
+
+				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-stats"></span> <b>Volume tidal</b> :  0.5 L au repos et 3.0 L pendant effort </p>
+				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-transfer"></span>	<b>Respiration</b> :  12-20 respi/min et 30 respi/min pendant effort  </p>
+				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-sort-by-attributes"></span> <b>Ventilation</b> :  6.0 L/min au repos et 90 L/min pendant effort</p>
 
 
 				<br>

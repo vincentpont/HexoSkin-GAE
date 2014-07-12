@@ -50,8 +50,8 @@ if(request.getParameter("date") != null){
 	
 }
  // If not we show the last workout
-else{
-	restHexoDate = lastDateWorkout; 
+else{ 
+	restHexoDate =  lastDateWorkout;
 	restMap.getDataMap("vincentpont@gmail.com", restHexoDate); 
 	restHexoDate = restHexoDate.substring(0, 10);
 	restHexoDate = restHexoDate.replace('.', '-');
@@ -457,7 +457,7 @@ function logout() {
 				      content: contentStringSpeeds
 				  });
 			      				
-				  if (arraySpeed[k] <= 5 ){
+				  if (arraySpeed[k] <= 6 ){
 					  var speedLowImg = 'img/Speedlow.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
 					  markerSpeed = new google.maps.Marker({
@@ -467,7 +467,7 @@ function logout() {
 							icon : speedLowImg
 						});  
 				  }
-				  else if (arraySpeed[k] > 5 && arraySpeed[k] <= 8){
+				  else if (arraySpeed[k] > 6 && arraySpeed[k] <= 12){
 					  var speedMidImg = 'img/SpeedMiddle.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
 					  markerSpeed = new google.maps.Marker({
@@ -478,7 +478,7 @@ function logout() {
 						});
 				  }
 				  
-				  else if (arraySpeed[k] > 8){
+				  else if (arraySpeed[k] > 12){
 					  var speedFastImg = 'img/SpeedMax.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
 					  markerSpeed = new google.maps.Marker({
@@ -532,7 +532,7 @@ function logout() {
 							icon : hhlow
 						});  
 				  }
-				  else if (arrayPulsation[j] > 80 && arraySpeed[j] <= 120){
+				  else if (arrayPulsation[j] > 85 && arraySpeed[j] <= 150){
 					  var hhmid = 'img/h2.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
 					  markerPuls = new google.maps.Marker({
@@ -543,7 +543,7 @@ function logout() {
 						});
 				  }
 				  
-				  else if (arrayPulsation[j] > 120){
+				  else if (arrayPulsation[j] > 150){
 					  var hhfast = 'img/h3.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
 					  markerPuls = new google.maps.Marker({
@@ -730,6 +730,7 @@ function logout() {
 					<li class="active"><a href="index.jsp">Dashboard</a></li>
 					<li><a href="compare.jsp">Comparer</a></li>
 					<li><a href="historique.jsp">Historique</a></li>
+				    <li><a href="definition.jsp">Définitions</a></li>
 				</ul>
 			</div>
 
@@ -935,27 +936,27 @@ function logout() {
 			<table>
 			<TR>
 			
-				<TD> <span style="font-style:italic; font-size:10pt;"> Chemin du trajet. &nbsp; </span>
+				<TD> <span style="font-style:italic; font-size:10pt;"> Chemin du trajet : &nbsp; </span>
 				<img title="Tracé du chemin de la séance parcourue." src="img/path.png"/> 
 				
 <br>
 			    
-			    <span style="font-style:italic; font-size:10pt;"> Point début/stop séance.  </span>
+			    <span style="font-style:italic; font-size:10pt;"> Point début/stop :  </span>
 				<img title="Point de départ." src="img/dd-start.png"/> 
 				<img title="Point d'arrivée." src="img/dd-end.png"/> 
 				
  <br>
  				
-				 <span style="font-style:italic; font-size:10pt;"> Degré pulsation. (faible à fort) </span>
-				<img title="Vitesse basse" src="img/h1.png"/> 
-				<img title="Vitesse moyenne" src="img/h2.png"/> 
-				<img title="Vitesse haute" src="img/h3.png"/> 
+				 <span style="font-style:italic; font-size:10pt;"> Degré des pulsations : </span>
+				<img title="Vitesse basse" src="img/h1.png"/>  <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>85</span>  
+				<img title="Vitesse moyenne" src="img/h2.png"/>  <span style="font-size:10pt;">entre 85 et 150 </span>
+				<img title="Vitesse haute" src="img/h3.png"/>  <span style="font-size:10pt;"><%out.print("<b>> </b>"); %> 150</span>
  <br>			
-				 <span style="font-style:italic; font-size:10pt;"> Degré vitesse. (faible à fort)  </span>
+				 <span style="font-style:italic; font-size:10pt;"> Degré des vitesses :   </span>
 
-				<img title="Vitesse basse" src="img/Speedlow.png"/> 
-				<img title="Vitesse moyenne" src="img/SpeedMiddle.png"/> 
-				<img title="Vitesse haute" src="img/SpeedMax.png"/> 
+				<img title="Vitesse basse" src="img/Speedlow.png"/>  <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>6</span>   
+				<img title="Vitesse moyenne" src="img/SpeedMiddle.png"/> <span style="font-size:10pt;">entre 6 et 12 </span>
+				<img title="Vitesse haute" src="img/SpeedMax.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %> 12</span>
  <br>				
 				
 				 <span style="font-style:italic; font-size:10pt;"> Détails séance.  </span>
@@ -997,7 +998,11 @@ function logout() {
 								</table>
 						</div>
 					</div>
-				
+			<% 
+            String attribut = (String) request.getAttribute("dateStr");
+			String attribut2 =  (String) session.getAttribute("dateStr") ;
+            out.println("VALUE :" +attribut2);
+            %>
 			</div>
 		</div>
 	

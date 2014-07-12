@@ -95,6 +95,7 @@
 					<li class="active"><a href="index.jsp">Dashboard</a></li>
 					<li><a href="compare.jsp">Comparer</a></li>
 					<li><a href="historique.jsp">Historique</a></li>
+				    <li><a href="definition.jsp">Définitions</a></li>
 				</ul>
 			</div>
 

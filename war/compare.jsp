@@ -532,26 +532,47 @@ StringBuffer stringBufferLong2 = new StringBuffer();
 stringBufferLat2 = restMap.convertListToStringBuffer(listLatitude2);
 stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 
+
 String booleanPath = "Yes" ; 
 String booleanStartStop = "Yes";
-String booleanDiff = "No" ;
+String booleanDiffSpeed = "No" ;
+String booleanDiffPuls = "No" ;
 String meterMarker = "50" ;
 
 
-// Test if the user want to show the info
-String diffTest = request.getParameter("testDiffSpeed");
-if(request.getParameter("testDiffSpeed") != null){
-	if(diffTest.equals("Yes")){
+
+//Test if the user want to show the info
+String diffPulsTest = request.getParameter("testDifPuls");
+if(request.getParameter("testDifPuls") != null){
+	if(diffPulsTest.equals("Yes")){
 		if(request.getParameter("meterMarker") != null){
 			meterMarker = request.getParameter("meterMarker");
-			booleanDiff = "Yes";
+			booleanDiffPuls = "Yes";
 		} else {
 			meterMarker = "50"; // default
-			booleanDiff = "Yes";
+			booleanDiffPuls = "Yes";
 		}
 	}
 	else{
-		booleanDiff = "No";
+		booleanDiffPuls = "No";
+	}
+}
+
+
+// Test if the user want to show the info
+String diffTestSpeed = request.getParameter("testDiffSpeed");
+if(request.getParameter("testDiffSpeed") != null){
+	if(diffTestSpeed.equals("Yes")){
+		if(request.getParameter("meterMarker") != null){
+			meterMarker = request.getParameter("meterMarker");
+			booleanDiffSpeed = "Yes";
+		} else {
+			meterMarker = "50"; // default
+			booleanDiffSpeed = "Yes";
+		}
+	}
+	else{
+		booleanDiffSpeed = "No";
 	}
 }
 
@@ -591,6 +612,8 @@ if(request.getParameter("testDepStop") != null){
 	    var arrayLat1 = [ <%= stringBufferLat1.toString() %> ];
 	    var arrayLong1 = [ <%= stringBufferLong1.toString() %> ];
 	    var arraySpeed1 = [ <%= stringBufferVitesses1.toString() %> ];
+	    var arrayPulsation1 = [ <%= stringBufferPulsation1.toString() %> ];
+	    var arrayPulsation2 = [ <%= stringBufferPulsation2.toString() %> ];
 	    
 	    // Path 2
 	    var arrayLat2 = [ <%= stringBufferLat2.toString() %> ];
@@ -599,7 +622,8 @@ if(request.getParameter("testDepStop") != null){
 	    
 	    var booleanPath = '<%=booleanPath%>';
 	    var booleanStartStop = '<%=booleanStartStop%>';
-	    var booleanDiff = '<%= booleanDiff%>';
+	    var booleanDiffSpeed = '<%= booleanDiffSpeed%>';
+	    var booleanDiffPuls = '<%= booleanDiffPuls%>';
 	    
 	    // Param
 	    var meterMarker = '<%=meterMarker%>';
@@ -607,8 +631,11 @@ if(request.getParameter("testDepStop") != null){
 	    var numberMarker ;
 	    
 	    // Set checked if the user already checked 
-	    if(booleanDiff == "Yes"){
+	    if(booleanDiffSpeed == "Yes"){
 	    document.getElementById("testDiffSpeed").checked = true;
+	    }
+	    if(booleanDiffPuls == "Yes"){
+		document.getElementById("testDifPuls").checked = true;	
 	    }
 	    if(booleanPath == "Yes"){
 	    	document.getElementById("testPath").checked = true;
@@ -616,6 +643,7 @@ if(request.getParameter("testDepStop") != null){
 	    if(booleanStartStop == "Yes"){
 	    	document.getElementById("testDepStop").checked = true;
 	    }
+
 	    
 	    switch(meterMarker) {
 	    case 2:
@@ -692,8 +720,8 @@ if(request.getParameter("testDepStop") != null){
 							
 					
 					
-			// Differences séance
-		    if(booleanDiff == "Yes"){
+			// Differences vitesses
+		    if(booleanDiffSpeed == "Yes"){
 
 				for(var k = numberMarker ; k < arraySpeed1.length ; k += numberMarker){	
 			 
@@ -781,7 +809,105 @@ if(request.getParameter("testDepStop") != null){
 						  this.infowindow.open(map, this);
 					  });
 					  
+					  // show only if there is a differences
+					  if(diffSpeeds != 0){
 					  markerDiffSpeed.setMap(map);
+					  }
+				}
+		    }
+			
+			
+			
+		 // Differences pulsation
+		    if(booleanDiffPuls == "Yes"){
+
+				for(var k = numberMarker ; k < arraySpeed1.length ; k += numberMarker){	
+			 
+					var markerDiffPuls;
+					var markerPosition;
+					var pulsImg;
+					var namePath;
+					
+					// Test the differences vitesses
+					var diffPuls ;
+					var diffPulsStr;
+
+					if(arrayPulsation1[k] >arrayPulsation2[k]){
+						// Set position
+					 	markerPosition = new google.maps.LatLng(arrayLat1[k],arrayLong1[k]);
+					 	diffPuls = arrayPulsation1[k] - arrayPulsation2[k];
+						alert("diffPuls "+diffPuls);
+					 	
+					 	// Test value of the differences to add the right icon img
+					 	if(diffSpeeds <= 20){
+					 		pulsImg = 'img/h1.png';
+					 	}
+					 	else if(diffPuls > 20 && diffPuls <= 40 ){
+					 		pulsImg = 'img/h2.png';
+					 	}
+					 	else if(diffPuls > 40 ){
+					 		pulsImg = 'img/h3.png';
+					 	}
+		 	
+					 	diffPulsStr = "+" + diffPuls.toString() + " pulsation";
+					 	namePath = " trajet 1";
+					}
+					else{		
+						markerPosition = new google.maps.LatLng(arrayLat2[k],arrayLong2[k]);
+						diffPuls = arrayPulsation2[k] - arrayPulsation1[k] ;
+					 	
+					 	// Test value of the differences to add the right icon img
+					 	if(diffPuls <= 20){
+					 		pulsImg = 'img/h1.png';
+					 	}
+					 	else if(diffPuls > 20 && diffPuls <= 40 ){
+					 		pulsImg = 'img/h2.png';
+					 	}
+					 	else if(diffPuls  > 40 ){
+					 		pulsImg = 'img/h3.png';
+					 	}
+					 	
+					 	diffPulsStr = '+' + diffPuls.toString() + ' pulsation';
+					 	namePath = " trajet 2";
+					}
+							
+					
+					// Now add the content of the popup
+					  var contentStringSpeeds = '<div id="content">'+
+				      '<div id="siteNotice">'+
+				      '<h5 id="firstHeading" class="firstHeading">Données' +namePath.toString() + '</h5>'+
+				      '<div id="bodyContent">'+
+				      '<table class="table">' + 
+				      '<TR>'+
+				      '<TD align="left">' + '<span title="Différence vitesses" style="font-size:11pt;">' + diffPulsStr.toString() +  '</span>' +'</TD>' +
+				      '</TR>' +
+				      '</table>'+
+				      '</div>'+
+				      '</div>'+
+				      '</div>';
+				      
+				      // add content text html
+					  var myinfowindow  = new google.maps.InfoWindow({
+					      content: contentStringSpeeds
+					  });
+				      				
+					  markerDiffPuls = new google.maps.Marker({
+							position: markerPosition,
+				    		animation: google.maps.Animation.DROP,
+							infowindow: myinfowindow ,
+							icon : pulsImg
+						});  
+
+					  
+					  // Listener
+					  google.maps.event.addListener(markerDiffPuls, 'click', function() {
+						  this.infowindow.open(map, this);
+					  });
+					  
+					  // show only if there is a differences
+					  if(diffPuls != 0){
+					  markerDiffPuls.setMap(map);
+					  }
 				}
 		    }
 				
@@ -911,7 +1037,8 @@ if(request.getParameter("testDepStop") != null){
 	          <ul class="nav nav-sidebar">
 	            <li><a href="index.jsp">Dashboard</a></li>
 	            <li class="active"><a href="compare.jsp">Comparer</a></li>
-            <li><a href="historique.jsp">Historique</a></li>
+                <li><a href="historique.jsp">Historique</a></li>
+				    <li><a href="definition.jsp">Définitions</a></li>
 	          </ul>
 			</div>
 
@@ -1291,10 +1418,18 @@ if(request.getParameter("testDepStop") != null){
 											</div>
 <br>											
 									
-											<div title="Afficher les différences" class="checkbox">
+											<div title="Afficher les différences de pulsation" class="checkbox">
+											<span>
+												  <input id='testDifPuls' type='checkbox' value='Yes' name='testDifPuls'>
+												  Calcule différences pulsation
+												  <input id='testDifPulsHidden' type='hidden' value='No' name='testDifPuls'>
+											</span>
+											</div>
+											
+										    <div title="Afficher les différences de vitesse" class="checkbox">
 											<span>
 												  <input id='testDiffSpeed' type='checkbox' value='Yes' name='testDiffSpeed'>
-												  Calcule Différences vitesses
+												  Calcule différences vitesse
 												  <input id='testDiffSpeedHidden' type='hidden' value='No' name='testDiffSpeed'>
 											</span>
 											</div>
@@ -1327,25 +1462,30 @@ if(request.getParameter("testDepStop") != null){
 			<table>
 			<TR>
 			
-				<TD> <span style="font-style:italic; font-size:10pt;"> Première séance. &nbsp; </span>
+				<TD> <span style="font-style:italic; font-size:11pt;"> Première séance : &nbsp; </span>
 				<img title="Tracé du chemin de la séance parcourue." src="img/path.png"/> 
 				
 <br>
 
-				<span style="font-style:italic; font-size:10pt;"> Deuxième séance. &nbsp; </span>
+				<span style="font-style:italic; font-size:11pt;"> Deuxième séance : &nbsp; </span>
 				<img title="Tracé du chemin de la séance parcourue." src="img/path2.png"/> 
 				
 <br>
 			    
-			    <span style="font-style:italic; font-size:10pt;"> Point début/stop séance.  </span>
+			    <span style="font-style:italic; font-size:11pt;"> Point début/stop : </span>
 				<img title="Point de départ." src="img/dd-start.png"/> 
 				<img title="Point d'arrivée." src="img/dd-end.png"/> 
+<br>				
+				<span style="font-style:italic; font-size:11pt;"> Degré de pulsation entre les deux séances :   </span>
+				<img title="Vitesse basse" src="img/h1.png"/>  <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>20</span>
+				<img title="Vitesse moyenne" src="img/h2.png"/> <span style="font-size:10pt;">entre 20 et 40</span>
+				<img title="Vitesse haute" src="img/h3.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %>40</span>
 						
  <br>			
-				<span style="font-style:italic; font-size:10pt;"> Différences de vitesse entre les deux séances. (faible à fort)   </span>
-				<img title="Vitesse basse" src="img/Speedlow.png"/> 
-				<img title="Vitesse moyenne" src="img/SpeedMiddle.png"/> 
-				<img title="Vitesse haute" src="img/SpeedMax.png"/> 
+				<span style="font-style:italic; font-size:11pt;"> Degré de vitesse entre les deux séances :  </span>
+				<img title="Vitesse basse" src="img/Speedlow.png"/> <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>3</span>  
+				<img title="Vitesse moyenne" src="img/SpeedMiddle.png"/> <span style="font-size:10pt;">entre 3 et 6 </span> 
+				<img title="Vitesse haute" src="img/SpeedMax.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %>6 </span>  
     
 		    
 			    </TD>
