@@ -64,18 +64,21 @@ List<String> listRespirationFreqs = restHexo.returnAllValueFromJson(restHexoDate
 List<String> listVentilations = restHexo.returnAllValueFromJson(restHexoDate, "36"); 
 
 List<Double> listVitesses = restMap.getListVitesses();
+List<Double> listAltitudes = restMap.getListAltitudes();
 
 StringBuffer stringBufferPulsation = new StringBuffer();
 StringBuffer stringBufferVitesses = new StringBuffer();
 StringBuffer stringBufferVolumeTidal = new StringBuffer();
 StringBuffer stringBufferRespirationFreq = new StringBuffer();
 StringBuffer stringBufferVentilations = new StringBuffer();
+StringBuffer stringBufferAltitudes = new StringBuffer();
 
 stringBufferPulsation = restMap.convertListToStringBufferInteger(listPulsations);
 stringBufferVitesses = restMap.convertListToStringBufferInteger(listVitesses);
 stringBufferVolumeTidal = restMap.convertListToStringBufferInteger(listVolumeTidals);
 stringBufferRespirationFreq = restMap.convertListToStringBufferInteger(listRespirationFreqs);
 stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilations);
+stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 
 
 %>
@@ -92,30 +95,22 @@ stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilat
 	
 	function drawChart() {
 		
-	  	var arrayPulsation = [ <%= stringBufferPulsation.toString() %> ];
 	    var arrayVitesses = [ <%= stringBufferVitesses.toString() %> ];
-	    var arrayVolumeTidal = [ <%= stringBufferVolumeTidal.toString() %> ];
-	    var arrayRespiration = [ <%= stringBufferRespirationFreq.toString() %> ];
-	    var arrayVentilation = [ <%= stringBufferVentilations.toString() %> ];
+
 		
 		var data = new google.visualization.DataTable();
 		data.addColumn('string', "Enregistrements");
-		data.addColumn('number', 'Pulsation');
-		data.addColumn('number', 'Vitesse');
-		data.addColumn('number', 'Volume Tidale');
-		data.addColumn('number', 'Respiration rate');
-		data.addColumn('number', 'Ventilation');
+		data.addColumn('number', 'Vitesses km/h');
 		
 	
-
-		 // Add values and converte it ml to l
-		  for(var i = 0; i < arrayVitesses.length ; i++){
-		   data.addRow([i.toString(), arrayPulsation[i], arrayVitesses[i], (arrayVolumeTidal[i]/1000), 
-		                arrayRespiration[i], (arrayVentilation[i]/1000)]);
+		 // Add values and converte it ml to l /1000
+		  for(var i = 0; i < arrayVitesses.length  ; i++){
+		   data.addRow([i.toString(), arrayVitesses[i]]);
+		
 		  }
 
 		var options = {
-			colors: ['#FF0007', '#FFF800', '#46FDCF', '#960DF9', '#0C1A69'],
+			colors: ['#FFF800'],
 			hAxis : {
 				title: 'Enregistrements',
 				titleTextStyle : {
@@ -123,6 +118,7 @@ stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilat
 				}
 			},
 			vAxis : {
+				title: 'Valeurs',
 				minValue : 0
 			},
 		};
@@ -130,6 +126,118 @@ stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilat
 
 		var chart = new google.visualization.AreaChart(document
 				.getElementById('chart_div1'));
+		chart.draw(data, options);
+	
+		
+	}
+</script>
+
+
+<!-- Google CHART  -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+
+	google.load("visualization", "1", {
+		packages : [ "corechart" ]
+	});
+	
+	google.setOnLoadCallback(drawChart);
+	
+	function drawChart() {
+		
+	    var arrayVitesses = [ <%= stringBufferVitesses.toString() %> ];
+	    var arrayAltitudes = [ <%= stringBufferAltitudes.toString() %> ];
+
+		
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', "Enregistrements");
+		data.addColumn('number', 'Altitudes mètre');
+
+		
+	
+		 // Add values and converte it ml to l /1000
+		  for(var i = 0; i < arrayAltitudes.length  ; i++){
+		   data.addRow([i.toString(), (arrayAltitudes[i])]);
+		
+		  }
+
+		var options = {
+			colors: ['#00B125'],
+			hAxis : {
+				title: 'Enregistrements',
+				titleTextStyle : {
+					color : '#333'
+				}
+			},
+			vAxis : {
+				title: 'Valeurs',
+				minValue : 0
+			},
+		};
+		
+
+		var chart = new google.visualization.AreaChart(document
+				.getElementById('chart_div3'));
+		chart.draw(data, options);
+	
+		
+	}
+</script>
+
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+
+	google.load("visualization", "1", {
+		packages : [ "corechart" ]
+	});
+	
+	google.setOnLoadCallback(drawChart);
+	
+	function drawChart() {
+		
+	  	var arrayPulsation = [ <%= stringBufferPulsation.toString() %> ];
+	    var arrayVolumeTidal = [ <%= stringBufferVolumeTidal.toString() %> ];
+	    var arrayRespiration = [ <%= stringBufferRespirationFreq.toString() %> ];
+	    var arrayVentilation = [ <%= stringBufferVentilations.toString() %> ];
+		
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', "Enregistrements");
+		data.addColumn('number', 'Pulsation min');
+		data.addColumn('number', 'Volume Tidale litre');
+		data.addColumn('number', 'Respiration min');
+		data.addColumn('number', 'Ventilation litre/min');
+		
+		
+	    // Because of the differences of length
+
+	
+		 // Add values and converte it ml to l /1000
+		  for(var i = 0; i < arrayPulsation.length  ; i++){
+		   data.addRow([i.toString(), arrayPulsation[i], (arrayVolumeTidal[i]/1000), 
+		                arrayRespiration[i], (arrayVentilation[i]/1000)]);
+		
+		  }
+
+		var options = {
+			colors: ['#FF0007', '#46FDCF', '#960DF9', '#0C1A69'],
+			hAxis : {
+				title: 'Enregistrements',
+				titleTextStyle : {
+					color : '#333'
+				}
+			},
+			vAxis : {
+				title: 'Valeurs',
+				minValue : 0
+			},
+		};
+		
+
+		var chart = new google.visualization.AreaChart(document
+				.getElementById('chart_div2'));
 		chart.draw(data, options);
 		
 		
@@ -143,24 +251,13 @@ stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilat
 
 		 }
 		 
-		 var hideExp = document.getElementById("hideSpeed");
-		 hideExp.onclick = function()
-		 {
-
-
-		    view = new google.visualization.DataView(data);
-		    view.hideColumns([2]); 
-		    chart.draw(view, options);
-
-		    
-		 }	
 		 
 		 var hideTidal = document.getElementById("hideTidal");
 		 hideTidal.onclick = function()
 		 {
 
 		    view = new google.visualization.DataView(data);
-		    view.hideColumns([3]);
+		    view.hideColumns([2]);
 		    chart.draw(view, options);
 
 		 }	
@@ -171,7 +268,7 @@ stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilat
 
 
 		    view = new google.visualization.DataView(data);
-		    view.hideColumns([4]); 
+		    view.hideColumns([3]); 
 		    chart.draw(view, options);
 
 		 }	
@@ -182,7 +279,7 @@ stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilat
 
 
 		    view = new google.visualization.DataView(data);
-		    view.hideColumns([5]); 
+		    view.hideColumns([4]); 
 		    chart.draw(view, options);
 
 		 }	
@@ -192,18 +289,16 @@ stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilat
 		 seeAll.onclick = function()
 		 {
 		    view = new google.visualization.DataView(data);
-		    view.setColumns([0,1,2,3,4,5]);
+		    view.setColumns([0,1,2,3,4]);
 		    chart.draw(view, options);
 		 }
 		
 	}
 </script>
 
-
-
 <script>
 function logout() {
-	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://8-dot-logical-light-564.appspot.com/login.jsp";
+	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
 }
 </script>
 
@@ -342,6 +437,7 @@ function logout() {
 	    var arraySpeed = [ <%= stringBufferSpeed.toString() %> ];
 	    var arrayAlti = [ <%= stringBufferAlti.toString() %> ];
 	    var size = arrayLat.length;
+	    
 	    
 	    // HexoSkin data
 	   	var arrayPulsation = [ <%= stringBufferPulsation.toString() %> ];
@@ -510,7 +606,7 @@ function logout() {
 			      '<div id="bodyContent">'+
 			      '<table class="table">' + 
 			      '<TR>'+
-			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arrayPulsation[j].toString() +  '</span>' +'</TD>' +
+			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arrayPulsation[j+1].toString() +  '</span>' +'</TD>' +
 			      '</TR>' +
 			      '</table>'+
 			      '</div>'+
@@ -582,13 +678,13 @@ function logout() {
 			      '<br>' +
 			       '<span title="Altitude mètre" style="font-size:11pt;" class="glyphicon glyphicon-signal">'+ '&nbsp;'  +  arrayAlti[i].toString()  +'</span>' +
 			      '<br>' +
-			       '<span title="Pulsation min" style="font-size:11pt;" class="glyphicon glyphicon-heart">' + '&nbsp;' + arrayPulsation[i].toString() +  '</span>' +
+			       '<span title="Pulsation min" style="font-size:11pt;" class="glyphicon glyphicon-heart">' + '&nbsp;' + arrayPulsation[i+1].toString() +  '</span>' +
 			      '<br>' +
-			       '<span title="Volume tidal" style="font-size:11pt;" class="glyphicon glyphicon-stats">' + '&nbsp;'+ arrayVolumeTidal[i].toString() +  '</span>' +
+			       '<span title="Volume tidal" style="font-size:11pt;" class="glyphicon glyphicon-stats">' + '&nbsp;'+ arrayVolumeTidal[i+1].toString() +  '</span>' +
 			      '<br>' +
-			       '<span title="Respiration fréquence" style="font-size:11pt;" class="glyphicon glyphicon-transfer">'+ '&nbsp;' + arrayRespirationFreq[i].toString() +  '</span>' +
+			       '<span title="Respiration fréquence" style="font-size:11pt;" class="glyphicon glyphicon-transfer">'+ '&nbsp;' + arrayRespirationFreq[i+1].toString() +  '</span>' +
 			      '<br>' +
-			      '<span title="Ventilation min" style="font-size:11pt;" class="glyphicon glyphicon-sort-by-attributes">'+ '&nbsp;' + arrayVentilations[i].toString() +  '</span>' +'</TD>' +
+			      '<span title="Ventilation min" style="font-size:11pt;" class="glyphicon glyphicon-sort-by-attributes">'+ '&nbsp;' + arrayVentilations[i+1].toString() +  '</span>' +'</TD>' +
 			      '</TR>' +
 			      '</table>'+
 			      '</div>'+
@@ -977,8 +1073,24 @@ function logout() {
 					<h3 class="page-header">Graphiques </h3>
 						<div class="row">
 					
-	  					<div class="col-xs-12 col-md-8">			
+	  					<div class="col-md-6">			
 			  				<div id="chart_div1" style="width: 100%; height: 500px;"></div>
+			  			</div>  
+			  			
+			  			<div class="col-md-6">			
+			  				<div id="chart_div3" style="width: 100%; height: 500px;"></div>
+			  			</div>  
+
+<br>	
+
+						</div> 										
+			
+
+
+						<div class="row">
+					
+	  					<div class="col-xs-12 col-md-8">			
+			  				<div id="chart_div2" style="width: 100%; height: 500px;"></div>
 			  			</div>  
 <br><br>	  				
 <br><br>
@@ -988,7 +1100,6 @@ function logout() {
 									<TR>
 										<TD>				   					
 				   						<button  title="Cacher la pulsation" class="btn btn-default" type="button" id="hidePulsation"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-<br>									<button style="margin-top:8px;" title="Cacher la vitesse" class="btn btn-default" type="button" id="hideSpeed"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Vitesse</button>
 <br>									<button style="margin-top:8px;" title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideTidal"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Volume tidal l</button>
 <br>									<button style="margin-top:8px;" title="Cacher la respiration" class="btn btn-default" type="button" id="hideRespiration"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Repiration min</button>
 <br>									<button style="margin-top:8px;" title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Ventilation</button>
@@ -998,13 +1109,13 @@ function logout() {
 								</table>
 						</div>
 					</div>
-			<% 
-            String attribut = (String) request.getAttribute("dateStr");
-			String attribut2 =  (String) session.getAttribute("dateStr") ;
-            out.println("VALUE :" +attribut2);
-            %>
+					<% String s = (String) request.getAttribute("dateStr"); 
+					//out.print("Value "+s);
+					%>
 			</div>
-		</div>
+			
+			
+
 	
 
 <div class="row">

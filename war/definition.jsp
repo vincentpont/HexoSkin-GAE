@@ -33,7 +33,7 @@
 
 <script>
 function logout() {
-	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://8-dot-logical-light-564.appspot.com/login.jsp";
+	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
 }
 </script>
 
@@ -105,7 +105,7 @@ function logout() {
 				<h1 class="page-header">Définitions </h1>
 
 <br>
-				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-stats"></span> <b>Volume tidal</b> :  0.5 L au repos et 3.0 L pendant effort </p>
+				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-stats"></span> <b>Volume tidal </b> (est le volume pulmonaire normale représentant le volume de l'air déplacé entre l'inhalation et l'exhalation) :  0.5 L au repos et 3.0 L pendant effort </p>
 				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-transfer"></span>	<b>Respiration</b> :  12-20 respi/min et 30 respi/min pendant effort  </p>
 				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-sort-by-attributes"></span> <b>Ventilation</b> :  6.0 L/min au repos et 90 L/min pendant effort</p>
 
@@ -116,7 +116,7 @@ function logout() {
 
 		</div>
 		
-		<div class="row">
+		<div style="bottom:0;position:absolute;width:100%;" class="row">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<hr>
 		<footer>

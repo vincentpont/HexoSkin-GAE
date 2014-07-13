@@ -75,17 +75,13 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-	         <li ><a href="index.jsp">Dashboard</a></li>
-            <li><a href="compare.jsp">Comparer</a></li>
-            <li><a href="historique.jsp">Historique</a></li>
-			<li><a href="definition.jsp">Définitions</a></li>
+
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">Login</h1>
-          <h3>Veuillez vous authentifiez avec votre compte Google.</h3>
+          <h3>Veuillez vous authentifiez.</h3>
 <br>
-
           <div>
 
           
@@ -104,7 +100,7 @@
         </div>
       </div>
       
-      <div class="row">
+      <div style="bottom:0;position:absolute;width:100%;" class="row">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<hr>
 		<footer>

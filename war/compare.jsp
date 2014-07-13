@@ -76,7 +76,6 @@ stringBufferVitesses1 = restMap.convertListToStringBufferInteger(listVitesses1);
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 
-	var arrayPulsation1 = [ <%= stringBufferPulsation1.toString() %> ];
     var arrayVitesses1 = [ <%= stringBufferVitesses1.toString() %> ];
 
 
@@ -87,54 +86,28 @@ stringBufferVitesses1 = restMap.convertListToStringBufferInteger(listVitesses1);
 
 			var data = new google.visualization.DataTable();
 			data.addColumn('string', "Enregistrements");
-			data.addColumn('number', 'Pulsations');
-			data.addColumn('number', 'Vitesses');
+			data.addColumn('number', 'Vitesses km/h');
 	
 		 	// Add values and converte it ml to l
 		   for(var i = 0; i < arrayVitesses1.length ; i++){
-		   	data.addRow([i.toString(), arrayPulsation1[i], arrayVitesses1[i]]);
+		   	data.addRow([i.toString(), arrayVitesses1[i]]);
 		   }
 			
 		  var options = {
-		    colors: ['#FF0007', '#FFF800'],
+		    colors: ['#FFF800'],
 			hAxis : {
 				title: 'Enregistrements'
 				},
 			vAxis : {
 				title: 'Valeurs'
 			},
-		    title: 'Vitesses / Pulsations'
+		    title: 'Vitesses'
 		  };
 		  
 		  var chart = new google.visualization.AreaChart(document.getElementById('chart_div1'));
 		
 		  chart.draw(data, options);
 		  
-			 
-			 var hidePuls1 = document.getElementById("hidePulsation1");
-			 hidePuls1.onclick = function()
-			 {
-			    view = new google.visualization.DataView(data);
-			    view.hideColumns([1]); 
-			    chart.draw(view, options);
-			 }		
-			 
-			 var hideSpeed1 = document.getElementById("hideSpeed1");
-			 hideSpeed1.onclick = function()
-			 {
-			    view = new google.visualization.DataView(data);
-			    view.hideColumns([2]); 
-			    chart.draw(view, options);
-			 }
-			 
-			 // See all
-			 var seeAll1 = document.getElementById("seeAll1");
-			 seeAll1.onclick = function()
-			 {
-			    view = new google.visualization.DataView(data);
-			    view.setColumns([0,1,2]);
-			    chart.draw(view, options);
-			 }
 }
 		
 
@@ -161,6 +134,7 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 
+		var arrayPulsation1 = [ <%= stringBufferPulsation1.toString() %> ];
 		var arrayVolumeTidal1 = [ <%= stringBufferVolumeTidal1.toString() %> ];
 		var arrayRespiration1 = [ <%= stringBufferRespirationFreq1.toString() %> ];
 		var arrayVentilation1 = [ <%= stringBufferVentilations1.toString() %> ];
@@ -173,17 +147,18 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 
 			var data = new google.visualization.DataTable();
 			data.addColumn('string', "Enregistrements");
-			data.addColumn('number', 'Respiration');
-			data.addColumn('number', 'Ventilation');
-			data.addColumn('number', 'Volume tidal');
+			data.addColumn('number', 'Pulsation min');
+			data.addColumn('number', 'Respiration min');
+			data.addColumn('number', 'Ventilation litre/min');
+			data.addColumn('number', 'Volume Tidale litre');
 	
 		 	// Add values and converte it ml to l
-		   for(var i = 0; i < arrayVitesses1.length ; i++){
-		   	data.addRow([i.toString(), arrayRespiration1[i], arrayVentilation1[i]/1000, arrayVolumeTidal1[i]/1000]);
+		   for(var i = 0; i < arrayPulsation1.length ; i++){
+		   	data.addRow([i.toString(), arrayPulsation1[i], arrayRespiration1[i], arrayVentilation1[i]/1000, arrayVolumeTidal1[i]/1000]);
 		   }
 		 	
 		  var options = {
-		    colors: ['#960DF9', '#0C1A69' ,'#46FDCF'],
+		    colors: ['#FF0007', '#960DF9', '#0C1A69' ,'#46FDCF'],
 			hAxis : {
 				title: 'Enregistrements'
 				},
@@ -197,12 +172,19 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 		
 		  chart.draw(data, options);
 		  
-			 
+			 var hidePuls1 = document.getElementById("hidePulsation1");
+			 hidePuls1.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.hideColumns([1]); 
+			    chart.draw(view, options);
+			 }	 
+		  
 			 var hideRespi1 = document.getElementById("hideRespiration1");
 			 hideRespi1.onclick = function()
 			 {
 			    view = new google.visualization.DataView(data);
-			    view.hideColumns([1]); 
+			    view.hideColumns([2]); 
 			    chart.draw(view, options);
 			 }		
 			 
@@ -210,7 +192,7 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 			 hideVenti1.onclick = function()
 			 {
 			    view = new google.visualization.DataView(data);
-			    view.hideColumns([2]); 
+			    view.hideColumns([3]); 
 			    chart.draw(view, options);
 			 }
 			 
@@ -218,7 +200,7 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 			 hideVolumT1.onclick = function()
 			 {
 			    view = new google.visualization.DataView(data);
-			    view.hideColumns([3]); 
+			    view.hideColumns([4]); 
 			    chart.draw(view, options);
 			 }
 			 
@@ -227,7 +209,7 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 			 seeAll3.onclick = function()
 			 {
 			    view = new google.visualization.DataView(data);
-			    view.setColumns([0,1,2,3]);
+			    view.setColumns([0,1,2,3,4]);
 			    chart.draw(view, options);
 			 }
 }
@@ -269,7 +251,6 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 
-var arrayPulsation2 = [ <%= stringBufferPulsation2.toString() %> ];
 var arrayVitesses2 = [ <%= stringBufferVitesses2.toString() %> ];
 
 	google.load("visualization", "1", {
@@ -281,57 +262,32 @@ var arrayVitesses2 = [ <%= stringBufferVitesses2.toString() %> ];
 		
 		var data = new google.visualization.DataTable();
 		data.addColumn('string', "Enregistrements");
-		data.addColumn('number', 'Pulsations');
-		data.addColumn('number', 'Vitesses');
+		data.addColumn('number', 'Vitesses km/h');
 
 		
 	 // Add values and converte it ml to l
 	  for(var i = 0; i < arrayVitesses2.length ; i++){
-	   data.addRow([i.toString(), arrayPulsation2[i], arrayVitesses2[i]]);
+	   data.addRow([i.toString(), arrayVitesses2[i]]);
 	  }
 		
 
 	  var options = {
-				colors: ['#FF0007', '#FFF800'],
+			    colors: ['#FFF800'],
 				hAxis : {
 					title: 'Enregistrements'
 					},
 				vAxis : {
 					title: 'Valeurs'
 				},
-			    title: 'Vitesses / Pulsations'
+			    title: 'Vitesses'
 			  };
 
 		var chart = new google.visualization.AreaChart(document
 				.getElementById('chart_div2'));
 		chart.draw(data, options);
 		
-		 var hidePuls2 = document.getElementById("hidePulsation2");
-		 hidePuls2.onclick = function()
-		 {
-		    view = new google.visualization.DataView(data);
-		    view.hideColumns([1]); 
-		    chart.draw(view, options);
-		 }	
-		
-		 var hideSpeed2 = document.getElementById("hideSpeed2");
-		 hideSpeed2.onclick = function()
-		 {
-		    view = new google.visualization.DataView(data);
-		    view.hideColumns([2]); 
-		    chart.draw(view, options);
-		 }
-		 	 
-		 // See all
-		 var seeAll2 = document.getElementById("seeAll2");
-		 seeAll2.onclick = function()
-		 {
-		    view = new google.visualization.DataView(data);
-		    view.setColumns([0,1,2]);
-		    chart.draw(view, options);
-		 }
 	}
-	
+
 
 </script>
 
@@ -355,6 +311,8 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 
+
+		var arrayPulsation2 = [ <%= stringBufferPulsation2.toString() %> ];
 		var arrayVolumeTidal2 = [ <%= stringBufferVolumeTidal2.toString() %> ];
 		var arrayRespiration2 = [ <%= stringBufferRespirationFreq2.toString() %> ];
 		var arrayVentilation2 = [ <%= stringBufferVentilations2.toString() %> ];
@@ -367,17 +325,18 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 
 			var data = new google.visualization.DataTable();
 			data.addColumn('string', "Enregistrements");
-			data.addColumn('number', 'Respiration');
-			data.addColumn('number', 'Ventilation');
-			data.addColumn('number', 'Volume tidal');
+			data.addColumn('number', 'Pulsation min');
+			data.addColumn('number', 'Respiration min');
+			data.addColumn('number', 'Ventilation litre/min');
+			data.addColumn('number', 'Volume Tidale litre');
 	
 		 	// Add values and converte it ml to l
-		   for(var i = 0; i < arrayVitesses2.length ; i++){
-		   	data.addRow([i.toString(), arrayRespiration2[i], arrayVentilation2[i]/1000, arrayVolumeTidal2[i]/1000]);
+		   for(var i = 0; i < arrayPulsation2.length ; i++){
+		   	data.addRow([i.toString(), arrayPulsation2[i], arrayRespiration2[i], arrayVentilation2[i]/1000, arrayVolumeTidal2[i]/1000]);		  
 		   }
 		 	
 		  var options = {
-			colors: ['#960DF9', '#0C1A69' ,'#46FDCF'],
+				 colors: ['#FF0007', '#960DF9', '#0C1A69' ,'#46FDCF'],
 			hAxis : {
 				title: 'Enregistrements'
 				},
@@ -391,12 +350,19 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 		
 		  chart.draw(data, options);
 		  
+			 var hidePuls2 = document.getElementById("hidePulsation2");
+			 hidePuls2.onclick = function()
+			 {
+			    view = new google.visualization.DataView(data);
+			    view.hideColumns([1]); 
+			    chart.draw(view, options);
+			 }	 
 			 
 			 var hideRespi2 = document.getElementById("hideRespiration2");
 			 hideRespi2.onclick = function()
 			 {
 			    view = new google.visualization.DataView(data);
-			    view.hideColumns([1]); 
+			    view.hideColumns([2]); 
 			    chart.draw(view, options);
 			 }		
 			 
@@ -404,7 +370,7 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 			 hideVent2.onclick = function()
 			 {
 			    view = new google.visualization.DataView(data);
-			    view.hideColumns([2]); 
+			    view.hideColumns([3]); 
 			    chart.draw(view, options);
 			 }
 			 
@@ -412,7 +378,7 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 			 hideVoluT2.onclick = function()
 			 {
 			    view = new google.visualization.DataView(data);
-			    view.hideColumns([3]); 
+			    view.hideColumns([4]); 
 			    chart.draw(view, options);
 			 }
 			 
@@ -421,7 +387,7 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 			 seeAll4.onclick = function()
 			 {
 			    view = new google.visualization.DataView(data);
-			    view.setColumns([0,1,2,3]);
+			    view.setColumns([0,1,2,3,4]);
 			    chart.draw(view, options);
 			 }
 }
@@ -433,7 +399,7 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
  * Method ot logout the user from the site.
  */
 function logout() {
-	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://8-dot-logical-light-564.appspot.com/login.jsp";
+	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
 }
 
 /**
@@ -454,49 +420,70 @@ function testChoice()
 
 /**
  * Method that change de color of a <TD> workout if he is more or less than the value of the other workout.
+ * We say that the two workouts is the same path to compare the performance
  */
 function changeColor()
 {   
 	var value1 ;
 	var value2 ;
 
-	// We compare the value and change the color
+	// Bigger is the heart rate = good training
 	// Pulsation
 	value1 = parseFloat(document.getElementById('puls1SP').innerHTML);
 	value2  = parseFloat(document.getElementById('puls2SP').innerHTML);
 	if(value1 > value2){
-		document.getElementById('puls1TD').style.color = "rgb(255,69,0)";
+		document.getElementById('puls1TD').style.color = "rgb(0,205,0)";
+		document.getElementById('puls1TD').style.fontWeight = 'bold';
 	}
 	else if (value2 > value1){
-		document.getElementById('puls2TD').style.color = "rgb(255,69,0)";
+		document.getElementById('puls2TD').style.color = "rgb(0,205,0)";
+		document.getElementById('puls2TD').style.fontWeight = 'bold';
 	}
 	
 	// Vitesse
-	value1 = document.getElementById('speed1SP').innerHTML;
-	value2  = document.getElementById('speed2SP').innerHTML;
+	// Bigger is the speed = good training
+	value1 = parseFloat(document.getElementById('speed1SP').innerHTML);
+	value2  = parseFloat(document.getElementById('speed2SP').innerHTML);
 	
 	if(value1 > value2){
-		document.getElementById('speed2SP').style.color = "rgb(0,255,17)"; // vert
-		document.getElementById('speed1SP').style.color = "rgb(255,69,0)"; // rouge
+		document.getElementById('speed1SP').style.color = "rgb(0,205,0)"; // vert
+		document.getElementById('speed1SP').style.fontWeight = 'bold';
 	}
 	else if (value2 > value1){
-		document.getElementById('speed1SP').style.color = "rgb(0,255,17)"; // vert
-		document.getElementById('speed2SP').style.color = "rgb(255,69,0)";
+		document.getElementById('speed2SP').style.color = "rgb(0,205,0)"; // vert
+		document.getElementById('speed2SP').style.fontWeight = 'bold';
 	}
 	
 	// Calories
-	value1 = document.getElementById('ca1TD').innerHTML;
-	value2  = document.getElementById('ca2TD').innerHTML;
+	// Bigger is calories = good training
+	value1 = parseFloat(document.getElementById('ca1SP').innerHTML);
+	value2  = parseFloat(document.getElementById('ca2SP').innerHTML);
 	
 	if(value1 > value2){
-		document.getElementById('ca2TD').style.color = "rgb(0,255,17)"; // vert
-		document.getElementById('ca1TD').style.color = "rgb(255,69,0)"; 
+		document.getElementById('ca1TD').style.color = "rgb(0,205,0)"; // vert
+		document.getElementById('ca1TD').style.fontWeight = 'bold';
+
 	}
 	else if (value2 > value1){
-		document.getElementById('ca1TD').style.color = "rgb(0,255,17)"; // vert
-		document.getElementById('ca2TD').style.color = "rgb(255,69,0)";
+		document.getElementById('ca2TD').style.color = "rgb(0,205,0)"; // vert
+		document.getElementById('ca2TD').style.fontWeight = 'bold';
 	}
-
+	
+	// Temps
+	// Less is the time = good training
+	value1 = document.getElementById('time1SP').innerHTML;
+	value2  = document.getElementById('time2SP').innerHTML;
+	value1 = value1.replace(":", "");
+	value2 = value2.replace(":", "");
+	
+	if(parseInt(value1) > parseInt(value2)){
+		document.getElementById('time2TD').style.color = "rgb(0,205,0)"; // vert
+		document.getElementById('time2TD').style.fontWeight = 'bold';
+	}
+	else if (parseInt(value2) > parseInt(value1)){
+		document.getElementById('time1TD').style.color = "rgb(0,205,0)"; // vert
+		document.getElementById('time1TD').style.fontWeight = 'bold';
+	}
 }
 
 </script>
@@ -1119,7 +1106,7 @@ if(request.getParameter("testDepStop") != null){
 						
 					<TD id="ca1TD" title="Calories brûlées" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
-					 <span id="ca1SP" style="font-size:10pt; font-family:Verdana;"> <% out.print(listWorkout1.get(3)); %> </span>
+					 <span id="ca1SP" style="font-size:11pt; font-family:Verdana;"> <% out.print(listWorkout1.get(3)); %> </span>
 					
 					</TD>
 						
@@ -1198,23 +1185,22 @@ if(request.getParameter("testDepStop") != null){
 				</TR>
 				</table>
 
-<button type='button'  class="btn btn-success" onClick="changeColor();"> <b> Comparer </b> </button>	
+<button type='button'  class="btn btn-success" onClick="changeColor();"> <b> Performance </b> </button>	
 <br>		
 <br>
 <br>
 				    <h3>Graphiques </h3>
 <br>
 						<div id="chart_div1" style="width: 100%; height: 400px;"></div>
-<br>
-						<button title="Cacher la vitesse" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideSpeed1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Vitesses</button>
-   						<button title="Cacher la pulsation" class="btn btn-default" type="button" id="hidePulsation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll1"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+
 <br>
 						<div id="chart_div3" style="width: 100%; height: 400px;"></div>
 <br>
-						<button title="Cacher la respiration" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
+						<button title="Cacher la pulsation" class="btn btn-default" style="margin-left:90px;" type="button" id="hidePulsation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+						<button title="Cacher la respiration" class="btn btn-default"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
    						<button title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
-   						<button title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
+ <br>
+   						<button title="Cacher le volume tidal" class="btn btn-default" style="margin-left:165px;" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
    						<button title="Voir tout" class="btn btn-default" type="button" id="seeAll3"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 				</div>	
 
@@ -1369,15 +1355,14 @@ if(request.getParameter("testDepStop") != null){
 <br>
 						<div id="chart_div2" style="width: 100%; height: 400px;"> </div>
 <br>
-						<button title="Cacher la vitesse" class="btn btn-default"  style="margin-left:90px;" type="button" id="hideSpeed2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Vitesses</button>
-   						<button title="Cacher la pulsation" class="btn btn-default" type="button" id="hidePulsation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll2"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
-<br>
+
 						<div id="chart_div4" style="width: 100%; height: 400px;"></div>	
 <br>
-						<button title="Cacher la respiration" class="btn btn-default" style="margin-left:90px;"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
+						<button title="Cacher la pulsation" class="btn btn-default" style="margin-left:90px;" type="button" id="hidePulsation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+						<button title="Cacher la respiration" class="btn btn-default"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button> 
    						<button title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
-   						<button title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
+<br>
+   						<button title="Cacher le volume tidal" class="btn btn-default" type="button" style="margin-left:165px;" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
    						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll4"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 				
 											
@@ -1498,7 +1483,7 @@ if(request.getParameter("testDepStop") != null){
 		
 				
 		
-<div class="row">
+<div   class="row">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<hr>
 		<footer>

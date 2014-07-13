@@ -33,7 +33,7 @@
 
 <script>
 function logout() {
-	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://8-dot-logical-light-564.appspot.com/login.jsp";
+	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
 }
 </script>
 
@@ -117,7 +117,7 @@ function logout() {
 
 		</div>
 		
-		<div class="row">
+		<div style="bottom:0;position:absolute;width:100%;" class="row">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<hr>
 		<footer>

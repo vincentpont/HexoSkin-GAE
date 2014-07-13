@@ -44,7 +44,7 @@ public class testHexoSkin {
 		 */
 		
 		// Delete
-		rest.deleteWorkoutById("36746");
+		rest.deleteWorkoutById("36642");
 			
 	}
 
