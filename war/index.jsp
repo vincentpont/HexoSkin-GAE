@@ -9,9 +9,6 @@
 <%@ page import="restHexoSkin.RestInvokerHexo"%>
 <%@ page import="java.util.Iterator, java.util.List, java.util.Date, java.text.DecimalFormat;"%>
 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!--  Get Variable servlet -->
 <%  String lastDateWorkout = (String) request.getAttribute("lastDateWorkout"); %>
 
@@ -26,6 +23,7 @@
 		s.parentNode.insertBefore(po, s);
 	})();
 </script>
+
 
 <script>
 	function signinCallback(authResult) {
@@ -86,58 +84,8 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 
 
 %>
-<!-- Google CHART  -->
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
 
 
-	google.load("visualization", "1", {
-		packages : [ "corechart" ]
-	});
-	
-	google.setOnLoadCallback(drawChart);
-	
-	function drawChart() {
-		
-	    var arrayVitesses = [ <%= stringBufferVitesses.toString() %> ];
-
-		
-		var data = new google.visualization.DataTable();
-		data.addColumn('string', "Enregistrements");
-		data.addColumn('number', 'Vitesses km/h');
-		
-	
-		 // Add values and converte it ml to l /1000
-		  for(var i = 0; i < arrayVitesses.length  ; i++){
-		   data.addRow([i.toString(), arrayVitesses[i]]);
-		
-		  }
-
-		var options = {
-			colors: ['#FFF800'],
-			hAxis : {
-				title: 'Enregistrements',
-				titleTextStyle : {
-					color : '#333'
-				}
-			},
-			vAxis : {
-				title: 'Valeurs',
-				minValue : 0
-			},
-		};
-		
-
-		var chart = new google.visualization.AreaChart(document
-				.getElementById('chart_div1'));
-		chart.draw(data, options);
-	
-		
-	}
-</script>
-
-
-<!-- Google CHART  -->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 
@@ -152,56 +100,6 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 		
 	    var arrayVitesses = [ <%= stringBufferVitesses.toString() %> ];
 	    var arrayAltitudes = [ <%= stringBufferAltitudes.toString() %> ];
-
-		
-		var data = new google.visualization.DataTable();
-		data.addColumn('string', "Enregistrements");
-		data.addColumn('number', 'Altitudes mètre');
-
-		
-	
-		 // Add values and converte it ml to l /1000
-		  for(var i = 0; i < arrayAltitudes.length  ; i++){
-		   data.addRow([i.toString(), (arrayAltitudes[i])]);
-		
-		  }
-
-		var options = {
-			colors: ['#00B125'],
-			hAxis : {
-				title: 'Enregistrements',
-				titleTextStyle : {
-					color : '#333'
-				}
-			},
-			vAxis : {
-				title: 'Valeurs',
-				minValue : 0
-			},
-		};
-		
-
-		var chart = new google.visualization.AreaChart(document
-				.getElementById('chart_div3'));
-		chart.draw(data, options);
-	
-		
-	}
-</script>
-
-
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-
-
-	google.load("visualization", "1", {
-		packages : [ "corechart" ]
-	});
-	
-	google.setOnLoadCallback(drawChart);
-	
-	function drawChart() {
-		
 	  	var arrayPulsation = [ <%= stringBufferPulsation.toString() %> ];
 	    var arrayVolumeTidal = [ <%= stringBufferVolumeTidal.toString() %> ];
 	    var arrayRespiration = [ <%= stringBufferRespirationFreq.toString() %> ];
@@ -209,6 +107,8 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 		
 		var data = new google.visualization.DataTable();
 		data.addColumn('string', "Enregistrements");
+		data.addColumn('number', 'Vitesse km/h');
+		data.addColumn('number', 'Altitudes décamètre');
 		data.addColumn('number', 'Pulsation min');
 		data.addColumn('number', 'Volume Tidale litre');
 		data.addColumn('number', 'Respiration min');
@@ -220,13 +120,13 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 	
 		 // Add values and converte it ml to l /1000
 		  for(var i = 0; i < arrayPulsation.length  ; i++){
-		   data.addRow([i.toString(), arrayPulsation[i], (arrayVolumeTidal[i]/1000), 
+		   data.addRow([i.toString(), arrayVitesses[i], arrayAltitudes[i]/10, arrayPulsation[i], (arrayVolumeTidal[i]/1000), 
 		                arrayRespiration[i], (arrayVentilation[i]/1000)]);
 		
 		  }
 
 		var options = {
-			colors: ['#FF0007', '#46FDCF', '#960DF9', '#0C1A69'],
+			colors: ['#FFF800' , '#00B125', '#FF0007', '#46FDCF', '#960DF9', '#0C1A69'],
 			hAxis : {
 				title: 'Enregistrements',
 				titleTextStyle : {
@@ -239,10 +139,35 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 			},
 		};
 		
-
 		var chart = new google.visualization.AreaChart(document
 				.getElementById('chart_div2'));
 		chart.draw(data, options);
+		
+		
+		 var hideSpeed = document.getElementById("hideSpeed");
+		 hideSpeed.onclick = function()
+		 {
+
+		    view = new google.visualization.DataView(data); 
+		    view.hideColumns([1]); 
+		    chart.draw(view, options);
+
+		 }
+		
+		var chart = new google.visualization.AreaChart(document
+				.getElementById('chart_div2'));
+		chart.draw(data, options);
+		
+		
+		 var hideAlti = document.getElementById("hideAltitude");
+		 hideAlti.onclick = function()
+		 {
+
+		    view = new google.visualization.DataView(data); 
+		    view.hideColumns([2]); 
+		    chart.draw(view, options);
+
+		 }
 		
 		
 		 var hideSal = document.getElementById("hidePulsation");
@@ -250,7 +175,7 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 		 {
 
 		    view = new google.visualization.DataView(data); 
-		    view.hideColumns([1]); 
+		    view.hideColumns([3]); 
 		    chart.draw(view, options);
 
 		 }
@@ -261,7 +186,7 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 		 {
 
 		    view = new google.visualization.DataView(data);
-		    view.hideColumns([2]);
+		    view.hideColumns([4]);
 		    chart.draw(view, options);
 
 		 }	
@@ -272,7 +197,7 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 
 
 		    view = new google.visualization.DataView(data);
-		    view.hideColumns([3]); 
+		    view.hideColumns([5]); 
 		    chart.draw(view, options);
 
 		 }	
@@ -283,7 +208,7 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 
 
 		    view = new google.visualization.DataView(data);
-		    view.hideColumns([4]); 
+		    view.hideColumns([6]); 
 		    chart.draw(view, options);
 
 		 }	
@@ -293,7 +218,7 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 		 seeAll.onclick = function()
 		 {
 		    view = new google.visualization.DataView(data);
-		    view.setColumns([0,1,2,3,4]);
+		    view.setColumns([0,1,2,3,4,5,6]);
 		    chart.draw(view, options);
 		 }
 		
@@ -339,267 +264,168 @@ function logout() {
 	List<String> list = restMap.getDataWorkoutByEmailAndDate(lastDateMap, "vincentpont@gmail.com");
 	String speedAverage = list.get(4) ;
 	
-	// Default values
-	String meterMarker = "50" ;
-	String booleanInfo = "No" ;
-	String booleanSpeed = "No" ;
-	String booleanPulsation = "No" ;
-	String booleanPath = "Yes" ; 
-	String booleanStartStop = "Yes";
-	
-	// Test if the user want to show the info
-	String infoTest = request.getParameter("testInfo");
-	if(request.getParameter("testInfo") != null){
-		if(infoTest.equals("Yes")){
-			if(request.getParameter("meterMarker") != null){
-				meterMarker = request.getParameter("meterMarker");
-				booleanInfo = "Yes";
-			} else {
-				meterMarker = "50"; // default
-				booleanInfo = "Yes";
-			}
-		}
-		else{
-			booleanInfo = "No";
-		}
-	}
-	
-	
-	// Test show speeds
-	String speedTest = request.getParameter("testSpeed");
-	if(request.getParameter("testSpeed") != null){
-		if(speedTest.equals("Yes")){
-			if(request.getParameter("meterMarker") != null){
-				meterMarker = request.getParameter("meterMarker");
-				booleanSpeed = "Yes";
-			} else {
-				booleanSpeed = "Yes";
-				meterMarker = "50"; // default
-			}
-		}
-		else {
-			booleanSpeed = "No";
-		}
-	}
-	
-	// Test show pulsation
-	String pulsationTest = request.getParameter("testPulsation");
-	if(request.getParameter("testPulsation") != null){
-		if(pulsationTest.equals("Yes")){
-			if(request.getParameter("meterMarker") != null){
-				meterMarker = request.getParameter("meterMarker");
-				booleanPulsation = "Yes";
-			} else {
-				booleanPulsation = "Yes";
-				meterMarker = "50"; // default
-			}
-		}
-		else {
-			booleanPulsation = "No";
-		}
-	}
-	
-	// Test show path
-	String pathTest = request.getParameter("testPath");
-	if(request.getParameter("testPath") != null){
-		if(pathTest.equals("Yes")){
-			booleanPath = "Yes";
-		}
-		else {
-			booleanPath = "No";
-		}
-	}	
-	
-	// Test show start/stop point
-	String depStopTest = request.getParameter("testDepStop");
-	if(request.getParameter("testDepStop") != null){
-		if(depStopTest.equals("Yes")){
-			booleanStartStop = "Yes";
-		}
-		else {
-			booleanStartStop = "No";
-		}
-	}	
-	
 	%>
 	
 	<!-- Google MAPS -->
 <script
 	src="https://maps.googleapis.com/maps/api/js?v=3?key={AIzaSyA9MSARpM9GdjunV4sR5mxpOuD3pfkyldc}">
 </script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
 	
 <script>
+
+	// Android data
+	var arrayLat = [ <%= stringBufferLat.toString() %> ];
+	var arrayLong = [ <%= stringBufferLong.toString() %> ];
+	var arraySpeed = [ <%= stringBufferSpeed.toString() %> ];
+	var arrayAlti = [ <%= stringBufferAlti.toString() %> ];
+	var size = arrayLat.length;
+	
+	// HexoSkin data
+	var arrayPulsation = [ <%= stringBufferPulsation.toString() %> ];
+	var arrayVolumeTidal = [ <%= stringBufferVolumeTidal.toString() %> ];
+	var arrayRespirationFreq = [ <%= stringBufferRespirationFreq.toString() %> ];
+	var arrayVentilations = [ <%= stringBufferVentilations.toString() %> ];
+
+	var heatmap;
+	var pointarray;
+	var taxiData = new Array();
+	var map ;
 
    /**
     * Method to initalize the map
     */
 	function initialize() {
-		
-		// Android data
-	    var arrayLat = [ <%= stringBufferLat.toString() %> ];
-	    var arrayLong = [ <%= stringBufferLong.toString() %> ];
-	    var arraySpeed = [ <%= stringBufferSpeed.toString() %> ];
-	    var arrayAlti = [ <%= stringBufferAlti.toString() %> ];
-	    var size = arrayLat.length;
-	    
-	    
-	    // HexoSkin data
-	   	var arrayPulsation = [ <%= stringBufferPulsation.toString() %> ];
-	   	var arrayVolumeTidal = [ <%= stringBufferVolumeTidal.toString() %> ];
-	   	var arrayRespirationFreq = [ <%= stringBufferRespirationFreq.toString() %> ];
-	   	var arrayVentilations = [ <%= stringBufferVentilations.toString() %> ];
-
-	    // Param
-	    var meterMarker = '<%=meterMarker%>';
-	    meterMarker = parseInt(meterMarker); //parse
-	    var numberMarker ;
-	    
-	    var booleanInfo = '<%=booleanInfo%>';
-	    var booleanSpeed = '<%=booleanSpeed%>';
-	    var booleanPath = '<%=booleanPath%>';
-	    var booleanStartStop = '<%=booleanStartStop%>';
-	    var booleanPulsation = '<%= booleanPulsation%>';
-	    
-	    // Set checked if the user already checked 
-	    if(booleanInfo == "Yes"){
-	    document.getElementById("testInfo").checked = true;
-	    }
-	    if(booleanSpeed == "Yes"){
-	    	document.getElementById("testSpeed").checked = true;
-	    } 
-	    if(booleanPulsation== "Yes"){
-	    	document.getElementById("testPulsation").checked = true;
-	    }
-	    if(booleanPath == "Yes"){
-	    	document.getElementById("testPath").checked = true;
-	    }
-	    if(booleanStartStop == "Yes"){
-	    	document.getElementById("testDepStop").checked = true;
-	    }
-	    
-	    switch(meterMarker) {
-	    case 2:
-	    	numberMarker = 1 ;
-	        break;
-	    case 10:
-	    	numberMarker = 3 ;
-	        break;
-	    case 50:
-	    	numberMarker = 11 ;
-	        break;
-	    case 100:
-	    	numberMarker = 25;
-	        break;
-	    case 200:
-	    	numberMarker = 50 ;
-	        break;
-	    case 500:
-	    	numberMarker = 125 ;
-	        break;
-	    case 1000:
-	    	numberMarker = 250 ;
-	        break;
-	} 
-
+	  
 		var mapOptions = {  
 			zoom : 16,
 			center : new google.maps.LatLng(arrayLat[0], arrayLong[0]),
 			mapTypeId : google.maps.MapTypeId.PLAN
 		};
 
-		var map = new google.maps.Map(document.getElementById('map-canvas'),
+		map = new google.maps.Map(document.getElementById('map-canvas'),
 				mapOptions);
 		
-					
-		// Pass the value to the array of path
-		var planCoordinates= new Array() ;	
-		var pathStyle ;
+	   // Add by default the path and start/end point
+	   addPath();
+	   addStartStop();
+					  	
+	}
+  
+
+
+	google.maps.event.addDomListener(window, 'resize', initialize);
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	/**
+	 * Method to add infos marker (all information)
+	 */
+	function addAllInfos(){
+		
+		for(var i = 0 ; i < arraySpeed.length ; i ++ ){	
 			
-			// Path NORMAL
-			if(booleanPath == "Yes"){
-				for( var i = 0 ; i < arrayLat.length; i++ ){
-						planCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
-				}
-				
-				pathStyle= new google.maps.Polyline({
-					path : planCoordinates,
-					geodesic : true,
-					strokeColor : "#000000",
-					strokeOpacity : 1,
-					strokeWeight : 4
-				});
-				pathStyle.setMap(map);
-			}
+		    var arrayMarkers = new Array();
+			
+			// Now add the content of the popup
+			  var contentStrings = '<div id="content">'+
+		      '<div id="siteNotice">'+
+		      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
+		      '<div id="bodyContent">'+
+		      '<table class="table">' + 
+		      '<TR>'+
+		      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + '&nbsp;' + arraySpeed[i].toString() +  '</span>' +
+		      '<br>' +
+		       '<span title="Altitude mètre" style="font-size:11pt;" class="glyphicon glyphicon-signal">'+ '&nbsp;'  +  arrayAlti[i].toString()  +'</span>' +
+		      '<br>' +
+		       '<span title="Pulsation min" style="font-size:11pt;" class="glyphicon glyphicon-heart">' + '&nbsp;' + arrayPulsation[i+1].toString() +  '</span>' +
+		      '<br>' +
+		       '<span title="Volume tidal" style="font-size:11pt;" class="glyphicon glyphicon-stats">' + '&nbsp;'+ arrayVolumeTidal[i+1].toString() +  '</span>' +
+		      '<br>' +
+		       '<span title="Respiration fréquence" style="font-size:11pt;" class="glyphicon glyphicon-transfer">'+ '&nbsp;' + arrayRespirationFreq[i+1].toString() +  '</span>' +
+		      '<br>' +
+		      '<span title="Ventilation min" style="font-size:11pt;" class="glyphicon glyphicon-sort-by-attributes">'+ '&nbsp;' + arrayVentilations[i+1].toString() +  '</span>' +'</TD>' +
+		      '</TR>' +
+		      '</table>'+
+		      '</div>'+
+		      '</div>'+
+		      '</div>';
+		      
+			  var markerPosition = new google.maps.LatLng(arrayLat[i],arrayLong[i]);
+			  var image = 'img/info_marker.png';
+
+		      arrayMarkers[i] = new google.maps.Marker({
+		        position: markerPosition,
+		        icon : image,
+	    		animation: google.maps.Animation.DROP,
+		        map: map
+		      });
+		      		      
+		      arrayMarkers[i].infowindow = new google.maps.InfoWindow({
+		    	  content: contentStrings,
+		    	  maxWidth: 120
+		    	});
+			  			  		      
+			  // Listener
+			  google.maps.event.addListener(arrayMarkers[i], 'mouseover', function() {
+				  this.infowindow.open(map, this);
+			  });
+			  
+			  arrayMarkers[i].setMap(map);
+		}
+	}
+	
+	
+	
+	/**
+	 * Method to add speed constance
+	 */
+		function addConstanceSpeed(){
+		
+			var pointarray;
+			var taxiData = new Array();
+			
+			// Heart rate, show if the workout was performant (same speed more or less) 
+			for(var p = 0 ; p < arraySpeed.length ; p ++ ){	
 					
-			 
-	    // Add SPEED markers if the user want it
-	    if(booleanSpeed == "Yes"){
-			for(var k = numberMarker ; k < arraySpeed.length ; k += numberMarker){	
-		 
-				var markerSpeed ;
-				
-				// Now add the content of the popup
-				  var contentStringSpeeds = '<div id="content">'+
-			      '<div id="siteNotice">'+
-			      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
-			      '<div id="bodyContent">'+
-			      '<table class="table">' + 
-			      '<TR>'+
-			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[k].toString() +  '</span>' +'</TD>' +
-			      '</TR>' +
-			      '</table>'+
-			      '</div>'+
-			      '</div>'+
-			      '</div>';
-			      
-			      // add content text html
-				  var myinfowindow  = new google.maps.InfoWindow({
-				      content: contentStringSpeeds
-				  });
-			      				
-				  if (arraySpeed[k] <= 6 ){
-					  var speedLowImg = 'img/Speedlow.png';
-					  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
-					  markerSpeed = new google.maps.Marker({
-							position: markerPosition,
-				    		animation: google.maps.Animation.DROP,
-							infowindow: myinfowindow ,
-							icon : speedLowImg
-						});  
-				  }
-				  else if (arraySpeed[k] > 6 && arraySpeed[k] <= 12){
-					  var speedMidImg = 'img/SpeedMiddle.png';
-					  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
-					  markerSpeed = new google.maps.Marker({
-							position: markerPosition,
-				    		animation: google.maps.Animation.DROP,
-							infowindow: myinfowindow ,
-							icon : speedMidImg
-						});
-				  }
-				  
-				  else if (arraySpeed[k] > 12){
-					  var speedFastImg = 'img/SpeedMax.png';
-					  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
-					  markerSpeed = new google.maps.Marker({
-							position: markerPosition,
-				    		animation: google.maps.Animation.DROP,
-							infowindow: myinfowindow ,
-							icon : speedFastImg
-						});	
-				  }
-				  // Listener
-				  google.maps.event.addListener(markerSpeed, 'click', function() {
-					  this.infowindow.open(map, this);
-				  });
-				  
-				  markerSpeed.setMap(map);
+				//Create array of location
+				if(arraySpeed[p] <= 3.0){	  
+					taxiData[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 10};
+				}		
+				else if(arraySpeed[p] > 3.0 && arraySpeed[p] <= 6 ) {
+					taxiData[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 100};								
+				}
+				else if(arraySpeed[p] > 6.0 && arraySpeed[p] <= 9 ) {
+					taxiData[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 500};								
+				}
+				else if(arraySpeed[p] > 9.0 && arraySpeed[p] <= 12.0 ) {
+					taxiData[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1000};								
+				}
+				else if(arraySpeed[p] > 12.0) {
+					taxiData[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1500};								
+				}
 			}
-	    }
-	    
-	    // Add HEART RATE markers if the user want it
-	    if(booleanPulsation == "Yes"){
-			for(var j = numberMarker ; j < arraySpeed.length ; j += numberMarker){	
+
+
+			  pointArray = new google.maps.MVCArray(taxiData);
+				
+			  heatmap = new google.maps.visualization.HeatmapLayer({
+				    data: pointArray
+				  });
+			  
+
+			  //heatmap.set('gradient', gradient); // bleu
+			  heatmap.set('radius', 20);
+			  // add heatmap
+			  heatmap.setMap(map);
+	}
+	
+	/**
+	 * Method to add heart rate information
+	 */
+	function addHeartRate(){
+		
+		 // Add HEART RATE markers if the user want it
+			for(var j = 0 ; j < arraySpeed.length ; j ++){	
 				
 				var markerPuls ;
 		 
@@ -632,7 +458,7 @@ function logout() {
 							icon : hhlow
 						});  
 				  }
-				  else if (arrayPulsation[j] > 85 && arraySpeed[j] <= 150){
+				  else if (arrayPulsation[j] > 85 && arrayPulsation[j] <= 150){
 					  var hhmid = 'img/h2.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
 					  markerPuls = new google.maps.Marker({
@@ -660,67 +486,84 @@ function logout() {
 				  
 				  markerPuls.setMap(map);
 			}
-	    }
-	    
-	    
-	    
-	 	// Add INFOS markers if the user want it
-	    if(booleanInfo == "Yes"){
-			// Add markers to the path 
-			for(var i = numberMarker ; i < arraySpeed.length ; i += numberMarker ){	
-				
-			    var arrayMarkers = new Array();
-				
-				// Now add the content of the popup
-				  var contentStrings = '<div id="content">'+
-			      '<div id="siteNotice">'+
-			      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
-			      '<div id="bodyContent">'+
-			      '<table class="table">' + 
-			      '<TR>'+
-			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + '&nbsp;' + arraySpeed[i].toString() +  '</span>' +
-			      '<br>' +
-			       '<span title="Altitude mètre" style="font-size:11pt;" class="glyphicon glyphicon-signal">'+ '&nbsp;'  +  arrayAlti[i].toString()  +'</span>' +
-			      '<br>' +
-			       '<span title="Pulsation min" style="font-size:11pt;" class="glyphicon glyphicon-heart">' + '&nbsp;' + arrayPulsation[i+1].toString() +  '</span>' +
-			      '<br>' +
-			       '<span title="Volume tidal" style="font-size:11pt;" class="glyphicon glyphicon-stats">' + '&nbsp;'+ arrayVolumeTidal[i+1].toString() +  '</span>' +
-			      '<br>' +
-			       '<span title="Respiration fréquence" style="font-size:11pt;" class="glyphicon glyphicon-transfer">'+ '&nbsp;' + arrayRespirationFreq[i+1].toString() +  '</span>' +
-			      '<br>' +
-			      '<span title="Ventilation min" style="font-size:11pt;" class="glyphicon glyphicon-sort-by-attributes">'+ '&nbsp;' + arrayVentilations[i+1].toString() +  '</span>' +'</TD>' +
-			      '</TR>' +
-			      '</table>'+
-			      '</div>'+
-			      '</div>'+
-			      '</div>';
-			      
-				  var markerPosition = new google.maps.LatLng(arrayLat[i],arrayLong[i]);
-				  var image = 'img/info_marker.png';
+		
+	}
+	
+	
+	/**
+	 * Method to add speed infos
+	 */
+	function addSpeed() {
 
-			      arrayMarkers[i] = new google.maps.Marker({
-			        position: markerPosition,
-			        icon : image,
-		    		animation: google.maps.Animation.DROP,
-			        map: map
-			      });
-			      		      
-			      arrayMarkers[i].infowindow = new google.maps.InfoWindow({
-			    	  content: contentStrings,
-			    	  maxWidth: 120
-			    	});
-				  			  		      
-				  // Listener
-				  google.maps.event.addListener(arrayMarkers[i], 'mouseover', function() {
-					  this.infowindow.open(map, this);
-				  });
-				  
-				  arrayMarkers[i].setMap(map);
-			}	
-	    }
-				
-
-	      
+		for(var k = 0 ; k < arraySpeed.length ; k ++){	
+			 
+			var markerSpeed ;
+			
+			// Now add the content of the popup
+			  var contentStringSpeeds = '<div id="content">'+
+		      '<div id="siteNotice">'+
+		      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
+		      '<div id="bodyContent">'+
+		      '<table class="table">' + 
+		      '<TR>'+
+		      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed[k].toString() +  '</span>' +'</TD>' +
+		      '</TR>' +
+		      '</table>'+
+		      '</div>'+
+		      '</div>'+
+		      '</div>';
+		      
+		      // add content text html
+			  var myinfowindow  = new google.maps.InfoWindow({
+			      content: contentStringSpeeds
+			  });
+		      				
+			  if (arraySpeed[k] <= 6.0 ){
+				  var speedLowImg = 'img/Speedlow.png';
+				  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
+				  markerSpeed = new google.maps.Marker({
+						position: markerPosition,
+			    		animation: google.maps.Animation.DROP,
+						infowindow: myinfowindow ,
+						icon : speedLowImg
+					});  
+			  }
+			  else if (arraySpeed[k] > 6.0 && arraySpeed[k] <= 12.0){
+				  var speedMidImg = 'img/SpeedMiddle.png';
+				  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
+				  markerSpeed = new google.maps.Marker({
+						position: markerPosition,
+			    		animation: google.maps.Animation.DROP,
+						infowindow: myinfowindow ,
+						icon : speedMidImg
+					});
+			  }
+			  
+			  else if (arraySpeed[k] > 12.0){
+				  var speedFastImg = 'img/SpeedMax.png';
+				  var markerPosition = new google.maps.LatLng(arrayLat[k],arrayLong[k]);
+				  markerSpeed = new google.maps.Marker({
+						position: markerPosition,
+			    		animation: google.maps.Animation.DROP,
+						infowindow: myinfowindow ,
+						icon : speedFastImg
+					});	
+			  }
+			  // Listener
+			  google.maps.event.addListener(markerSpeed, 'click', function() {
+				  this.infowindow.open(map, this);
+			  });
+			  
+			  markerSpeed.setMap(map);
+		}
+		
+	}
+	
+	/**
+	*Method to add the start and end point to the path
+	*/
+	function addStartStop(){
+		
 	     var imageStart = 'img/dd-start.png';
 	     var imageEnd = 'img/dd-end.png';
 
@@ -741,45 +584,49 @@ function logout() {
 		});
 		
 
-		// Only if the user ask for it
-		if(booleanStartStop == "Yes"){
-	  	
-		  	// Add the two markers
-		  	markerEnd.setMap(map);
-		  	markerStart.setMap(map);
-		}
-	  	
-	  	/* Listener to get long and lat
-	  	google.maps.event.addListener(markerStart, 'dragend', function (event) {
-	  	    document.getElementById("latbox").value = this.getPosition().lat();
-	  	    document.getElementById("lngbox").value = this.getPosition().lng();
-	  	});
-	  	*/
-
-
-	  	/*
-		  google.maps.event.addListener(map, 'mouseover', function() {
-			  for(var j = 0 ; j < arrayMarkers.length ; j++ ){
-				  if(typeof arrayMarkers[j] !== 'undefined'){
-				 	arrayMarkers[j].infowindow.close();
-				  }
-			  }
-		  });
-		*/
+		 // Add the two markers
+		 markerEnd.setMap(map);
+		 markerStart.setMap(map);  	
+		
 	}
 	
-	google.maps.event.addDomListener(window, 'resize', initialize);
-	google.maps.event.addDomListener(window, 'load', initialize);
-	
+	/**
+	*Method to add the path to the map 
+	*/
+	function addPath(){
+
+		// Pass the value to the array of path
+		var planCoordinates= new Array() ;	
+		var pathStyle ;
+			
+			// Path NORMAL
+				for( var i = 0 ; i < arrayLat.length; i++ ){
+						planCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
+				}
+				
+				pathStyle= new google.maps.Polyline({
+					path : planCoordinates,
+					geodesic : true,
+					strokeColor : "#000000",
+					strokeOpacity : 1,
+					strokeWeight : 4
+				});
+				pathStyle.setMap(map);
+			
+		
+	}
 	
 	/**
 	*Method to reload the map NOT USED
 	*/
-	function reloadMap(map){
+	function reloadMap(){
 		google.maps.event.trigger(map, 'resize');
 	}
 
 </script>
+
+<!--  Test heat -->
+
 
 
 <meta charset="utf-8">
@@ -968,63 +815,26 @@ function logout() {
   						<table>
 						<TR>
 							<TD>
-								<form  method="get" action="dashboard">
 							
-											<div title="Afficher le trajet enregistré." class="checkbox">
-											<span>
-												   <input id='testPath' type='checkbox' value='Yes' name='testPath'>
-												    Chemin
-												   <input id='testPathHidden' type='hidden' value='No' name='testPath'>
-												  
-											</span>
-											</div>
-											<div title="Afficher point départ et stop" class="checkbox">
-											<span>
-												  <input id='testDepStop' type='checkbox' value='Yes' name='testDepStop'>
-												  Point départ/stop
-												  <input id='testDepStopHidden' type='hidden' value='No' name='testDepStop'>
-											</span>
-											</div>
-<br>									
-										
-											<div title="Afficher les vitesses" class="checkbox">
-											<span>
-												  <input id='testSpeed' type='checkbox' value='Yes' name='testSpeed'>
-												  Vitesses
-												  <input id='testSpeedHidden' type='hidden' value='No' name='testSpeed'>
-											</span>
-											</div>
-	
-											<div title="Afficher point départ et stop" class="checkbox">
-											<span>
-												  <input id='testPulsation' type='checkbox' value='Yes' name='testPulsation'>
-												  Pulsations
-												  <input id='testPulsationHidden' type='hidden' value='No' name='testPulsation'>
-											</span>
-											</div>
-											
-											<div title="Afficher les données enregistrées." class="checkbox">
-											<span>
-												  <input id='testInfo' type='checkbox' value='Yes' name='testInfo'>
-												  Détails séances
-												  <input id='testInfoHidden' type='hidden' value='No' name='testInfo'>
-											</span>
-											</div>	
-											
-										<select title ="Représente le nombre de mètres qui séparent chaques filtres de la séance." name="meterMarker" id="precision" class="form-control"  style="max-width:100px;">
-											  <option value="2">2 m</option>
-											  <option value="10">10 m</option>
-											  <option value="50">50 m</option>
-											  <option value="100">100 m</option>
-											  <option value="200">200 m</option>
-											  <option value="500">500 m</option>
-											  <option value="1000">1000 m</option>
-										</select> 	
-										<input type='hidden' name='date' value='<%= dateToShow %>'> 
+
+<br>		
+							<button  type='button' class="btn btn-primary btn-sm" onclick="addPath();"><b>Chemin</b></button>	
+							<button  type='button' class="btn btn-primary btn-sm" onclick="addStartStop();"><b>Départ/Stop</b></button>	
+<br>											
+							<button style="margin-top:8pt;"  type='button' class="btn btn-primary btn-sm" onclick="addConstanceSpeed();"><b>Constance vitesse</b></button>											
+							<button style="margin-top:8pt;" type='button' class="btn btn-primary btn-sm" onclick="addSpeed();"><b>Ajouter vitesses</b></button>
+<br>											
+
+							<button style="margin-top:8pt;" type='button' class="btn btn-primary btn-sm" onclick="addHeartRate();"><b>Ajouter pulsation</b></button>
+<br>											
+							<button style="margin-top:8pt;" type='button' class="btn btn-primary btn-sm" onclick="addAllInfos();"><b>Informations maximales</b></button>
+							
+
 <br>
-							     		<button type='submit' class="btn btn-success"> <b> Filtrer </b></button>
 <br>
-								</form> 
+				     		<button style="margin-top:8pt;" type='button' class="btn btn-success" onclick="initialize();"> <b> <span class="glyphicon glyphicon-refresh"> </span>  &nbsp; Recharger  </b></button>
+<br>
+
 							</TD>
 						</TR>
 					</table>
@@ -1076,49 +886,36 @@ function logout() {
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 					<h3 class="page-header">Graphiques </h3>
+
+																	
 						<div class="row">
 					
-	  					<div class="col-md-6">			
-			  				<div id="chart_div1" style="width: 100%; height: 500px;"></div>
-			  			</div>  
-			  			
-			  			<div class="col-md-6">			
-			  				<div id="chart_div3" style="width: 100%; height: 500px;"></div>
-			  			</div>  
-
-<br>	
-
-						</div> 										
 			
-
-
-						<div class="row">
-					
-	  					<div class="col-xs-12 col-md-8">			
-			  				<div id="chart_div2" style="width: 100%; height: 500px;"></div>
-			  			</div>  
+			  				<div id="chart_div2" style="width: 100%; height: 600px;"></div>
+			  		
 <br><br>	  				
-<br><br>
-<br><br>	  										
-						<div class="col-xs-12 col-md-4">	
+ 										
+
 								<table>
 									<TR>
-										<TD>				   					
+										<TD>
+										<button style="margin-left:150px;" title="Cacher la vitesse" class="btn btn-default" type="button" id="hideSpeed"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
+										<button  title="Cacher l'altitue" class="btn btn-default" type="button" id="hideAltitude"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>				   					
 				   						<button  title="Cacher la pulsation" class="btn btn-default" type="button" id="hidePulsation"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-<br>									<button style="margin-top:8px;" title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideTidal"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Volume tidal l</button>
-<br>									<button style="margin-top:8px;" title="Cacher la respiration" class="btn btn-default" type="button" id="hideRespiration"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Repiration min</button>
-<br>									<button style="margin-top:8px;" title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Ventilation</button>
-<br>				   					<button style="margin-top:8px;" style="margin-top:8px;" title="Voir tout" class="btn btn-default" type="button" id="seeAll"> &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+										<button  title="Cacher le volume tidal" class="btn btn-default" type="button" id="hideTidal"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Volume ti. </button>
+										<button  title="Cacher la respiration" class="btn btn-default" type="button" id="hideRespiration"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Repiration</button>
+										<button  title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Ventilation</button>
+				   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll"> &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 										</TD>
 									</TR>
 								</table>
-						</div>
+
 					</div>
 					 
-			</div>
-			
 			
 
+			
+	</div>
 	
 
 <div class="row">
