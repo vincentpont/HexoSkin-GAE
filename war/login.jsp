@@ -17,7 +17,7 @@
         function signinCallback(authResult) {
       	  if (authResult['access_token']) {
       	    // Autorisation réussie
-      	    window.location = "index.jsp";
+      	    window.location = "/dashboard";
       	  } else if (authResult['error']) {
       		//alert("Not logged.");
       	  }
@@ -62,7 +62,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-				<a class="navbar-brand" href="index.jsp">HexoSkin</a>
+				<a class="navbar-brand" href="dashboard">HexoSkin</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				

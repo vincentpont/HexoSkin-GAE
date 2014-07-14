@@ -252,7 +252,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.jsp">HexoSkin</a>
+				<a class="navbar-brand" href="dashboard">HexoSkin</a>
 			</div>
 			<div class="navbar-collapse collapse" >
 				<ul class="nav navbar-nav navbar-right">
@@ -269,8 +269,8 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li><a href="index.jsp">Dashboard</a></li>
-					<li><a href="compare.jsp">Comparer</a></li>
+					<li><a href="dashboard">Dashboard</a></li>
+					<li><a href="compare">Comparer</a></li>
 					<li class="active"><a href="historique.jsp">Historique</a></li>
 				    <li><a href="definition.jsp">Définitions</a></li>
 				</ul>
@@ -317,7 +317,7 @@
 									for(int l = 0 ; l < 1 ;l++) { %>
 									<TD>
 									<form action="index.jsp" method="get">
-							     	<input type='hidden' name='date' value='<%= list.get(dateCount) %>'>  
+							     	<input type='hidden' name='date' value='<%= list.get(dateCount) %>'> 
 									<button title="Détail" type="submit" class="btn btn-success">
 									<span style="font-size:14pt;" class="glyphicon glyphicon-search"></span>
 									</button>

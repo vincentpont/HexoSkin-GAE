@@ -9,6 +9,11 @@
 <%@ page import="restHexoSkin.RestInvokerHexo"%>
 <%@ page import="java.util.Iterator, java.util.List, java.util.Date, java.text.DecimalFormat;"%>
 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!--  Get Variable servlet -->
+<%  String lastDateWorkout = (String) request.getAttribute("lastDateWorkout"); %>
 
 <!-- LOGIN Google</body> -->
 <script type="text/javascript">
@@ -38,7 +43,7 @@
 String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
 RestInvokerHexo restHexo = new RestInvokerHexo(s1); 
 RestInvokerDatastore restMap = new RestInvokerDatastore(); 
-String lastDateWorkout = restMap.getLastDateWorkout("vincentpont@gmail.com"); 
+
 String restHexoDate = "" ;
 
 // Test if we have something in param 
@@ -51,9 +56,8 @@ if(request.getParameter("date") != null){
 }
  // If not we show the last workout
 else{ 
-	restHexoDate =  lastDateWorkout;
-	restMap.getDataMap("vincentpont@gmail.com", restHexoDate); 
-	restHexoDate = restHexoDate.substring(0, 10);
+	restMap.getDataMap("vincentpont@gmail.com", lastDateWorkout); 
+	restHexoDate = lastDateWorkout.substring(0, 10);
 	restHexoDate = restHexoDate.replace('.', '-');
 }
 
@@ -806,7 +810,7 @@ function logout() {
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.jsp">HexoSkin</a>
+				<a class="navbar-brand" href="dashboard">HexoSkin</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
@@ -823,8 +827,8 @@ function logout() {
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar titreNavigation">
-					<li class="active"><a href="index.jsp">Dashboard</a></li>
-					<li><a href="compare.jsp">Comparer</a></li>
+					<li class="active"><a href="dashboard">Dashboard</a></li>
+					<li><a href="compare">Comparer</a></li>
 					<li><a href="historique.jsp">Historique</a></li>
 				    <li><a href="definition.jsp">Définitions</a></li>
 				</ul>
@@ -964,7 +968,7 @@ function logout() {
   						<table>
 						<TR>
 							<TD>
-								<form  method="post" action="">
+								<form  method="get" action="dashboard">
 							
 											<div title="Afficher le trajet enregistré." class="checkbox">
 											<span>
@@ -1016,6 +1020,7 @@ function logout() {
 											  <option value="500">500 m</option>
 											  <option value="1000">1000 m</option>
 										</select> 	
+										<input type='hidden' name='date' value='<%= dateToShow %>'> 
 <br>
 							     		<button type='submit' class="btn btn-success"> <b> Filtrer </b></button>
 <br>
@@ -1109,9 +1114,7 @@ function logout() {
 								</table>
 						</div>
 					</div>
-					<% String s = (String) request.getAttribute("dateStr"); 
-					//out.print("Value "+s);
-					%>
+					 
 			</div>
 			
 			
