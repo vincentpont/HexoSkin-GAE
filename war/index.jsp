@@ -287,16 +287,19 @@ function logout() {
 	var arrayRespirationFreq = [ <%= stringBufferRespirationFreq.toString() %> ];
 	var arrayVentilations = [ <%= stringBufferVentilations.toString() %> ];
 
+	var planCoordinates= new Array() ;	
+	var pathStyle ;
 	var heatmap;
 	var pointarray;
 	var taxiData = new Array();
 	var map ;
+	var markerEnd, markerStart;
 
    /**
     * Method to initalize the map
     */
 	function initialize() {
-	  
+	   
 		var mapOptions = {  
 			zoom : 16,
 			center : new google.maps.LatLng(arrayLat[0], arrayLong[0]),
@@ -306,16 +309,16 @@ function logout() {
 		map = new google.maps.Map(document.getElementById('map-canvas'),
 				mapOptions);
 		
-	   // Add by default the path and start/end point
+	   // Add by default the path
 	   addPath();
 	   addStartStop();
 					  	
 	}
   
-
-
 	google.maps.event.addDomListener(window, 'resize', initialize);
 	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	
 	
 	/**
 	 * Method to add infos marker (all information)
@@ -333,17 +336,17 @@ function logout() {
 		      '<div id="bodyContent">'+
 		      '<table class="table">' + 
 		      '<TR>'+
-		      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + '&nbsp;' + arraySpeed[i].toString() +  '</span>' +
+		      '<TD>' + '<span title="Vitesse km/h" style="font-size:10pt;" class="glyphicon glyphicon-flash">' + '&nbsp;' + arraySpeed[i].toString() +  '</span>' +
 		      '<br>' +
-		       '<span title="Altitude mètre" style="font-size:11pt;" class="glyphicon glyphicon-signal">'+ '&nbsp;'  +  arrayAlti[i].toString()  +'</span>' +
+		       '<span title="Altitude mètre" style="font-size:10pt;" class="glyphicon glyphicon-signal">'+ '&nbsp;'  +  arrayAlti[i].toString()  +'</span>' +
 		      '<br>' +
-		       '<span title="Pulsation min" style="font-size:11pt;" class="glyphicon glyphicon-heart">' + '&nbsp;' + arrayPulsation[i+1].toString() +  '</span>' +
+		       '<span title="Pulsation min" style="font-size:10pt;" class="glyphicon glyphicon-heart">' + '&nbsp;' + arrayPulsation[i].toString() +  '</span>' +
 		      '<br>' +
-		       '<span title="Volume tidal" style="font-size:11pt;" class="glyphicon glyphicon-stats">' + '&nbsp;'+ arrayVolumeTidal[i+1].toString() +  '</span>' +
+		       '<span title="Volume tidal" style="font-size:10pt;" class="glyphicon glyphicon-stats">' + '&nbsp;'+ (arrayVolumeTidal[i]/1000).toFixed(2) +  '</span>' +
 		      '<br>' +
-		       '<span title="Respiration fréquence" style="font-size:11pt;" class="glyphicon glyphicon-transfer">'+ '&nbsp;' + arrayRespirationFreq[i+1].toString() +  '</span>' +
+		       '<span title="Respiration fréquence" style="font-size:10pt;" class="glyphicon glyphicon-transfer">'+ '&nbsp;' + arrayRespirationFreq[i].toString() +  '</span>' +
 		      '<br>' +
-		      '<span title="Ventilation min" style="font-size:11pt;" class="glyphicon glyphicon-sort-by-attributes">'+ '&nbsp;' + arrayVentilations[i+1].toString() +  '</span>' +'</TD>' +
+		      '<span title="Ventilation min" style="font-size:10pt;" class="glyphicon glyphicon-sort-by-attributes">'+ '&nbsp;' + (arrayVentilations[i]/1000).toFixed(2)  +  '</span>' +'</TD>' +
 		      '</TR>' +
 		      '</table>'+
 		      '</div>'+
@@ -366,7 +369,7 @@ function logout() {
 		    	});
 			  			  		      
 			  // Listener
-			  google.maps.event.addListener(arrayMarkers[i], 'mouseover', function() {
+			  google.maps.event.addListener(arrayMarkers[i], 'click', function() {
 				  this.infowindow.open(map, this);
 			  });
 			  
@@ -382,31 +385,31 @@ function logout() {
 		function addConstanceSpeed(){
 		
 			var pointarray;
-			var taxiData = new Array();
+			var speedConstant = new Array();
 			
 			// Heart rate, show if the workout was performant (same speed more or less) 
 			for(var p = 0 ; p < arraySpeed.length ; p ++ ){	
 					
 				//Create array of location
 				if(arraySpeed[p] <= 3.0){	  
-					taxiData[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 10};
+					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 10};
 				}		
 				else if(arraySpeed[p] > 3.0 && arraySpeed[p] <= 6 ) {
-					taxiData[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 100};								
+					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 100};								
 				}
 				else if(arraySpeed[p] > 6.0 && arraySpeed[p] <= 9 ) {
-					taxiData[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 500};								
+					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 500};								
 				}
 				else if(arraySpeed[p] > 9.0 && arraySpeed[p] <= 12.0 ) {
-					taxiData[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1000};								
+					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1000};								
 				}
 				else if(arraySpeed[p] > 12.0) {
-					taxiData[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1500};								
+					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1500};								
 				}
 			}
 
 
-			  pointArray = new google.maps.MVCArray(taxiData);
+			  pointArray = new google.maps.MVCArray(speedConstant);
 				
 			  heatmap = new google.maps.visualization.HeatmapLayer({
 				    data: pointArray
@@ -489,6 +492,67 @@ function logout() {
 		
 	}
 	
+	function addConstanceHeart(){
+		
+		var pointarray;
+		var HeartConstant = new Array();
+		
+		// Heart rate, show if the workout was performant (same speed more or less) 
+		for(var p = 0 ; p < arraySpeed.length ; p ++ ){	
+				
+			//Create array of location
+			if(arrayPulsation[p] <= 70){	  
+				HeartConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 10};
+			}		
+			else if(arrayPulsation[p] > 70 && arrayPulsation[p] <= 100 ) {
+				HeartConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 100};								
+			}
+			else if(arrayPulsation[p] > 100 && arrayPulsation[p] <= 130 ) {
+				HeartConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 500};								
+			}
+			else if(arrayPulsation[p] > 130 && arrayPulsation[p] <= 160) {
+				HeartConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1000};								
+			}
+			else if(arrayPulsation[p] > 160) {
+				HeartConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1500};								
+			}
+		}
+		
+		  var gradient = [
+		                  'rgba(0, 255, 255, 0)',
+		                  'rgba(0, 255, 255, 1)',
+		                  'rgba(0, 191, 255, 1)',
+		                  'rgba(0, 127, 255, 1)',
+		                  'rgba(0, 63, 255, 1)',
+		                  'rgba(0, 0, 255, 1)',
+		                  'rgba(0, 0, 223, 1)',
+		                  'rgba(0, 0, 191, 1)',
+		                  'rgba(0, 0, 159, 1)',
+		                  'rgba(0, 0, 127, 1)',
+		                  'rgba(63, 0, 91, 1)',
+		                  'rgba(127, 0, 63, 1)',
+		                  'rgba(191, 0, 31, 1)',
+		                  'rgba(255, 0, 0, 1)'
+		                ]
+
+
+
+		  pointArray = new google.maps.MVCArray(HeartConstant);
+			
+		  heatmap = new google.maps.visualization.HeatmapLayer({
+			    data: pointArray
+			  });
+		  
+
+		  heatmap.set('gradient', gradient); // bleu
+		  heatmap.set('radius', 20);
+		  
+		  // add heatmap
+		  heatmap.setMap(map);
+		
+		
+	}
+	
 	
 	/**
 	 * Method to add speed infos
@@ -568,7 +632,7 @@ function logout() {
 	     var imageEnd = 'img/dd-end.png';
 
 	  	var endMarker = new google.maps.LatLng(arrayLat[arrayLat.length-1],arrayLong[arrayLong.length-1]);	
-		var markerEnd = new google.maps.Marker({
+		markerEnd = new google.maps.Marker({
     		position: endMarker,
     		animation: google.maps.Animation.DROP,
     		title:"END",
@@ -576,7 +640,7 @@ function logout() {
 		});
 		
 	  	var startMarker = new google.maps.LatLng(arrayLat[0],arrayLong[0]);	
-		var markerStart = new google.maps.Marker({
+		markerStart = new google.maps.Marker({
     		position: startMarker,
     		animation: google.maps.Animation.DROP,
     		title:"START",
@@ -591,13 +655,21 @@ function logout() {
 	}
 	
 	/**
+	*Method to remove the start/end point 
+	*/
+	function removeStartEndPoint(){
+		
+		markerStart.setMap(null);
+		markerEnd.setMap(null);
+
+	}
+	
+	
+	/**
 	*Method to add the path to the map 
 	*/
 	function addPath(){
 
-		// Pass the value to the array of path
-		var planCoordinates= new Array() ;	
-		var pathStyle ;
 			
 			// Path NORMAL
 				for( var i = 0 ; i < arrayLat.length; i++ ){
@@ -611,21 +683,23 @@ function logout() {
 					strokeOpacity : 1,
 					strokeWeight : 4
 				});
-				pathStyle.setMap(map);
-			
-		
+				pathStyle.setMap(map);	
 	}
 	
 	/**
-	*Method to reload the map NOT USED
+	*Method to remove the path to the map 
 	*/
-	function reloadMap(){
-		google.maps.event.trigger(map, 'resize');
+	function removePath(){
+		
+		pathStyle.setMap(null);
+
 	}
+	
+
+
 
 </script>
 
-<!--  Test heat -->
 
 
 
@@ -818,21 +892,24 @@ function logout() {
 							
 
 <br>		
-							<button  type='button' class="btn btn-primary btn-sm" onclick="addPath();"><b>Chemin</b></button>	
-							<button  type='button' class="btn btn-primary btn-sm" onclick="addStartStop();"><b>Départ/Stop</b></button>	
-<br>											
-							<button style="margin-top:8pt;"  type='button' class="btn btn-primary btn-sm" onclick="addConstanceSpeed();"><b>Constance vitesse</b></button>											
-							<button style="margin-top:8pt;" type='button' class="btn btn-primary btn-sm" onclick="addSpeed();"><b>Ajouter vitesses</b></button>
-<br>											
+							<button title="Enlever le chemin de la carte." type='button' class="btn btn-default btn-sm" onclick="removePath();"><b>Enlever chemin</b></button>	
+							<button title="Enlever les points de départ et stop." type='button' class="btn btn-default btn-sm" onclick="removeStartEndPoint();"><b>Enlever départ/stop</b></button>	
+<br>
+<br>
+											
+							<button title="Montrer si la vitesse est constante." style="margin-top:12pt;"  type='button' class="btn btn-warning btn-sm" onclick="addConstanceSpeed();"><b>Constance vitesse</b></button>											
+							<button title="Montrer tous les vitesses." style="margin-top:12pt;" type='button' class="btn btn-warning btn-sm" onclick="addSpeed();"><b>Ajouter vitesses</b></button>
+<br>										
 
-							<button style="margin-top:8pt;" type='button' class="btn btn-primary btn-sm" onclick="addHeartRate();"><b>Ajouter pulsation</b></button>
+							<button title="Montrer si les pulsations sont constantes." style="margin-top:12pt;" type='button' class="btn btn-danger btn-sm" onclick="addConstanceHeart();"><b>Constance pulsation</b></button>
+							<button title="Montrer toutes les pulsations." style="margin-top:12pt;" type='button' class="btn btn-danger btn-sm" onclick="addHeartRate();"><b>Ajouter pulsation</b></button>
 <br>											
-							<button style="margin-top:8pt;" type='button' class="btn btn-primary btn-sm" onclick="addAllInfos();"><b>Informations maximales</b></button>
+							<button title="Montrer toutes les données de la séances." style="margin-top:12pt;" type='button' class="btn btn-info btn-sm" onclick="addAllInfos();"><b>Informations maximales</b></button>
 							
 
 <br>
 <br>
-				     		<button style="margin-top:8pt;" type='button' class="btn btn-success" onclick="initialize();"> <b> <span class="glyphicon glyphicon-refresh"> </span>  &nbsp; Recharger  </b></button>
+				     		<button  title="Recharger la carte et réinitialiser." style="margin-top:15pt;" type='button' class="btn btn-success" onclick="initialize();"> <b> <span class="glyphicon glyphicon-refresh"> </span>  &nbsp; Recharger  </b></button>
 <br>
 
 							</TD>

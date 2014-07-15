@@ -523,155 +523,260 @@ stringBufferLat2 = restMap.convertListToStringBuffer(listLatitude2);
 stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 
 
-String booleanPath = "Yes" ; 
-String booleanStartStop = "Yes";
-String booleanDiffSpeed = "No" ;
-String booleanDiffPuls = "No" ;
-String meterMarker = "50" ;
-
-
-
-//Test if the user want to show the info
-String diffPulsTest = request.getParameter("testDifPuls");
-if(request.getParameter("testDifPuls") != null){
-	if(diffPulsTest.equals("Yes")){
-		if(request.getParameter("meterMarker") != null){
-			meterMarker = request.getParameter("meterMarker");
-			booleanDiffPuls = "Yes";
-		} else {
-			meterMarker = "50"; // default
-			booleanDiffPuls = "Yes";
-		}
-	}
-	else{
-		booleanDiffPuls = "No";
-	}
-}
-
-
-// Test if the user want to show the info
-String diffTestSpeed = request.getParameter("testDiffSpeed");
-if(request.getParameter("testDiffSpeed") != null){
-	if(diffTestSpeed.equals("Yes")){
-		if(request.getParameter("meterMarker") != null){
-			meterMarker = request.getParameter("meterMarker");
-			booleanDiffSpeed = "Yes";
-		} else {
-			meterMarker = "50"; // default
-			booleanDiffSpeed = "Yes";
-		}
-	}
-	else{
-		booleanDiffSpeed = "No";
-	}
-}
-
-// Test show path
-String pathTest = request.getParameter("testPath");
-if(request.getParameter("testPath") != null){
-	if(pathTest.equals("Yes")){
-		booleanPath = "Yes";
-	}
-	else {
-		booleanPath = "No";
-	}
-}	
-
-// Test show start/stop point
-String depStopTest = request.getParameter("testDepStop");
-if(request.getParameter("testDepStop") != null){
-	if(depStopTest.equals("Yes")){
-		booleanStartStop = "Yes";
-	}
-	else {
-		booleanStartStop = "No";
-	}
-}	
-
-
 %>
 
 <script>
+
+	// Path 1
+	var arrayLat1 = [ <%= stringBufferLat1.toString() %> ];
+	var arrayLong1 = [ <%= stringBufferLong1.toString() %> ];
+	var arraySpeed1 = [ <%= stringBufferVitesses1.toString() %> ];
+	var arrayPulsation1 = [ <%= stringBufferPulsation1.toString() %> ];
+	
+	// Path 2
+	var arrayLat2 = [ <%= stringBufferLat2.toString() %> ];
+	var arrayLong2 = [ <%= stringBufferLong2.toString() %> ];
+	var arraySpeed2 = [ <%= stringBufferVitesses2.toString() %> ];
+	var arrayPulsation2 = [ <%= stringBufferPulsation2.toString() %> ];
+	
+	var pathStyle1;
+	var pathStyle2;
+	var map;
+ 	var startMarker, endMarker;
 
    /**
     * Method to initalize the map
     */
 	function initialize() {
-		
-	   // Path 1
-	    var arrayLat1 = [ <%= stringBufferLat1.toString() %> ];
-	    var arrayLong1 = [ <%= stringBufferLong1.toString() %> ];
-	    var arraySpeed1 = [ <%= stringBufferVitesses1.toString() %> ];
-	    var arrayPulsation1 = [ <%= stringBufferPulsation1.toString() %> ];
-	    var arrayPulsation2 = [ <%= stringBufferPulsation2.toString() %> ];
-	    
-	    // Path 2
-	    var arrayLat2 = [ <%= stringBufferLat2.toString() %> ];
-	    var arrayLong2 = [ <%= stringBufferLong2.toString() %> ];
-	    var arraySpeed2 = [ <%= stringBufferVitesses2.toString() %> ];
-	    
-	    var booleanPath = '<%=booleanPath%>';
-	    var booleanStartStop = '<%=booleanStartStop%>';
-	    var booleanDiffSpeed = '<%= booleanDiffSpeed%>';
-	    var booleanDiffPuls = '<%= booleanDiffPuls%>';
-	    
-	    // Param
-	    var meterMarker = '<%=meterMarker%>';
-	    meterMarker = parseInt(meterMarker); //parse
-	    var numberMarker ;
-	    
-	    // Set checked if the user already checked 
-	    if(booleanDiffSpeed == "Yes"){
-	    document.getElementById("testDiffSpeed").checked = true;
-	    }
-	    if(booleanDiffPuls == "Yes"){
-		document.getElementById("testDifPuls").checked = true;	
-	    }
-	    if(booleanPath == "Yes"){
-	    	document.getElementById("testPath").checked = true;
-	    }
-	    if(booleanStartStop == "Yes"){
-	    	document.getElementById("testDepStop").checked = true;
-	    }
 
-	    
-	    switch(meterMarker) {
-	    case 2:
-	    	numberMarker = 1 ;
-	        break;
-	    case 10:
-	    	numberMarker = 3 ;
-	        break;
-	    case 50:
-	    	numberMarker = 11 ;
-	        break;
-	    case 100:
-	    	numberMarker = 25;
-	        break;
-	    case 200:
-	    	numberMarker = 50 ;
-	        break;
-	    case 500:
-	    	numberMarker = 125 ;
-	        break;
-	    case 1000:
-	    	numberMarker = 250 ;
-	        break;
-	} 
-	    
 		var mapOptions = {  
 			zoom : 16,
 			center : new google.maps.LatLng(arrayLat1[0], arrayLong1[0]),
 			mapTypeId : google.maps.MapTypeId.PLAN
 		};
 
-		var map = new google.maps.Map(document.getElementById('map-canvas'),
+		map = new google.maps.Map(document.getElementById('map-canvas'),
 				mapOptions);
+	  	
+		// Add by default the two paths and marker of the path1
+		addPaths();
+		addMarkerPath1();
+	  	
+	}
+	
+	google.maps.event.addDomListener(window, 'resize', initialize);
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	
+	/**
+	* Method to add differences of heart rate on the path
+	*/
+	function addDiffHeart(){
+			
+		// Differences pulsation
+		for(var k = 0 ; k < arraySpeed1.length ; k ++){	
+	 
+			var markerDiffPuls;
+			var markerPosition;
+			var pulsImg;
+			var namePath;
+			
+			// Test the differences vitesses
+			var diffPuls ;
+			var diffPulsStr;
+
+			if(arrayPulsation1[k] >arrayPulsation2[k]){
+				// Set position
+			 	markerPosition = new google.maps.LatLng(arrayLat1[k],arrayLong1[k]);
+			 	diffPuls = arrayPulsation1[k] - arrayPulsation2[k];
+				alert("diffPuls "+diffPuls);
+			 	
+			 	// Test value of the differences to add the right icon img
+			 	if(diffSpeeds <= 20){
+			 		pulsImg = 'img/h1.png';
+			 	}
+			 	else if(diffPuls > 20 && diffPuls <= 40 ){
+			 		pulsImg = 'img/h2.png';
+			 	}
+			 	else if(diffPuls > 40 ){
+			 		pulsImg = 'img/h3.png';
+			 	}
+ 	
+			 	diffPulsStr = "+" + diffPuls.toString() + " pulsation";
+			 	namePath = " trajet 1";
+			}
+			else{		
+				markerPosition = new google.maps.LatLng(arrayLat2[k],arrayLong2[k]);
+				diffPuls = arrayPulsation2[k] - arrayPulsation1[k] ;
+			 	
+			 	// Test value of the differences to add the right icon img
+			 	if(diffPuls <= 20){
+			 		pulsImg = 'img/h1.png';
+			 	}
+			 	else if(diffPuls > 20 && diffPuls <= 40 ){
+			 		pulsImg = 'img/h2.png';
+			 	}
+			 	else if(diffPuls  > 40 ){
+			 		pulsImg = 'img/h3.png';
+			 	}
+			 	
+			 	diffPulsStr = '+' + diffPuls.toString() + ' pulsation';
+			 	namePath = " trajet 2";
+			}
+					
+			
+			// Now add the content of the popup
+			  var contentStringSpeeds = '<div id="content">'+
+		      '<div id="siteNotice">'+
+		      '<h5 id="firstHeading" class="firstHeading">Données' +namePath.toString() + '</h5>'+
+		      '<div id="bodyContent">'+
+		      '<table class="table">' + 
+		      '<TR>'+
+		      '<TD align="left">' + '<span title="Différence vitesses" style="font-size:11pt;">' + diffPulsStr.toString() +  '</span>' +'</TD>' +
+		      '</TR>' +
+		      '</table>'+
+		      '</div>'+
+		      '</div>'+
+		      '</div>';
+		      
+		      // add content text html
+			  var myinfowindow  = new google.maps.InfoWindow({
+			      content: contentStringSpeeds
+			  });
+		      				
+			  markerDiffPuls = new google.maps.Marker({
+					position: markerPosition,
+		    		animation: google.maps.Animation.DROP,
+					infowindow: myinfowindow ,
+					icon : pulsImg
+				});  
+
+			  
+			  // Listener
+			  google.maps.event.addListener(markerDiffPuls, 'click', function() {
+				  this.infowindow.open(map, this);
+			  });
+			  
+			  // show only if there is a differences
+
+			  markerDiffPuls.setMap(map);
+			  
+		}
+		
+		
+	}
+	
+	
+	/**
+	* Method to add differences of Speeds on the path
+	*/
+	function addDiffSpeed(){
+		
+		// Differences vitesses
+		for(var k = 0 ; k < arraySpeed1.length ; k ++){	
+	 
+			var markerDiffSpeed ;
+			var markerPosition;
+			var speedImg;
+			var namePath;
+			
+			// Test the differences vitesses
+			var diffSpeeds ;
+			var diffSpeedStr;
+
+			if(arraySpeed1[k] >arraySpeed2[k]){
 				
+				// Set position
+			 	markerPosition = new google.maps.LatLng(arrayLat1[k],arrayLong1[k]);
+			 	diffSpeeds = arraySpeed1[k] - arraySpeed2[k];
+			 	diffSpeeds = diffSpeeds.toFixed(2);
+			 	
+			 	// Test value of the differences to add the right icon img
+			 	if(diffSpeeds <= 3.0){
+			 	 speedImg = 'img/Speedlow.png';
+			 	}
+			 	else if(diffSpeeds > 3.0 && diffSpeeds <= 6.0 ){
+				 speedImg = 'img/SpeedMiddle.png';
+			 	}
+			 	else if(diffSpeeds > 6.0 ){
+				 speedImg = 'img/SpeedMax.png';
+			 	}
+ 	
+			 	diffSpeedStr = "+" + diffSpeeds.toString() + " km/h";
+			 	namePath = " trajet 1";
+			}
+			else{
+				
+				markerPosition = new google.maps.LatLng(arrayLat2[k],arrayLong2[k]);
+				diffSpeeds = arraySpeed2[k] - arraySpeed1[k] ;
+			 	diffSpeeds = diffSpeeds.toFixed(2);
+			 	
+			 	// Test value of the differences to add the right icon img
+			 	if(diffSpeeds <= 3.0){
+			 	 speedImg = 'img/Speedlow.png';
+			 	}
+			 	else if(diffSpeeds > 3.0 && diffSpeeds <= 6.0 ){
+				 speedImg = 'img/SpeedMiddle.png';
+			 	}
+			 	else if(diffSpeeds > 6.0 ){
+				 speedImg = 'img/SpeedMax.png';
+			 	}
+			 	
+				diffSpeedStr = '+' + diffSpeeds.toString() + ' km/h';
+			 	namePath = " trajet 2";
+			}
+					
+			
+			// Now add the content of the popup
+			  var contentStringSpeeds = '<div id="content">'+
+		      '<div id="siteNotice">'+
+		      '<h5 id="firstHeading" class="firstHeading">Données' +namePath.toString() + '</h5>'+
+		      '<div id="bodyContent">'+
+		      '<table class="table">' + 
+		      '<TR>'+
+		      '<TD align="left">' + '<span title="Différence vitesses" style="font-size:11pt;">' + diffSpeedStr.toString() +  '</span>' +'</TD>' +
+		      '</TR>' +
+		      '</table>'+
+		      '</div>'+
+		      '</div>'+
+		      '</div>';
+		      
+		      // add content text html
+			  var myinfowindow  = new google.maps.InfoWindow({
+			      content: contentStringSpeeds
+			  });
+		      				
+			  markerDiffSpeed = new google.maps.Marker({
+					position: markerPosition,
+		    		animation: google.maps.Animation.DROP,
+					infowindow: myinfowindow ,
+					icon : speedImg
+				});  
+
+			  
+			  // Listener
+			  google.maps.event.addListener(markerDiffSpeed, 'click', function() {
+				  this.infowindow.open(map, this);
+			  });
+			  
+			  // show only if there is a differences
+			  
+			  markerDiffSpeed.setMap(map);
+			  
+		}
+    
+		
+		
+		
+	}
+	
+	/**
+	*Method to add the two paths to the map 
+	*/
+	function addPaths(){
 		
 		// Path 1
 		var planCoordinates1 = new Array() ;	
-		var pathStyle1 ;
 			
 
 				for( var j = 0 ; j < arrayLat1.length; j++ ){
@@ -688,10 +793,11 @@ if(request.getParameter("testDepStop") != null){
 
 				
 				pathStyle1.setMap(map);
-			
+				
+				
+
 			// Path 2	
 			var planCoordinates2 = new Array() ;	
-			var pathStyle2 ;
 			
 					for( var i = 0 ; i < arrayLat2.length; i++ ){
 						planCoordinates2[i] = new google.maps.LatLng(arrayLat2[i] , arrayLong2[i]);
@@ -706,233 +812,17 @@ if(request.getParameter("testDepStop") != null){
 					});
 					
 					
-					pathStyle2.setMap(map);
-							
-					
-					
-			// Differences vitesses
-		    if(booleanDiffSpeed == "Yes"){
-
-				for(var k = numberMarker ; k < arraySpeed1.length ; k += numberMarker){	
-			 
-					var markerDiffSpeed ;
-					var markerPosition;
-					var speedImg;
-					var namePath;
-					
-					// Test the differences vitesses
-					var diffSpeeds ;
-					var diffSpeedStr;
-
-					if(arraySpeed1[k] >arraySpeed2[k]){
-						
-						// Set position
-					 	markerPosition = new google.maps.LatLng(arrayLat1[k],arrayLong1[k]);
-					 	diffSpeeds = arraySpeed1[k] - arraySpeed2[k];
-					 	diffSpeeds = diffSpeeds.toFixed(2);
-					 	
-					 	// Test value of the differences to add the right icon img
-					 	if(diffSpeeds <= 3.0){
-					 	 speedImg = 'img/Speedlow.png';
-					 	}
-					 	else if(diffSpeeds > 3.0 && diffSpeeds <= 6.0 ){
-						 speedImg = 'img/SpeedMiddle.png';
-					 	}
-					 	else if(diffSpeeds > 6.0 ){
-						 speedImg = 'img/SpeedMax.png';
-					 	}
-		 	
-					 	diffSpeedStr = "+" + diffSpeeds.toString() + " km/h";
-					 	namePath = " trajet 1";
-					}
-					else{
-						
-						markerPosition = new google.maps.LatLng(arrayLat2[k],arrayLong2[k]);
-						diffSpeeds = arraySpeed2[k] - arraySpeed1[k] ;
-					 	diffSpeeds = diffSpeeds.toFixed(2);
-					 	
-					 	// Test value of the differences to add the right icon img
-					 	if(diffSpeeds <= 3.0){
-					 	 speedImg = 'img/Speedlow.png';
-					 	}
-					 	else if(diffSpeeds > 3.0 && diffSpeeds <= 6.0 ){
-						 speedImg = 'img/SpeedMiddle.png';
-					 	}
-					 	else if(diffSpeeds > 6.0 ){
-						 speedImg = 'img/SpeedMax.png';
-					 	}
-					 	
-						diffSpeedStr = '+' + diffSpeeds.toString() + ' km/h';
-					 	namePath = " trajet 2";
-					}
-							
-					
-					// Now add the content of the popup
-					  var contentStringSpeeds = '<div id="content">'+
-				      '<div id="siteNotice">'+
-				      '<h5 id="firstHeading" class="firstHeading">Données' +namePath.toString() + '</h5>'+
-				      '<div id="bodyContent">'+
-				      '<table class="table">' + 
-				      '<TR>'+
-				      '<TD align="left">' + '<span title="Différence vitesses" style="font-size:11pt;">' + diffSpeedStr.toString() +  '</span>' +'</TD>' +
-				      '</TR>' +
-				      '</table>'+
-				      '</div>'+
-				      '</div>'+
-				      '</div>';
-				      
-				      // add content text html
-					  var myinfowindow  = new google.maps.InfoWindow({
-					      content: contentStringSpeeds
-					  });
-				      				
-					  markerDiffSpeed = new google.maps.Marker({
-							position: markerPosition,
-				    		animation: google.maps.Animation.DROP,
-							infowindow: myinfowindow ,
-							icon : speedImg
-						});  
-
-					  
-					  // Listener
-					  google.maps.event.addListener(markerDiffSpeed, 'click', function() {
-						  this.infowindow.open(map, this);
-					  });
-					  
-					  // show only if there is a differences
-					  if(diffSpeeds != 0){
-					  markerDiffSpeed.setMap(map);
-					  }
-				}
-		    }
+				pathStyle2.setMap(map);
 			
-			
-			
-		 // Differences pulsation
-		    if(booleanDiffPuls == "Yes"){
-
-				for(var k = numberMarker ; k < arraySpeed1.length ; k += numberMarker){	
-			 
-					var markerDiffPuls;
-					var markerPosition;
-					var pulsImg;
-					var namePath;
-					
-					// Test the differences vitesses
-					var diffPuls ;
-					var diffPulsStr;
-
-					if(arrayPulsation1[k] >arrayPulsation2[k]){
-						// Set position
-					 	markerPosition = new google.maps.LatLng(arrayLat1[k],arrayLong1[k]);
-					 	diffPuls = arrayPulsation1[k] - arrayPulsation2[k];
-						alert("diffPuls "+diffPuls);
-					 	
-					 	// Test value of the differences to add the right icon img
-					 	if(diffSpeeds <= 20){
-					 		pulsImg = 'img/h1.png';
-					 	}
-					 	else if(diffPuls > 20 && diffPuls <= 40 ){
-					 		pulsImg = 'img/h2.png';
-					 	}
-					 	else if(diffPuls > 40 ){
-					 		pulsImg = 'img/h3.png';
-					 	}
-		 	
-					 	diffPulsStr = "+" + diffPuls.toString() + " pulsation";
-					 	namePath = " trajet 1";
-					}
-					else{		
-						markerPosition = new google.maps.LatLng(arrayLat2[k],arrayLong2[k]);
-						diffPuls = arrayPulsation2[k] - arrayPulsation1[k] ;
-					 	
-					 	// Test value of the differences to add the right icon img
-					 	if(diffPuls <= 20){
-					 		pulsImg = 'img/h1.png';
-					 	}
-					 	else if(diffPuls > 20 && diffPuls <= 40 ){
-					 		pulsImg = 'img/h2.png';
-					 	}
-					 	else if(diffPuls  > 40 ){
-					 		pulsImg = 'img/h3.png';
-					 	}
-					 	
-					 	diffPulsStr = '+' + diffPuls.toString() + ' pulsation';
-					 	namePath = " trajet 2";
-					}
-							
-					
-					// Now add the content of the popup
-					  var contentStringSpeeds = '<div id="content">'+
-				      '<div id="siteNotice">'+
-				      '<h5 id="firstHeading" class="firstHeading">Données' +namePath.toString() + '</h5>'+
-				      '<div id="bodyContent">'+
-				      '<table class="table">' + 
-				      '<TR>'+
-				      '<TD align="left">' + '<span title="Différence vitesses" style="font-size:11pt;">' + diffPulsStr.toString() +  '</span>' +'</TD>' +
-				      '</TR>' +
-				      '</table>'+
-				      '</div>'+
-				      '</div>'+
-				      '</div>';
-				      
-				      // add content text html
-					  var myinfowindow  = new google.maps.InfoWindow({
-					      content: contentStringSpeeds
-					  });
-				      				
-					  markerDiffPuls = new google.maps.Marker({
-							position: markerPosition,
-				    		animation: google.maps.Animation.DROP,
-							infowindow: myinfowindow ,
-							icon : pulsImg
-						});  
-
-					  
-					  // Listener
-					  google.maps.event.addListener(markerDiffPuls, 'click', function() {
-						  this.infowindow.open(map, this);
-					  });
-					  
-					  // show only if there is a differences
-					  if(diffPuls != 0){
-					  markerDiffPuls.setMap(map);
-					  }
-				}
-		    }
-				
-		// Marker end
-		  var contentStringEnd = '<div id="content">'+
-	      '<div id="siteNotice">'+
-	      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
-	      '<div id="bodyContent">'+
-	      '<table class="table">' +
-	      '<TR>'+
-	      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed1[arraySpeed1.length-1].toString() +  '</span>' +'</TD>' +
-	      '</TR>' +
-	      '</table>'+
-	      '</div>'+
-	      '</div>'+
-	      '</div>';
-	      
-		  var contentStringStart = '<div id="content">'+
-	      '<div id="siteNotice">'+
-	      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
-	      '<div id="bodyContent">'+
-	      '<table class="table">' +
-	      '<TR>'+
-	      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arraySpeed1[0].toString() +  '</span>' +'</TD>' +
-	      '</TR>' +
-	      '</table>'+
-	      '</div>'+
-	      '</div>'+
-	      '</div>';
-	      
+	}
+	
+	function addMarkerPath1(){
+		
 	    var imageStart = 'img/dd-start.png';
-	     var imageEnd = 'img/dd-end.png';
+	    var imageEnd = 'img/dd-end.png';
 
 	  	var endMarker = new google.maps.LatLng(arrayLat1[arrayLat1.length-1],arrayLong1[arrayLong1.length-1]);	
-		var markerEnd = new google.maps.Marker({
+		markerEnd = new google.maps.Marker({
     		position: endMarker,
     		animation: google.maps.Animation.DROP,
     		title:"END",
@@ -940,40 +830,42 @@ if(request.getParameter("testDepStop") != null){
 		});
 		
 	  	var startMarker = new google.maps.LatLng(arrayLat1[0],arrayLong1[0]);	
-		var markerStart = new google.maps.Marker({
+		markerStart = new google.maps.Marker({
     		position: startMarker,
     		animation: google.maps.Animation.DROP,
     		title:"START",
     		icon: imageStart,
 		});
-		
-		var infowindowStart = new google.maps.InfoWindow({
-		      content: contentStringStart
-		});
+		  	
 
-		var infowindowEnd = new google.maps.InfoWindow({
-		      content: contentStringEnd
-		});
-
-	  	google.maps.event.addListener(markerStart, 'click', function() {
-	  		infowindowStart.open(map,markerStart);
-		  });
-	  	
-	  	google.maps.event.addListener(markerEnd, 'click', function() {
-	  		infowindowEnd.open(map,markerEnd);
-		  });
-	  	
-	  	if(booleanStartStop == "Yes"){
 	  	// Add the two markers
 	  	markerEnd.setMap(map);
 	  	markerStart.setMap(map);
-	  	}
-	  	
+		
 	}
 	
-	google.maps.event.addDomListener(window, 'resize', initialize);
-	google.maps.event.addDomListener(window, 'load', initialize);
+	/**
+	*Method to remove the start/end point of path 1
+	*/
+	function removeStartEndPointPath1(){
+		
+		markerStart.setMap(null);
+		markerEnd.setMap(null);
+
+	}
 	
+	
+	/**
+	*Method to remove the paths to the map 
+	*/
+	function removePaths(){
+		
+		pathStyle1.setMap(null);
+		pathStyle2.setMap(null);
+
+	}
+	
+
 
 </script>
 
@@ -1387,57 +1279,18 @@ if(request.getParameter("testDepStop") != null){
   						<table>
 						<TR>
 							<TD>
-								<form  method="get" action="compare">
-							
-											<div title="Afficher le trajet enregistré." class="checkbox">
-											<span>
-												   <input id='testPath' type='checkbox' value='Yes' name='testPath'>
-												    Chemin
-												   <input id='testPathHidden' type='hidden' value='No' name='testPath'>
-												  
-											</span>
-											</div>
-											<div title="Afficher point départ et stop" class="checkbox">
-											<span>
-												  <input id='testDepStop' type='checkbox' value='Yes' name='testDepStop'>
-												  Point départ/stop
-												  <input id='testDepStopHidden' type='hidden' value='No' name='testDepStop'>
-											</span>
-											</div>
-<br>											
-									
-											<div title="Afficher les différences de pulsation entre les séances." class="checkbox">
-											<span>
-												  <input id='testDifPuls' type='checkbox' value='Yes' name='testDifPuls'>
-												  Calculer  pulsations
-												  <input id='testDifPulsHidden' type='hidden' value='No' name='testDifPuls'>
-											</span>
-											</div>
-											
-										    <div title="Afficher les différences de vitesse entre les séances." class="checkbox">
-											<span>
-												  <input id='testDiffSpeed' type='checkbox' value='Yes' name='testDiffSpeed'>
-												  Calculer vitesses
-												  <input id='testDiffSpeedHidden' type='hidden' value='No' name='testDiffSpeed'>
-											</span>
-											</div>
-											
-										<select title ="Représente le nombre de mètres qui séparent chaques filtres de la séance." name="meterMarker" id="precision" class="form-control"  style="max-width:100px;">
-											  <option value="2">2 m</option>
-											  <option value="10">10 m</option>
-											  <option value="50">50 m</option>
-											  <option value="100">100 m</option>
-											  <option value="200">200 m</option>
-											  <option value="500">500 m</option>
-											  <option value="1000">1000 m</option>
-										</select> 
-										<input type='hidden' name='date1' value='<%= dateToShow1 %>'> 
-										<input type='hidden' name='date2' value='<%= dateToShow2 %>'> 
-<br>
 
-							     		<button type='submit' class="btn btn-success"> <b>  Filtrer </b> </button>
 <br>
-								</form> 
+							<button title="Enlever le chemin de la carte." type='button' class="btn btn-default btn-sm" onclick="removePaths();"><b>Enlever chemin</b></button>	
+							<button title="Enlever les points de départ et stop." type='button' class="btn btn-default btn-sm" onclick="removeStartEndPointPath1();"><b>Enlever départ/stop</b></button>	
+<br>
+<br>
+							<button title="Montrer les différences de vitesses." style="margin-top:12pt;" type='button' class="btn btn-warning btn-sm" onclick="addDiffSpeed();"><b>Calculer vitesses</b></button>
+<br>
+							<button title="Montrer les différences de pulsation." style="margin-top:12pt;" type='button' class="btn btn-danger btn-sm" onclick="addDiffHeart();"><b>Calculer pulsations</b></button>
+<br>
+<br>
+							<button  title="Recharger la carte et réinitialiser." style="margin-top:15pt;" type='button' class="btn btn-success" onclick="initialize();"> <b> <span class="glyphicon glyphicon-refresh"> </span>  &nbsp; Recharger  </b></button>
 							</TD>
 						</TR>
 					</table>
