@@ -96,35 +96,165 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 	
 	google.setOnLoadCallback(drawChart);
 	
+    var arrayVitesses = [ <%= stringBufferVitesses.toString() %> ];
+    var arrayAltitudes = [ <%= stringBufferAltitudes.toString() %> ];
+  	var arrayPulsation = [ <%= stringBufferPulsation.toString() %> ];
+    var arrayVolumeTidal = [ <%= stringBufferVolumeTidal.toString() %> ];
+    var arrayRespiration = [ <%= stringBufferRespirationFreq.toString() %> ];
+    var arrayVentilation = [ <%= stringBufferVentilations.toString() %> ];
+    var multiple;
+	
 	function drawChart() {
 		
-	    var arrayVitesses = [ <%= stringBufferVitesses.toString() %> ];
-	    var arrayAltitudes = [ <%= stringBufferAltitudes.toString() %> ];
-	  	var arrayPulsation = [ <%= stringBufferPulsation.toString() %> ];
-	    var arrayVolumeTidal = [ <%= stringBufferVolumeTidal.toString() %> ];
-	    var arrayRespiration = [ <%= stringBufferRespirationFreq.toString() %> ];
-	    var arrayVentilation = [ <%= stringBufferVentilations.toString() %> ];
+		multiple = arrayPulsation.length / arrayVitesses.length;
+		var average = 0.0;
+		var index = 0;
+		var position = 0;
+		
+		
+		
+		// Set the values of the Altitude  list to the pulsation list
+		
+		if (multiple <= 2.5){
+		    // Double speed array with averages
+		    for(var f = 0  ; f < arrayPulsation.length; f++){
+		    	// only pairs
+		    	if(index % 2 == 0) {
+		    	average = (arrayAltitudes[index] + arrayAltitudes[index+2])/2;
+		    	average = average.toFixed(2);
+		    	average = parseFloat(average);
+		    	arrayAltitudes.splice(index+1, 0, average);
+		    	}
+		    	index++;
+		    }
+		}
+
+		else if (multiple <= 3.5 && multiple > 2.5  ) {
+	    	// Double speed array with averages
+		    for(var f = 0  ; f < arrayPulsation.length; f++){
+		    	
+		    	// add first value
+		    	if(f == 0){
+		    		
+					// add first number
+			    	average = (arrayAltitudes[f] + arrayAltitudes[f+3])/2;
+			    	average = average.toFixed(2);
+			    	average = parseFloat(average);
+			    	arrayAltitudes.splice(f+1, 0, average);
+			    	
+			    	// Second number
+			    	average = (arrayAltitudes[f+1] + arrayAltitudes[3])/2;
+			    	average = average.toFixed(2);
+			    	average = parseFloat(average);
+			    	arrayAltitudes.splice(f+2, 0, average);
+		    	}
+		    	
+		    	// add all others values by multiple of 3 (we miss 2 data of 3 if the size is 3x bigger)
+				if( position % 3 == 0){
+		
+				// add first number
+		    	average = (arrayAltitudes[position] + arrayAltitudes[position+3])/2;
+		    	average = average.toFixed(2);
+		    	average = parseFloat(average);
+		    	arrayAltitudes.splice(f+1, 0, average);
+		    	
+		    	// Second number
+		    	average = (arrayAltitudes[position+1] + arrayAltitudes[position+3])/2;
+		    	average = average.toFixed(2);
+		    	average = parseFloat(average);
+		    	arrayAltitudes.splice(f+2, 0, average);
+		    	
+		    	}
+		    
+		    	position ++;
+			}
+		}
+		
+		// Reinitialize
+		average = 0.0;
+		index = 0;
+		position = 0;
+		
+		// Set the values of the SPEED list to the pulsation list
+		
+		if (multiple <= 2.5){
+		    // Double speed array with averages
+		    for(var f = 0  ; f < arrayPulsation.length; f++){
+		    	// only pairs
+		    	if(index % 2 == 0) {
+		    	average = (arrayVitesses[index] + arrayVitesses[index+2])/2;
+		    	average = average.toFixed(2);
+		    	average = parseFloat(average);
+		    	arrayVitesses.splice(index+1, 0, average);
+		    	}
+		    	index++;
+		    }
+		}
+
+		else if (multiple <= 3.5 && multiple > 2.5 ) {
+	    	// Double speed array with averages
+		    for(var f = 0  ; f < arrayPulsation.length; f++){
+		    	
+		    	// add first value
+		    	if(f == 0){
+		    		
+					// add first number
+			    	average = (arrayVitesses[f] + arrayVitesses[f+3])/2;
+			    	average = average.toFixed(2);
+			    	average = parseFloat(average);
+			    	arrayVitesses.splice(f+1, 0, average);
+			    	
+			    	// Second number
+			    	average = (arrayVitesses[f+1] + arrayVitesses[3])/2;
+			    	average = average.toFixed(2);
+			    	average = parseFloat(average);
+			    	arrayVitesses.splice(f+2, 0, average);
+		    	}
+		    	
+		    	// add all others values by multiple of 3 (we miss 2 data of 3 if the size is 3x bigger)
+				if( position % 3 == 0){
+		
+				// add first number
+		    	average = (arrayVitesses[position] + arrayVitesses[position+3])/2;
+		    	average = average.toFixed(2);
+		    	average = parseFloat(average);
+		    	arrayVitesses.splice(f+1, 0, average);
+		    	
+		    	// Second number
+		    	average = (arrayVitesses[position+1] + arrayVitesses[position+3])/2;
+		    	average = average.toFixed(2);
+		    	average = parseFloat(average);
+		    	arrayVitesses.splice(f+2, 0, average);
+		    	
+		    	}
+		    
+		    	position ++;
+			}
+		}
+		
 		
 		var data = new google.visualization.DataTable();
-		data.addColumn('string', "Enregistrements");
-		data.addColumn('number', 'Vitesse km/h');
-		data.addColumn('number', 'Altitudes décamètre');
-		data.addColumn('number', 'Pulsation min');
-		data.addColumn('number', 'Volume Tidale litre');
-		data.addColumn('number', 'Respiration min');
-		data.addColumn('number', 'Ventilation litre/min');
-		
-		
-	    // Because of the differences of length
+			data.addColumn('string', "Enregistrements");
+			data.addColumn('number', 'Vitesse km/h');
+			data.addColumn('number', 'Altitudes décamètre');
+			data.addColumn('number', 'Pulsation min');
+			data.addColumn('number', 'Volume Tidale litre');
+			data.addColumn('number', 'Respiration min');
+			data.addColumn('number', 'Ventilation litre/min');
 
 	
-		 // Add values and converte it ml to l /1000
+		 // Add values
 		  for(var i = 0; i < arrayPulsation.length  ; i++){
-		   data.addRow([i.toString(), arrayVitesses[i], arrayAltitudes[i]/10, arrayPulsation[i], (arrayVolumeTidal[i]/1000), 
-		                arrayRespiration[i], (arrayVentilation[i]/1000)]);
+			  
+		   // Convert and decimals 2
+		   arrayVentilation[i] = parseFloat((arrayVentilation[i]/1000).toFixed(2));
+		   arrayVolumeTidal[i] = parseFloat((arrayVolumeTidal[i]/1000).toFixed(2));
+			  
+		   data.addRow([i.toString(), arrayVitesses[i], arrayAltitudes[i]/10, arrayPulsation[i], (arrayVolumeTidal[i]), 
+		                arrayRespiration[i], (arrayVentilation[i])]);
 		
 		  }
-
+		 
 		var options = {
 			colors: ['#FFF800' , '#00B125', '#FF0007', '#46FDCF', '#960DF9', '#0C1A69'],
 			hAxis : {
@@ -139,85 +269,110 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 			},
 		};
 		
+		// Draw chart
 		var chart = new google.visualization.AreaChart(document
 				.getElementById('chart_div2'));
 		chart.draw(data, options);
 		
+		var arrayToHide = new Array();
+		var index = 0 ;
 		
+
+		// Listener of buttons
 		 var hideSpeed = document.getElementById("hideSpeed");
 		 hideSpeed.onclick = function()
 		 {
-
 		    view = new google.visualization.DataView(data); 
-		    view.hideColumns([1]); 
+		    
+		    arrayToHide.splice(index, 0, 1);
+		    if(arrayToHide.length < 6){
+			    view.hideColumns(arrayToHide);
+			    }
+	    	
 		    chart.draw(view, options);
-
-		 }
-		
-		var chart = new google.visualization.AreaChart(document
-				.getElementById('chart_div2'));
-		chart.draw(data, options);
-		
+		    index++;
+		 }		
 		
 		 var hideAlti = document.getElementById("hideAltitude");
 		 hideAlti.onclick = function()
 		 {
-
 		    view = new google.visualization.DataView(data); 
-		    view.hideColumns([2]); 
+		    
+		    arrayToHide.splice(index, 0, 2);
+		    if(arrayToHide.length < 6){
+			    view.hideColumns(arrayToHide);
+			    }
+	    	
 		    chart.draw(view, options);
-
+		    index++;
 		 }
 		
 		
 		 var hideSal = document.getElementById("hidePulsation");
 		 hideSal.onclick = function()
 		 {
-
 		    view = new google.visualization.DataView(data); 
-		    view.hideColumns([3]); 
+		    
+		    arrayToHide.splice(index, 0, 3);
+		    if(arrayToHide.length < 6){
+			    view.hideColumns(arrayToHide);
+			    }
+		    
 		    chart.draw(view, options);
-
+		    index++;
 		 }
-		 
+
 		 
 		 var hideTidal = document.getElementById("hideTidal");
 		 hideTidal.onclick = function()
 		 {
-
 		    view = new google.visualization.DataView(data);
-		    view.hideColumns([4]);
+		    
+		    arrayToHide.splice(index, 0, 4);
+		    if(arrayToHide.length < 6){
+			    view.hideColumns(arrayToHide);
+			    }
+	    	
 		    chart.draw(view, options);
-
+		    index++;
 		 }	
 		 
 		 var hideRespiration = document.getElementById("hideRespiration");
 		 hideRespiration.onclick = function()
 		 {
-
-
 		    view = new google.visualization.DataView(data);
-		    view.hideColumns([5]); 
+		    
+		    arrayToHide.splice(index, 0, 5);
+		    if(arrayToHide.length < 6){
+		    view.hideColumns(arrayToHide);
+		    }
+	    	
 		    chart.draw(view, options);
-
+		    index++;
 		 }	
+		 
 		 
 		 var hideVentilation = document.getElementById("hideVentilation");
 		 hideVentilation.onclick = function()
 		 {
-
-
 		    view = new google.visualization.DataView(data);
-		    view.hideColumns([6]); 
-		    chart.draw(view, options);
+		    
+		    arrayToHide.splice(index, 0, 6);
+		    if(arrayToHide.length < 6){
+			    view.hideColumns(arrayToHide);
+			    }
 
+		    chart.draw(view, options);
+		    index++;
 		 }	
+		 
 		 
 		 // See all
 		 var seeAll = document.getElementById("seeAll");
 		 seeAll.onclick = function()
 		 {
 		    view = new google.visualization.DataView(data);
+		    arrayToHide.length = 0;
 		    view.setColumns([0,1,2,3,4,5,6]);
 		    chart.draw(view, options);
 		 }
@@ -422,13 +577,28 @@ function logout() {
 			  heatmap.setMap(map);
 	}
 	
+	
+	
+		
 	/**
 	 * Method to add heart rate information
 	 */
 	function addHeartRate(){
 		
+		var number ;
+		var multi ;
+
+		if (multiple <= 2.5){
+			number = 2;
+			multi = 2 ;
+		}
+		else if (multiple <= 3.5 && multiple > 2.5 ) {
+			number = 3 ;
+			multi = 3 ;
+		}
+		
 		 // Add HEART RATE markers if the user want it
-			for(var j = 0 ; j < arraySpeed.length ; j ++){	
+			for(var j = 0 ; j < arraySpeed.length ; j++){	
 				
 				var markerPuls ;
 		 
@@ -439,7 +609,7 @@ function logout() {
 			      '<div id="bodyContent">'+
 			      '<table class="table">' + 
 			      '<TR>'+
-			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-flash">' + arrayPulsation[j+1].toString() +  '</span>' +'</TD>' +
+			      '<TD>' + '<span title="Vitesse km/h" style="font-size:11pt;" class="glyphicon glyphicon-heart">' + arrayPulsation[number].toString() +  '</span>' +'</TD>' +
 			      '</TR>' +
 			      '</table>'+
 			      '</div>'+
@@ -451,7 +621,7 @@ function logout() {
 				      content: contentStringSpeeds
 				  });
 			      				
-				  if (arrayPulsation[j] <= 80 ){
+				  if (arrayPulsation[number] <= 80 ){
 					  var hhlow = 'img/h1.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
 					  markerPuls = new google.maps.Marker({
@@ -461,7 +631,7 @@ function logout() {
 							icon : hhlow
 						});  
 				  }
-				  else if (arrayPulsation[j] > 85 && arrayPulsation[j] <= 150){
+				  else if (arrayPulsation[number] > 80 && arrayPulsation[number] <= 150){
 					  var hhmid = 'img/h2.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
 					  markerPuls = new google.maps.Marker({
@@ -472,7 +642,7 @@ function logout() {
 						});
 				  }
 				  
-				  else if (arrayPulsation[j] > 150){
+				  else if (arrayPulsation[number] > 150){
 					  var hhfast = 'img/h3.png';
 					  var markerPosition = new google.maps.LatLng(arrayLat[j],arrayLong[j]);
 					  markerPuls = new google.maps.Marker({
@@ -487,35 +657,43 @@ function logout() {
 					  this.infowindow.open(map, this);
 				  });
 				  
-				  markerPuls.setMap(map);
+				  number += multi ;
+				  markerPuls.setMap(map);				  
 			}
-		
+
 	}
 	
 	function addConstanceHeart(){
 		
 		var pointarray;
 		var HeartConstant = new Array();
+		var number ;
+		var multi ;
+		
+		if (multiple <= 2.5){
+			number = 2;
+			multi = 2 ;
+		}
+		else if (multiple <= 3.5 && multiple > 2.5 ) {
+			number = 3 ;
+			multi = 3 ;
+		}
 		
 		// Heart rate, show if the workout was performant (same speed more or less) 
-		for(var p = 0 ; p < arraySpeed.length ; p ++ ){	
-				
+		for(var p = 0 ; p < arraySpeed.length ; p++ ){	
+
 			//Create array of location
-			if(arrayPulsation[p] <= 70){	  
+			if(arrayPulsation[number] <= 80){	  
 				HeartConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 10};
 			}		
-			else if(arrayPulsation[p] > 70 && arrayPulsation[p] <= 100 ) {
+			else if(arrayPulsation[number] > 80 && arrayPulsation[number] <= 150 ) {
 				HeartConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 100};								
 			}
-			else if(arrayPulsation[p] > 100 && arrayPulsation[p] <= 130 ) {
-				HeartConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 500};								
-			}
-			else if(arrayPulsation[p] > 130 && arrayPulsation[p] <= 160) {
+			else if(arrayPulsation[number] > 150) {
 				HeartConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1000};								
 			}
-			else if(arrayPulsation[p] > 160) {
-				HeartConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1500};								
-			}
+			
+			  number += multi ;
 		}
 		
 		  var gradient = [
@@ -549,7 +727,6 @@ function logout() {
 		  
 		  // add heatmap
 		  heatmap.setMap(map);
-		
 		
 	}
 	
@@ -694,11 +871,9 @@ function logout() {
 		pathStyle.setMap(null);
 
 	}
-	
-
-
 
 </script>
+
 
 
 
@@ -964,14 +1139,11 @@ function logout() {
 
 					<h3 class="page-header">Graphiques </h3>
 
+
 																	
 						<div class="row">
-					
-			
-			  				<div id="chart_div2" style="width: 100%; height: 600px;"></div>
-			  		
-<br><br>	  				
- 										
+
+			  				<div id="chart_div2" style="width: 100%; height: 500px;"></div>									
 
 								<table>
 									<TR>

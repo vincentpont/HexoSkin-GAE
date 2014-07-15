@@ -141,6 +141,9 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 		var arrayVolumeTidal1 = [ <%= stringBufferVolumeTidal1.toString() %> ];
 		var arrayRespiration1 = [ <%= stringBufferRespirationFreq1.toString() %> ];
 		var arrayVentilation1 = [ <%= stringBufferVentilations1.toString() %> ];
+		
+		var arrayToHide1 = new Array();
+		var index1 = 0 ;
 
 
 		google.load("visualization", "1", {packages:["corechart"]});
@@ -178,42 +181,63 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 			 var hidePuls1 = document.getElementById("hidePulsation1");
 			 hidePuls1.onclick = function()
 			 {
-			    view = new google.visualization.DataView(data);
-			    view.hideColumns([1]); 
-			    chart.draw(view, options);
+				    view = new google.visualization.DataView(data);
+				    arrayToHide1.splice(index1, 0, 1);
+				    if(arrayToHide1.length < 4){
+					    view.hideColumns(arrayToHide1);
+					    }
+			    	
+				    chart.draw(view, options);
+				    index1++;
 			 }	 
 		  
 			 var hideRespi1 = document.getElementById("hideRespiration1");
 			 hideRespi1.onclick = function()
 			 {
-			    view = new google.visualization.DataView(data);
-			    view.hideColumns([2]); 
-			    chart.draw(view, options);
+				    view = new google.visualization.DataView(data);
+				    arrayToHide1.splice(index1, 0, 2);
+				    if(arrayToHide1.length < 4){
+					    view.hideColumns(arrayToHide1);
+					    }
+			    	
+				    chart.draw(view, options);
+				    index1++;
 			 }		
 			 
 			 var hideVenti1 = document.getElementById("hideVentilation1");
 			 hideVenti1.onclick = function()
 			 {
-			    view = new google.visualization.DataView(data);
-			    view.hideColumns([3]); 
-			    chart.draw(view, options);
+				    view = new google.visualization.DataView(data);
+				    arrayToHide1.splice(index1, 0, 3);
+				    if(arrayToHide1.length < 4){
+					    view.hideColumns(arrayToHide1);
+					    }
+				    
+				    chart.draw(view, options);
+				    index1++;
 			 }
 			 
 			 var hideVolumT1 = document.getElementById("hideVolumeTidal1");
 			 hideVolumT1.onclick = function()
 			 {
-			    view = new google.visualization.DataView(data);
-			    view.hideColumns([4]); 
-			    chart.draw(view, options);
+				    view = new google.visualization.DataView(data);
+				    arrayToHide1.splice(index1, 0, 4);
+				    if(arrayToHide1.length < 4){
+					    view.hideColumns(arrayToHide1);
+					    }
+			    	
+				    chart.draw(view, options);
+				    index1++;
 			 }
 			 
 			 // See all
 			 var seeAll3 = document.getElementById("seeAll3");
 			 seeAll3.onclick = function()
 			 {
-			    view = new google.visualization.DataView(data);
-			    view.setColumns([0,1,2,3,4]);
-			    chart.draw(view, options);
+				    view = new google.visualization.DataView(data);
+				    arrayToHide1.length = 0;
+				    view.setColumns([0,1,2,3,4]);
+				    chart.draw(view, options);
 			 }
 }
 		
@@ -319,7 +343,8 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 		var arrayVolumeTidal2 = [ <%= stringBufferVolumeTidal2.toString() %> ];
 		var arrayRespiration2 = [ <%= stringBufferRespirationFreq2.toString() %> ];
 		var arrayVentilation2 = [ <%= stringBufferVentilations2.toString() %> ];
-
+		var arrayToHide = new Array();
+		var index = 0 ;
 
 		google.load("visualization", "1", {packages:["corechart"]});
 		google.setOnLoadCallback(drawChart);
@@ -349,40 +374,61 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 		    title: 'Capacité respiratoire'
 		  };
 		  
+		  // Draw the chart
 		  var chart = new google.visualization.AreaChart(document.getElementById('chart_div4'));
-		
 		  chart.draw(data, options);
 		  
+		  	// Listener of buttons
 			 var hidePuls2 = document.getElementById("hidePulsation2");
 			 hidePuls2.onclick = function()
 			 {
-			    view = new google.visualization.DataView(data);
-			    view.hideColumns([1]); 
-			    chart.draw(view, options);
+				    view = new google.visualization.DataView(data);
+				    arrayToHide.splice(index, 0, 1);
+				    if(arrayToHide.length < 4){
+					    view.hideColumns(arrayToHide);
+					    }
+			    	
+				    chart.draw(view, options);
+				    index++;
 			 }	 
 			 
 			 var hideRespi2 = document.getElementById("hideRespiration2");
 			 hideRespi2.onclick = function()
 			 {
-			    view = new google.visualization.DataView(data);
-			    view.hideColumns([2]); 
-			    chart.draw(view, options);
+				    view = new google.visualization.DataView(data);
+				    arrayToHide.splice(index, 0, 2);
+				    if(arrayToHide.length < 4){
+					    view.hideColumns(arrayToHide);
+					    }
+			    	
+				    chart.draw(view, options);
+				    index++;
 			 }		
 			 
 			 var hideVent2 = document.getElementById("hideVentilation2");
 			 hideVent2.onclick = function()
 			 {
-			    view = new google.visualization.DataView(data);
-			    view.hideColumns([3]); 
-			    chart.draw(view, options);
+				    view = new google.visualization.DataView(data);
+				    arrayToHide.splice(index, 0, 3);
+				    if(arrayToHide.length < 4){
+					    view.hideColumns(arrayToHide);
+					    }
+				    
+				    chart.draw(view, options);
+				    index++;
 			 }
 			 
 			 var hideVoluT2 = document.getElementById("hideVolumeTidal2");
 			 hideVoluT2.onclick = function()
 			 {
 			    view = new google.visualization.DataView(data);
-			    view.hideColumns([4]); 
+			    arrayToHide.splice(index, 0, 4);
+			    if(arrayToHide.length < 4){
+				    view.hideColumns(arrayToHide);
+				    }
+		    	
 			    chart.draw(view, options);
+			    index++;
 			 }
 			 
 			 // See all
@@ -390,6 +436,7 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 			 seeAll4.onclick = function()
 			 {
 			    view = new google.visualization.DataView(data);
+			    arrayToHide.length = 0;
 			    view.setColumns([0,1,2,3,4]);
 			    chart.draw(view, options);
 			 }
@@ -572,25 +619,40 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 	* Method to add differences of heart rate on the path
 	*/
 	function addDiffHeart(){
+		
+		var markerDiffPuls;
+		var markerPosition;
+		var pulsImg;
+		var namePath;
+		
+		// Test the differences vitesses
+		var diffPuls ;
+		var diffPulsStr;
+		
+		var number ;
+		var multi ;
+		
+		multiple = arrayPulsation1.length / arraySpeed1.length;
+		
+
+		if (multiple <= 2.5){
+			number = 2;
+			multi = 2 ;
+		}
+		else if (multiple <= 3.5 && multiple > 2.5 ) {
+			number = 3 ;
+			multi = 3 ;
+		}
 			
 		// Differences pulsation
 		for(var k = 0 ; k < arraySpeed1.length ; k ++){	
 	 
-			var markerDiffPuls;
-			var markerPosition;
-			var pulsImg;
-			var namePath;
-			
-			// Test the differences vitesses
-			var diffPuls ;
-			var diffPulsStr;
 
-			if(arrayPulsation1[k] >arrayPulsation2[k]){
+			if(arrayPulsation1[number] >arrayPulsation2[number]){
 				// Set position
 			 	markerPosition = new google.maps.LatLng(arrayLat1[k],arrayLong1[k]);
-			 	diffPuls = arrayPulsation1[k] - arrayPulsation2[k];
-				alert("diffPuls "+diffPuls);
-			 	
+			 	diffPuls = arrayPulsation1[number] - arrayPulsation2[number];
+
 			 	// Test value of the differences to add the right icon img
 			 	if(diffSpeeds <= 20){
 			 		pulsImg = 'img/h1.png';
@@ -607,16 +669,16 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 			}
 			else{		
 				markerPosition = new google.maps.LatLng(arrayLat2[k],arrayLong2[k]);
-				diffPuls = arrayPulsation2[k] - arrayPulsation1[k] ;
+				diffPuls = arrayPulsation2[number] - arrayPulsation1[number] ;
 			 	
 			 	// Test value of the differences to add the right icon img
 			 	if(diffPuls <= 20){
 			 		pulsImg = 'img/h1.png';
 			 	}
-			 	else if(diffPuls > 20 && diffPuls <= 40 ){
+			 	else if(diffPuls > 20 && diffPuls <= 50 ){
 			 		pulsImg = 'img/h2.png';
 			 	}
-			 	else if(diffPuls  > 40 ){
+			 	else if(diffPuls  > 50 ){
 			 		pulsImg = 'img/h3.png';
 			 	}
 			 	
@@ -658,7 +720,8 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 			  });
 			  
 			  // show only if there is a differences
-
+	  
+			  number += multi ;
 			  markerDiffPuls.setMap(map);
 			  
 		}
