@@ -20,7 +20,7 @@ import restDatastore.RestInvokerDatastore;
  */
 public class RestDatastore_Test {
 
-	private String date = "2014.07.07.19:40";
+	private String date = "2014.07.13.15:07";
 	private String email = "vincentpont@gmail.com";
 	private RestInvokerDatastore restDatastore = new RestInvokerDatastore();
 
@@ -78,6 +78,7 @@ public class RestDatastore_Test {
 	@Test
 	public void testGetAllWorkoutDates() throws UnsupportedEncodingException {
 
+		@SuppressWarnings("unchecked")
 		List<String> list = restDatastore.getAllWorkoutDates(email);
 
 		// We check if the list is not null so contains the dates
@@ -106,15 +107,17 @@ public class RestDatastore_Test {
 		String listSpeed = "[0,0,6.76,8.86,7.63,9.54,8.56,8.05,8.2,7.9,7.97,7.58,6.14,6.44,6.84,6.7,5.49,7.28,6.26,6.64,6.48,6.95,6.06,4.33,5.98,0]";
 		List<Double> listDoubleSpeed = new ArrayList<Double>();
 		listDoubleSpeed = restDatastore.substringLists(listSpeed);
-
+		Double d  = null ;
 		// Test if the list is in Double after calling the methods
 		try {
-			Double d = (Double) listDoubleSpeed.get(0);
+			d = (Double) listDoubleSpeed.get(0);
 		} catch (ClassCastException e) {
 			fail();
 			System.out.println("Was not a List<Integer>");
 		}
 
+		assertNotNull(d);
+		
 		// Test if we have data in it
 		assertNotNull(listDoubleSpeed);
 

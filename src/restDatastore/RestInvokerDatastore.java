@@ -365,7 +365,7 @@ public class RestInvokerDatastore {
 	public List getAllDatesWorkoutSorted(String email)
 			throws UnsupportedEncodingException {
 
-		List listDates = getAllWorkoutDates(email);
+		List<String> listDates = getAllWorkoutDates(email);
 
 		List<DatesComparator> list = new ArrayList<DatesComparator>();
 

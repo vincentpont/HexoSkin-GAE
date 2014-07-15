@@ -5,8 +5,7 @@
 <head>
 
 
-
-<!-- Placez ce script JavaScript asynchrone juste devant votre balise </body> -->
+<!-- Google account get account -->
 <script type="text/javascript">
 	(function() {
 		var po = document.createElement('script');
@@ -18,7 +17,8 @@
 	})();
 </script>
 
-<script>
+<!-- Google account test token -->
+<script type="text/javascript">
 	function signinCallback(authResult) {
 		if (authResult['access_token']) {
 			// Logged
@@ -28,45 +28,38 @@
 			window.location = "login.jsp";
 		}
 	}
+	
+	/**
+	* Method to logout the user
+	*/
+	function logout() {
+		document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
+	}
+	
 </script>
 
-
-<script>
-function logout() {
-	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
-}
-</script>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
-<meta name="author" content="">
+<meta name="author" content="Vincent Pont">
 <link rel="shortcut icon" href="img/icoFav.png">
 
 
-<title>HexoSkin-TB</title>
+<title>HexoSkin-About</title>
 
-<!-- Latest compiled and minified CSS -->
+<!-- Bootstrap CSS -->
 <link rel="stylesheet" href="bootstrap-3.1.1/dist/css/bootstrap.min.css">
-
-<!-- Custom styles for this template -->
 <link href="bootstrap-3.1.1/dist/css/dashboard.css" rel="stylesheet">
 
-<!-- Just for debugging purposes. Don't actually copy this line! -->
-<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 
 <body>
 
 
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -95,44 +88,40 @@ function logout() {
 					<li><a href="dashboard">Dashboard</a></li>
 					<li><a href="compare">Comparer</a></li>
 					<li><a href="historique.jsp">Historique</a></li>
-				    <li><a href="definition.jsp">Définitions</a></li>
+					<li><a href="definition.jsp">Définitions</a></li>
 				</ul>
 			</div>
 
 
-
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="font-size:12pt;" >
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"
+				style="font-size: 12pt;">
 				<h1 class="page-header">A propos</h1>
 
-				<p> Mapper l'effort grâce à HexoSkin.</p>
-				<p> Travail de bachelor 2014  </p>
-				<p> Étudiant : Vincent Point </p>
-				<p> Professeur responsable : Monsieur Michael Schumacher</p>
-				<p> HES-SO Valais </p>
-
+				<p>Mapper l'effort grâce à HexoSkin.</p>
+				<p>Travail de bachelor 2014</p>
+				<p>Étudiant : Vincent Point</p>
+				<p>Professeur responsable : Monsieur Michael Schumacher</p>
+				<p>HES-SO Valais</p>
 
 				<br>
 				<div class="row"></div>
 			</div>
 
 		</div>
-		
-		<div style="bottom:0;position:absolute;width:100%;" class="row">
-		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<hr>
-		<footer>
-			<p>
-				<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
-					réservés.</b>
-			</p>
-		</footer>
+
+		<div style="bottom: 0; position: absolute; width: 100%;" class="row">
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<hr>
+				<footer>
+					<p>
+						<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
+							réservés.</b>
+					</p>
+				</footer>
+			</div>
 		</div>
+
 	</div>
-		
-	</div>
-
-
-
 
 
 	<span id="signinButton" style="display: none"> <span
@@ -144,18 +133,12 @@ function logout() {
 	</span>
 
 
-
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
+	<!-- Bootstrap core JavaScript -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="bootstrap-3.1.1/dist/js/bootstrap.min.js"></script>
 	<script src="bootstrap-3.1.1/docs/assets/js/docs.min.js"></script>
 
-	<script type="text/javascript">
-		signinCallback(authResult);
-	</script>
 
 </body>
 </html>

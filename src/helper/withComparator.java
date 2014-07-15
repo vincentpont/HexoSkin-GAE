@@ -10,6 +10,7 @@ import java.util.Comparator;
  * Travail de bachelor 2014
  */
 
+@SuppressWarnings("rawtypes")
 public class withComparator implements Comparator {
 
 	@Override

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE project>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <application>logical-light-564</application>
   <version>9</version>

@@ -42,7 +42,7 @@ public class RestInvokerHexo_Test {
 	public void testReturnAllValueFromJson() {
 				
 		// Test if we get something = authenticated and we can retrieve data from datatype 52 (steps)
-		assertNotNull(restHexo.returnAllValueFromJson("2014-07-07", "52"));
+		assertNotNull(restHexo.returnAllValueFromJson("2014-07-13", "52"));
 		
 		
 	}
@@ -55,10 +55,10 @@ public class RestInvokerHexo_Test {
 	public void returnIdOfWorkout() {
 		
 		// Test if we return the correct id with the date
-		String result = "36446";
+		String result = "36892";
 		// Test if the ID returned is correct
-		assertEquals(result,restHexo.returnIdOfWorkout("2014-07-07"));
-		assertNotNull(result,restHexo.returnIdOfWorkout("2014-07-07"));
+		assertEquals(result,restHexo.returnIdOfWorkout("2014-07-13"));
+		assertNotNull(result,restHexo.returnIdOfWorkout("2014-07-13"));
 		
 	}
 

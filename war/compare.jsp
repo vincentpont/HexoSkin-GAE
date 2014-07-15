@@ -9,11 +9,11 @@
 <%@ page import="restHexoSkin.RestInvokerHexo"%>
 <%@ page import="java.util.Iterator, java.util.List"%>
 
-<!--  Get Variable servlet -->
+<!--  Get Variable Servlet -->
 <%  String lastDateWorkout = (String) request.getAttribute("lastDateWorkout"); %>
 
 
-<!-- Placez ce script JavaScript asynchrone juste devant votre balise </body> -->
+<!-- Google account get account -->
 <script type="text/javascript">
 	(function() {
 		var po = document.createElement('script');
@@ -25,21 +25,25 @@
 	})();
 </script>
 
-<script>
-	
-	/**
-	 * Method to check if the user is loged or not if not redirect to login page
-	 */
+<!-- Google account test token -->
+<script type="text/javascript">
 	function signinCallback(authResult) {
-    	  if (authResult['access_token']) {
-        		// Logged
-        	  } else if (authResult['error']) {
-          	document.getElementById('signinButton').setAttribute('style', 'display: none');
-        		window.location = "login.jsp";
-        	  }
+		if (authResult['access_token']) {
+			// Logged
+		} else if (authResult['error']) {
+			document.getElementById('signinButton').setAttribute('style',
+					'display: none');
+			window.location = "login.jsp";
+		}
+	}
+
+	/**
+	 * Method to logout the user
+	 */
+	function logout() {
+		document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
 	}
 </script>
-
 
 <%
 String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
@@ -116,9 +120,7 @@ stringBufferVitesses1 = restMap.convertListToStringBufferInteger(listVitesses1);
 
 </script>
 
-
 <%
-
 List<String> listVolumeTidals1 = restHEXO.returnAllValueFromJson(hexoDateSub1, "37"); 
 List<String> listRespirationFreqs1 = restHEXO.returnAllValueFromJson(hexoDateSub1, "33"); 
 List<String> listVentilations1 = restHEXO.returnAllValueFromJson(hexoDateSub1, "36"); 
@@ -130,7 +132,6 @@ StringBuffer stringBufferVentilations1 = new StringBuffer();
 stringBufferVolumeTidal1 = restMap.convertListToStringBufferInteger(listVolumeTidals1);
 stringBufferRespirationFreq1 = restMap.convertListToStringBufferInteger(listRespirationFreqs1);
 stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentilations1);
-
 %>
 
 <!-- Google charts Respiration/Ventilation/Tidal trajet 1  -->
@@ -241,7 +242,6 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 			 }
 }
 		
-
 </script>
 
 <%
@@ -271,7 +271,6 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 	
 	stringBufferPulsation2 = restMap.convertListToStringBufferInteger(listPulsations2);
 	stringBufferVitesses2 = restMap.convertListToStringBufferInteger(listVitesses2);
-
 %>
 
 <!-- Google chart Pulsation/Vitesse trajet 2 -->
@@ -319,7 +318,6 @@ var arrayVitesses2 = [ <%= stringBufferVitesses2.toString() %> ];
 </script>
 
 <%
-
 List<String> listVolumeTidals2 = restHEXO.returnAllValueFromJson(hexoDateSub2, "37"); 
 List<String> listRespirationFreqs2 = restHEXO.returnAllValueFromJson(hexoDateSub2, "33"); 
 List<String> listVentilations2 = restHEXO.returnAllValueFromJson(hexoDateSub2, "36"); 
@@ -331,7 +329,6 @@ StringBuffer stringBufferVentilations2 = new StringBuffer();
 stringBufferVolumeTidal2 = restMap.convertListToStringBufferInteger(listVolumeTidals2);
 stringBufferRespirationFreq2 = restMap.convertListToStringBufferInteger(listRespirationFreqs2);
 stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentilations2);
-
 %>
 
 <!-- Google charts Respiration/Ventilation/Tidal trajet 2 -->
@@ -445,12 +442,6 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 </script>
 
 <script>
-/**
- * Method ot logout the user from the site.
- */
-function logout() {
-	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
-}
 
 /**
  * Method that test if the user select two dates to compare them if not we don't allow submit form.
@@ -544,9 +535,7 @@ function changeColor()
 </script>
 
 
-
 <%
-
 // Trajet 1
 restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
 List<Double> listLatitude1 = restMap.getListLatitudes();
@@ -568,7 +557,6 @@ StringBuffer stringBufferLong2 = new StringBuffer();
 
 stringBufferLat2 = restMap.convertListToStringBuffer(listLatitude2);
 stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
-
 
 %>
 
@@ -722,11 +710,8 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 			  // show only if there is a differences
 	  
 			  number += multi ;
-			  markerDiffPuls.setMap(map);
-			  
+			  markerDiffPuls.setMap(map);	  
 		}
-		
-		
 	}
 	
 	
@@ -827,10 +812,6 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 			  markerDiffSpeed.setMap(map);
 			  
 		}
-    
-		
-		
-		
 	}
 	
 	/**
@@ -875,8 +856,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 					});
 					
 					
-				pathStyle2.setMap(map);
-			
+				pathStyle2.setMap(map);	
 	}
 	
 	function addMarkerPath1(){
@@ -911,10 +891,8 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 	*Method to remove the start/end point of path 1
 	*/
 	function removeStartEndPointPath1(){
-		
 		markerStart.setMap(null);
 		markerEnd.setMap(null);
-
 	}
 	
 	
@@ -922,14 +900,10 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 	*Method to remove the paths to the map 
 	*/
 	function removePaths(){
-		
 		pathStyle1.setMap(null);
 		pathStyle2.setMap(null);
-
 	}
 	
-
-
 </script>
 
 
@@ -941,12 +915,10 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <link rel="shortcut icon" href="img/icoFav.png">
 
 
-<title>HexoSkin-TB</title>
+<title>HexoSkin-Compare</title>
 
-<!-- Latest compiled and minified CSS -->
+<!-- Bootstrap CSS -->
 <link rel="stylesheet" href="bootstrap-3.1.1/dist/css/bootstrap.min.css">
-
-<!-- Custom styles for this template -->
 <link href="bootstrap-3.1.1/dist/css/dashboard.css" rel="stylesheet">
 
 </head>
@@ -954,7 +926,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <body>
 
 
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -999,7 +971,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 				    <%
 					RestInvokerDatastore rest =  new RestInvokerDatastore();
 					List listDates1 = rest.getAllDatesWorkoutSorted("vincentpont@gmail.com");
-					Iterator iterator1 = listDates1.iterator();
+					Iterator<String> iterator1 = listDates1.iterator();
 					%>
 
 					<div class="col-md-6">	
@@ -1018,7 +990,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 				 <%
 				 	// Données datastore (android)
 				 
-					List listWorkout1 = null ;
+					List<String> listWorkout1 = null ;
 					String dateToShow1 = "" ;
 				
 					// Test if we have something in param 
@@ -1050,7 +1022,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
  
  <table class="table">
 				<TR>
-					<TD id="time1TD"" title="Temps" class="success">
+					<TD id="time1TD" title="Temps" class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
 					 <span id="time1SP"  style="font-size:11pt; font-family:Verdana;"> <% out.print(listWorkout1.get(1)); %> </span>
 					
@@ -1183,7 +1155,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <br>				
 
 <% 					// Donnée datastore (android)
-					List listWorkout2 = null ;
+					List<String> listWorkout2 = null ;
 					String dateToShow2 = "" ;
 				
 					// Test if we have something in param 
@@ -1401,7 +1373,8 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 					 
 			</div>
 
-		
+		</div>
+	</div>
 				
 		
 <div   class="row">
@@ -1416,32 +1389,19 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 		</div>
 	</div>
 		
-
-	
-			
-
-
-
-			<br> <span id="signinButton" style="display: none"> <span
-				class="g-signin" data-callback="signinCallback"
-				data-clientid="799362622292-cisd7bgllvoo1pckcsm38smvl9ec1m60.apps.googleusercontent.com"
-				data-cookiepolicy="single_host_origin"
-				data-requestvisibleactions="http://schemas.google.com/AddActivity"
-				data-scope="https://www.googleapis.com/auth/plus.login"> </span>
-			</span>
+	<span id="signinButton" style="display: none"> <span
+		class="g-signin" data-callback="signinCallback"
+		data-clientid="799362622292-cisd7bgllvoo1pckcsm38smvl9ec1m60.apps.googleusercontent.com"
+		data-cookiepolicy="single_host_origin"
+		data-requestvisibleactions="http://schemas.google.com/AddActivity"
+		data-scope="https://www.googleapis.com/auth/plus.login"> </span>
+	</span>
 
 
-
-			<!-- Bootstrap core JavaScript
-    ================================================== -->
-			<!-- Placed at the end of the document so the pages load faster -->
-			<script
-				src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-			<script src="bootstrap-3.1.1/dist/js/bootstrap.min.js"></script>
-			<script src="bootstrap-3.1.1/docs/assets/js/docs.min.js"></script>
-
-			<script type="text/javascript">
-				signinCallback(authResult);
-			</script>
+	<!-- Bootstrap core JavaScript -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="bootstrap-3.1.1/dist/js/bootstrap.min.js"></script>
+	<script src="bootstrap-3.1.1/docs/assets/js/docs.min.js"></script>
 </body>
 </html>

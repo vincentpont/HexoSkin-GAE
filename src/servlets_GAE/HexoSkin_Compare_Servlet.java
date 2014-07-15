@@ -1,14 +1,11 @@
 package servlets_GAE;
 
 import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
-
 import restDatastore.RestInvokerDatastore;
-import restHexoSkin.RestInvokerHexo;
 
+@SuppressWarnings("serial")
 public class HexoSkin_Compare_Servlet extends HttpServlet {
 	
 	

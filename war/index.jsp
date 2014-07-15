@@ -7,12 +7,12 @@
 <!-- Import restInvoker class -->
 <%@ page import="restDatastore.RestInvokerDatastore"%>
 <%@ page import="restHexoSkin.RestInvokerHexo"%>
-<%@ page import="java.util.Iterator, java.util.List, java.util.Date, java.text.DecimalFormat;"%>
+<%@ page import="java.util.List;"%>
 
-<!--  Get Variable servlet -->
+<!--  Get Variable from Servlet -->
 <%  String lastDateWorkout = (String) request.getAttribute("lastDateWorkout"); %>
 
-<!-- LOGIN Google</body> -->
+<!-- Google account get account -->
 <script type="text/javascript">
 	(function() {
 		var po = document.createElement('script');
@@ -24,8 +24,8 @@
 	})();
 </script>
 
-
-<script>
+<!-- Google account test token -->
+<script type="text/javascript">
 	function signinCallback(authResult) {
 		if (authResult['access_token']) {
 			// Logged
@@ -35,6 +35,14 @@
 			window.location = "login.jsp";
 		}
 	}
+	
+	/**
+	* Method to logout the user
+	*/
+	function logout() {
+		document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
+	}
+	
 </script>
 
 <%  
@@ -84,7 +92,6 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 
 
 %>
-
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
@@ -380,11 +387,6 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 	}
 </script>
 
-<script>
-function logout() {
-	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
-}
-</script>
 
 	<%
 	String lastDateMap = "";
@@ -425,7 +427,11 @@ function logout() {
 <script
 	src="https://maps.googleapis.com/maps/api/js?v=3?key={AIzaSyA9MSARpM9GdjunV4sR5mxpOuD3pfkyldc}">
 </script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
+<script 
+
+	src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization">
+
+</script>
 	
 <script>
 
@@ -472,7 +478,6 @@ function logout() {
   
 	google.maps.event.addDomListener(window, 'resize', initialize);
 	google.maps.event.addDomListener(window, 'load', initialize);
-	
 	
 	
 	/**
@@ -533,7 +538,6 @@ function logout() {
 	}
 	
 	
-	
 	/**
 	 * Method to add speed constance
 	 */
@@ -563,7 +567,6 @@ function logout() {
 				}
 			}
 
-
 			  pointArray = new google.maps.MVCArray(speedConstant);
 				
 			  heatmap = new google.maps.visualization.HeatmapLayer({
@@ -577,8 +580,7 @@ function logout() {
 			  heatmap.setMap(map);
 	}
 	
-	
-	
+		
 		
 	/**
 	 * Method to add heart rate information
@@ -660,7 +662,6 @@ function logout() {
 				  number += multi ;
 				  markerPuls.setMap(map);				  
 			}
-
 	}
 	
 	function addConstanceHeart(){
@@ -796,8 +797,7 @@ function logout() {
 			  });
 			  
 			  markerSpeed.setMap(map);
-		}
-		
+		}	
 	}
 	
 	/**
@@ -824,7 +824,6 @@ function logout() {
     		icon: imageStart,
 		});
 		
-
 		 // Add the two markers
 		 markerEnd.setMap(map);
 		 markerStart.setMap(map);  	
@@ -834,11 +833,9 @@ function logout() {
 	/**
 	*Method to remove the start/end point 
 	*/
-	function removeStartEndPoint(){
-		
+	function removeStartEndPoint(){	
 		markerStart.setMap(null);
 		markerEnd.setMap(null);
-
 	}
 	
 	
@@ -846,8 +843,7 @@ function logout() {
 	*Method to add the path to the map 
 	*/
 	function addPath(){
-
-			
+		
 			// Path NORMAL
 				for( var i = 0 ; i < arrayLat.length; i++ ){
 						planCoordinates[i] = new google.maps.LatLng(arrayLat[i] , arrayLong[i]);
@@ -867,15 +863,10 @@ function logout() {
 	*Method to remove the path to the map 
 	*/
 	function removePath(){
-		
 		pathStyle.setMap(null);
-
 	}
 
 </script>
-
-
-
 
 
 <meta charset="utf-8">
@@ -885,19 +876,17 @@ function logout() {
 <meta name="author" content="">
 <link rel="shortcut icon" href="img/icoFav.png">
 
-<title>HexoSkin-TB</title>
+<title>HexoSkin-Dashboard</title>
 
-<!-- Latest compiled and minified CSS -->
+<!-- Bootstrap CSS -->
 <link rel="stylesheet" href="bootstrap-3.1.1/dist/css/bootstrap.min.css">
-
-<!-- Custom styles for this template -->
 <link href="bootstrap-3.1.1/dist/css/dashboard.css" rel="stylesheet">
 
 </head>
 
 <body>
 
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -931,7 +920,7 @@ function logout() {
 			</div>
 
 			<%
-				List listWorkout  ;
+				List<String> listWorkout  ;
 				String dateToShow = "" ;
 				 RestInvokerDatastore rest = new RestInvokerDatastore();
 				// Test if we have something in param 
@@ -983,7 +972,7 @@ function logout() {
 					</TD>
 				</TR>
 		
-<br>
+
 			<%	
 			String s1s = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
 			RestInvokerHexo restHEXO = new RestInvokerHexo(s1s);
@@ -1163,7 +1152,7 @@ function logout() {
 					 
 			
 
-			
+		</div>
 	</div>
 	
 
@@ -1189,17 +1178,11 @@ function logout() {
 		data-scope="https://www.googleapis.com/auth/plus.login"> </span>
 	</span>
 
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
+	<!-- Bootstrap core JavaScript -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="bootstrap-3.1.1/dist/js/bootstrap.min.js"></script>
 	<script src="bootstrap-3.1.1/docs/assets/js/docs.min.js"></script>
-
-	<script type="text/javascript">
-		signinCallback(authResult);
-	</script>
 
 </body>
 </html>

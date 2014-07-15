@@ -71,16 +71,15 @@
   </script>
 </head>
 <body>
-  <div id="signin-button" class="show">
-     <div class="g-signin" data-callback="loginFinishedCallback"
-      data-approvalprompt="force"
-      data-clientid="799362622292-cisd7bgllvoo1pckcsm38smvl9ec1m60.apps.googleusercontent.com"
-      data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email"
-      data-height="short"
-      data-cookiepolicy="single_host_origin"
-      >
-    </div>
-  </div>
+
+	<span id="signinButton" style="display: none"> <span
+		class="g-signin" data-callback="signinCallback"
+		data-clientid="799362622292-cisd7bgllvoo1pckcsm38smvl9ec1m60.apps.googleusercontent.com"
+		data-cookiepolicy="single_host_origin"
+		data-requestvisibleactions="http://schemas.google.com/AddActivity"
+		data-scope="https://www.googleapis.com/auth/plus.login"> </span>
+	</span>
+	
 
   <div id="email" class="hide"></div>
 </body>

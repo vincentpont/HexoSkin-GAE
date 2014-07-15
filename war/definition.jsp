@@ -6,7 +6,7 @@
 
 
 
-<!-- Placez ce script JavaScript asynchrone juste devant votre balise </body> -->
+<!-- Google account get account -->
 <script type="text/javascript">
 	(function() {
 		var po = document.createElement('script');
@@ -18,55 +18,46 @@
 	})();
 </script>
 
-<script>
+<!-- Google account test token -->
+<script type="text/javascript">
 	function signinCallback(authResult) {
 		if (authResult['access_token']) {
-			// Logged
+			// Autorisation réussie
+			window.location = "/dashboard";
 		} else if (authResult['error']) {
-			document.getElementById('signinButton').setAttribute('style',
-					'display: none');
-			window.location = "login.jsp";
+			// Fail logged
 		}
+	}
+
+	/**
+	 * Method to logout the user
+	 */
+	function logout() {
+		document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
 	}
 </script>
 
-
-<script>
-function logout() {
-	document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
-}
-</script>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
-<meta name="author" content="">
+<meta name="author" content="Vincent Pont">
 <link rel="shortcut icon" href="img/icoFav.png">
 
 
-<title>HexoSkin-TB</title>
+<title>HexoSkin-Definition</title>
 
-<!-- Latest compiled and minified CSS -->
+<!-- Bootstrap CSS -->
 <link rel="stylesheet" href="bootstrap-3.1.1/dist/css/bootstrap.min.css">
-
-<!-- Custom styles for this template -->
 <link href="bootstrap-3.1.1/dist/css/dashboard.css" rel="stylesheet">
 
-<!-- Just for debugging purposes. Don't actually copy this line! -->
-<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 
 <body>
 
 
-	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -95,19 +86,31 @@ function logout() {
 					<li><a href="dashboard">Dashboard</a></li>
 					<li><a href="compare">Comparer</a></li>
 					<li><a href="historique.jsp">Historique</a></li>
-				    <li class="active"><a href="definition.jsp">Définitions</a></li>
+					<li class="active"><a href="definition.jsp">Définitions</a></li>
 				</ul>
 			</div>
 
 
 
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="font-size:12pt;" >
-				<h1 class="page-header">Définitions </h1>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"
+				style="font-size: 12pt;">
+				<h1 class="page-header">Définitions</h1>
 
-<br>
-				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-stats"></span> <b>Volume tidal </b> (est le volume pulmonaire normale représentant le volume de l'air déplacé entre l'inhalation et l'exhalation) :  0.5 L au repos et 3.0 L pendant effort </p>
-				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-transfer"></span>	<b>Respiration</b> :  12-20 respi/min et 30 respi/min pendant effort  </p>
-				<p style="font-size:12pt;"> <span class="glyphicon glyphicon-sort-by-attributes"></span> <b>Ventilation</b> :  6.0 L/min au repos et 90 L/min pendant effort</p>
+				<br>
+				<p style="font-size: 12pt;">
+					<span class="glyphicon glyphicon-stats"></span> <b>Volume tidal
+					</b> (est le volume pulmonaire normale représentant le volume de l'air
+					déplacé entre l'inhalation et l'exhalation) : 0.5 L au repos et 3.0
+					L pendant effort
+				</p>
+				<p style="font-size: 12pt;">
+					<span class="glyphicon glyphicon-transfer"></span> <b>Respiration</b>
+					: 12-20 respi/min et 30 respi/min pendant effort
+				</p>
+				<p style="font-size: 12pt;">
+					<span class="glyphicon glyphicon-sort-by-attributes"></span> <b>Ventilation</b>
+					: 6.0 L/min au repos et 90 L/min pendant effort
+				</p>
 
 
 				<br>
@@ -115,23 +118,20 @@ function logout() {
 			</div>
 
 		</div>
-		
-		<div style="bottom:0;position:absolute;width:100%;" class="row">
-		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<hr>
-		<footer>
-			<p>
-				<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
-					réservés.</b>
-			</p>
-		</footer>
+
+		<div style="bottom: 0; position: absolute; width: 100%;" class="row">
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<hr>
+				<footer>
+					<p>
+						<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
+							réservés.</b>
+					</p>
+				</footer>
+			</div>
 		</div>
+
 	</div>
-		
-	</div>
-
-
-
 
 
 	<span id="signinButton" style="display: none"> <span
@@ -143,18 +143,11 @@ function logout() {
 	</span>
 
 
-
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
+	<!-- Bootstrap core JavaScript -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="bootstrap-3.1.1/dist/js/bootstrap.min.js"></script>
 	<script src="bootstrap-3.1.1/docs/assets/js/docs.min.js"></script>
-
-	<script type="text/javascript">
-		signinCallback(authResult);
-	</script>
 
 </body>
 </html>

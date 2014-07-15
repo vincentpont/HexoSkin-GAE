@@ -229,7 +229,6 @@ public class RestInvokerHexo {
 	 */
 	public String changeMltoLwith2Decimals(String average){
 
-		
 		DecimalFormat df = new DecimalFormat("####0.00");
 		double valueDouble = Double.parseDouble(average);
 		valueDouble = valueDouble/1000 ;

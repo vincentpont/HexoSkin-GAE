@@ -1,13 +1,10 @@
 package servlets_GAE;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
-
 import restDatastore.RestInvokerDatastore;
-import restHexoSkin.RestInvokerHexo;
+
 
 
 @SuppressWarnings("serial")
