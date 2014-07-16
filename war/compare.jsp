@@ -182,6 +182,7 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 			 var hidePuls1 = document.getElementById("hidePulsation1");
 			 hidePuls1.onclick = function()
 			 {
+				 	hidePuls1.disabled  = true;
 				    view = new google.visualization.DataView(data);
 				    arrayToHide1.splice(index1, 0, 1);
 				    if(arrayToHide1.length < 4){
@@ -195,6 +196,7 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 			 var hideRespi1 = document.getElementById("hideRespiration1");
 			 hideRespi1.onclick = function()
 			 {
+					hideRespi1.disabled  = true;
 				    view = new google.visualization.DataView(data);
 				    arrayToHide1.splice(index1, 0, 2);
 				    if(arrayToHide1.length < 4){
@@ -208,6 +210,7 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 			 var hideVenti1 = document.getElementById("hideVentilation1");
 			 hideVenti1.onclick = function()
 			 {
+					hideVenti1.disabled  = true;
 				    view = new google.visualization.DataView(data);
 				    arrayToHide1.splice(index1, 0, 3);
 				    if(arrayToHide1.length < 4){
@@ -217,10 +220,11 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 				    chart.draw(view, options);
 				    index1++;
 			 }
-			 
+			
 			 var hideVolumT1 = document.getElementById("hideVolumeTidal1");
 			 hideVolumT1.onclick = function()
 			 {
+				 	hideVolumT1.disabled  = true;
 				    view = new google.visualization.DataView(data);
 				    arrayToHide1.splice(index1, 0, 4);
 				    if(arrayToHide1.length < 4){
@@ -239,6 +243,10 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 				    arrayToHide1.length = 0;
 				    view.setColumns([0,1,2,3,4]);
 				    chart.draw(view, options);
+				 	hideVolumT1.disabled  = false;
+					hideVenti1.disabled  = false;
+					hideRespi1.disabled  = false;
+				 	hidePuls1.disabled  = false;
 			 }
 }
 		
@@ -379,6 +387,7 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 			 var hidePuls2 = document.getElementById("hidePulsation2");
 			 hidePuls2.onclick = function()
 			 {
+				 	hidePuls2.disabled  = true;
 				    view = new google.visualization.DataView(data);
 				    arrayToHide.splice(index, 0, 1);
 				    if(arrayToHide.length < 4){
@@ -392,6 +401,7 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 			 var hideRespi2 = document.getElementById("hideRespiration2");
 			 hideRespi2.onclick = function()
 			 {
+				 	hideRespi2.disabled  = true;
 				    view = new google.visualization.DataView(data);
 				    arrayToHide.splice(index, 0, 2);
 				    if(arrayToHide.length < 4){
@@ -405,6 +415,7 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 			 var hideVent2 = document.getElementById("hideVentilation2");
 			 hideVent2.onclick = function()
 			 {
+				 	hideVent2.disabled  = true;
 				    view = new google.visualization.DataView(data);
 				    arrayToHide.splice(index, 0, 3);
 				    if(arrayToHide.length < 4){
@@ -418,6 +429,7 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 			 var hideVoluT2 = document.getElementById("hideVolumeTidal2");
 			 hideVoluT2.onclick = function()
 			 {
+				hideVoluT2.disabled  = true;
 			    view = new google.visualization.DataView(data);
 			    arrayToHide.splice(index, 0, 4);
 			    if(arrayToHide.length < 4){
@@ -436,6 +448,10 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 			    arrayToHide.length = 0;
 			    view.setColumns([0,1,2,3,4]);
 			    chart.draw(view, options);
+			    hideVoluT2.disabled  = false;
+			    hideVent2.disabled  = false;
+			    hideRespi2.disabled  = false;
+			    hidePuls2.disabled  = false;
 			 }
 }
 
@@ -1126,12 +1142,12 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <br>
 						<div id="chart_div3" style="width: 100%; height: 400px;"></div>
 <br>
-						<button title="Cacher la pulsation" class="btn btn-default" style="margin-left:90px;" type="button" id="hidePulsation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-						<button title="Cacher la respiration" class="btn btn-default"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
-   						<button title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
+						<button title="Cacher la pulsation" class="btn btn-default btn-sm" style="margin-left:90px;" type="button" id="hidePulsation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+						<button title="Cacher la respiration" class="btn btn-default btn-sm"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
+   						<button title="Cacher la ventilation" class="btn btn-default btn-sm" type="button" id="hideVentilation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
  <br>
-   						<button title="Cacher le volume tidal" class="btn btn-default" style="margin-left:165px;" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
-   						<button title="Voir tout" class="btn btn-default" type="button" id="seeAll3"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+   						<button title="Cacher le volume tidal" class="btn btn-default btn-sm" style="margin-left:165px; margin-top:8px;" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
+   						<button title="Voir tout" class="btn btn-default btn-sm"  style="margin-top:8px;"type="button" id="seeAll3"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 				</div>	
 
 					<div class="col-md-6">
@@ -1288,12 +1304,12 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 
 						<div id="chart_div4" style="width: 100%; height: 400px;"></div>	
 <br>
-						<button title="Cacher la pulsation" class="btn btn-default" style="margin-left:90px;" type="button" id="hidePulsation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-						<button title="Cacher la respiration" class="btn btn-default"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button> 
-   						<button title="Cacher la ventilation" class="btn btn-default" type="button" id="hideVentilation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
+						<button title="Cacher la pulsation" class="btn btn-default btn-sm" style="margin-left:90px;" type="button" id="hidePulsation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+						<button title="Cacher la respiration" class="btn btn-default btn-sm"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button> 
+   						<button title="Cacher la ventilation" class="btn btn-default btn-sm" type="button" id="hideVentilation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
 <br>
-   						<button title="Cacher le volume tidal" class="btn btn-default" type="button" style="margin-left:165px;" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
-   						<button  title="Voir tout" class="btn btn-default" type="button" id="seeAll4"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+   						<button title="Cacher le volume tidal" class="btn btn-default btn-sm" type="button" style="margin-left:165px; margin-top:8px;" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
+   						<button  title="Voir tout" class="btn btn-default btn-sm" style="margin-top:8px;" type="button" id="seeAll4"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 				
 											
 					</div>

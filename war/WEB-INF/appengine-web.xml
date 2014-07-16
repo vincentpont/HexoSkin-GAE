@@ -2,7 +2,7 @@
 <!DOCTYPE project>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <application>logical-light-564</application>
-  <version>9</version>
+  <version>10</version>
 
   <!--
     Allows App Engine to send multiple requests to one instance in parallel:
