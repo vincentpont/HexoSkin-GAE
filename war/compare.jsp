@@ -51,11 +51,13 @@ RestInvokerHexo restHEXO = new RestInvokerHexo(s1);
 RestInvokerDatastore restMap = new RestInvokerDatastore(); 
 String hexoDate1 = "" ;
 String hexoDateSub1 = "";
+List list1 = null ;
 
 // Test if we have something in param 
 if(request.getParameter("date1") != null){
 	hexoDate1 = request.getParameter("date1");
 	restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
+	list1 = restMap.getDataWorkoutByEmailAndDate(hexoDate1, "vincentpont@gmail.com");
 	hexoDateSub1 = hexoDate1.substring(0, 10);
 	hexoDateSub1 = hexoDateSub1.replace('.', '-');
 	
@@ -64,18 +66,24 @@ if(request.getParameter("date1") != null){
 else if (request.getParameter("date1") == null){
 	hexoDate1 = lastDateWorkout; 
 	restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
+	list1 = restMap.getDataWorkoutByEmailAndDate(hexoDate1, "vincentpont@gmail.com");
 	hexoDateSub1 = hexoDate1.substring(0, 10);
 	hexoDateSub1 = hexoDateSub1.replace('.', '-');
 }
 
 List<String> listPulsations1 = restHEXO.returnAllValueFromJson(hexoDateSub1, "19"); 
 List<Double> listVitesses1 = restMap.getListVitesses();
+List<Double> listAltitude1 = restMap.getListAltitudes();
 
 StringBuffer stringBufferPulsation1 = new StringBuffer();
 StringBuffer stringBufferVitesses1 = new StringBuffer();
+StringBuffer stringBufferAltitude1 = new StringBuffer();
 
 stringBufferPulsation1 = restMap.convertListToStringBufferInteger(listPulsations1);
 stringBufferVitesses1 = restMap.convertListToStringBufferInteger(listVitesses1);
+stringBufferAltitude1 = restMap.convertListToStringBufferInteger(listAltitude1);
+
+String timeTotal1  = (String) list1.get(1);
 
 %>
 
@@ -84,36 +92,106 @@ stringBufferVitesses1 = restMap.convertListToStringBufferInteger(listVitesses1);
 <script type="text/javascript">
 
     var arrayVitesses1 = [ <%= stringBufferVitesses1.toString() %> ];
+    var arrayAltitude1 =  [ <%= stringBufferAltitude1.toString() %> ];
+    var timeTotal1 =  '<%=timeTotal1%>';
 
+	var arrayToHideSpeedAlti1 = new Array();
+	var indexSpeedAlti1 = 0 ;
 
 		google.load("visualization", "1", {packages:["corechart"]});
 		google.setOnLoadCallback(drawChart);
 		
 		function drawChart() {
 
+			var dateFormatter = new google.visualization.DateFormat({pattern : 'HH:mm:ss'})
+			
+			// Get time 
+		    var minutesTime =  timeTotal1.substring(0,1);
+			var secondesTime = timeTotal1.substring(2,4);
+			
+			// Convert to milliseconds
+			var minToMs = (minutesTime * 60) * 1000 ;
+			var secToMs = secondesTime * 1000 ;
+			var totalMilliseconds = minToMs  +  secToMs; 
+			//alert(minutesTime);
+			//alert(secondesTime);	
+
+			// Get number of data
+			var numberData = arrayVitesses1.length-1; 		
+			
+			// Divide number of milliseconds by data to know time that was record the data (in ms)
+			var msToMultiple = totalMilliseconds / numberData; 
+
+			
 			var data = new google.visualization.DataTable();
-			data.addColumn('string', "Enregistrements");
+			data.addColumn('datetime', "Temps");
+			data.addColumn('number', 'Altitude mètre');
 			data.addColumn('number', 'Vitesses km/h');
-	
+
+			
+			
 		 	// Add values and converte it ml to l
 		   for(var i = 0; i < arrayVitesses1.length ; i++){
-		   	data.addRow([i.toString(), arrayVitesses1[i]]);
-		   }
+		   	data.addRow([new Date(00, 00, 00, 00, 00, 00, i*msToMultiple), arrayAltitude1[i], arrayVitesses1[i]]);	   
+		    }
+		 	
+		   dateFormatter.format(data,0);
 			
 		  var options = {
-		    colors: ['#FFF800'],
+		    colors: ['#1A9F3B','#FFF800'],
 			hAxis : {
-				title: 'Enregistrements'
+				title: 'Temps',
+				format: 'HH:mm:ss',
+				gridlines: {count : arrayVitesses1.length-1},
 				},
 			vAxis : {
 				title: 'Valeurs'
 			},
-		    title: 'Vitesses'
+		    title: 'Vitesses / Altitudes'
 		  };
 		  
 		  var chart = new google.visualization.AreaChart(document.getElementById('chart_div1'));
 		
 		  chart.draw(data, options);
+		  
+		  var hideSpeed1 = document.getElementById("hideSpeed1");
+		  hideSpeed1.onclick = function()
+			 {
+			  hideSpeed1.disabled  = true;
+				    view = new google.visualization.DataView(data);
+				    arrayToHideSpeedAlti1.splice(indexSpeedAlti1, 0, 2);
+				    if(arrayToHideSpeedAlti1.length < 2){
+					    view.hideColumns(arrayToHideSpeedAlti1);
+					    }			    	
+				    chart.draw(view, options);
+				    indexSpeedAlti1++;
+			 }	 
+		  
+			 var hideAlti1 = document.getElementById("hideAlti1");
+			 hideAlti1.onclick = function()
+			 {
+				 hideAlti1.disabled  = true;
+				    view = new google.visualization.DataView(data);
+				    arrayToHideSpeedAlti1.splice(indexSpeedAlti1, 0, 1);
+				    if(arrayToHideSpeedAlti1.length < 2){
+					    view.hideColumns(arrayToHideSpeedAlti1);
+					    }			    	
+				    chart.draw(view, options);
+				    indexSpeedAlti1++;
+			 }		
+			 
+			 // See all
+			 var seeAll1 = document.getElementById("seeAll1");
+			 seeAll1.onclick = function()
+			 {
+				    view = new google.visualization.DataView(data);
+				    arrayToHideSpeedAlti1.length = 0;
+				    view.setColumns([0,1,2]);
+				    chart.draw(view, options);
+				 	hideSpeed1.disabled  = false;
+					hideAlti1.disabled  = false;
+
+			 }
 		  
 }
 		
@@ -151,9 +229,29 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 		google.setOnLoadCallback(drawChart);
 		
 		function drawChart() {
+			
+			
+			var dateFormatter = new google.visualization.DateFormat({pattern : 'HH:mm:ss'})
+			
+			// Get time 
+		    var minutesTime =  timeTotal1.substring(0,1);
+			var secondesTime = timeTotal1.substring(2,4);
+			
+			// Convert to milliseconds
+			var minToMs = (minutesTime * 60) * 1000 ;
+			var secToMs = secondesTime * 1000 ;
+			var totalMilliseconds = minToMs  +  secToMs; 
+			//alert(minutesTime);
+			//alert(secondesTime);	
+
+			// Get number of data
+			var numberData = arrayPulsation1.length-1; 		
+			
+			// Divide number of milliseconds by data to know time that was record the data (in ms)
+			var msToMultiple = totalMilliseconds / numberData; 
 
 			var data = new google.visualization.DataTable();
-			data.addColumn('string', "Enregistrements");
+			data.addColumn('datetime', "Temps");
 			data.addColumn('number', 'Pulsation min');
 			data.addColumn('number', 'Respiration min');
 			data.addColumn('number', 'Ventilation litre/min');
@@ -161,18 +259,26 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 	
 		 	// Add values and converte it ml to l
 		   for(var i = 0; i < arrayPulsation1.length ; i++){
-		   	data.addRow([i.toString(), arrayPulsation1[i], arrayRespiration1[i], arrayVentilation1[i]/1000, arrayVolumeTidal1[i]/1000]);
+			   
+			arrayVentilation1[i] = parseFloat((arrayVentilation1[i]/1000).toFixed(2));
+			arrayVolumeTidal1[i] = parseFloat((arrayVolumeTidal1[i]/1000).toFixed(2));
+			
+		   	data.addRow([new Date(00, 00, 00, 00, 00, 00, i*msToMultiple), arrayPulsation1[i], arrayRespiration1[i], arrayVentilation1[i], arrayVolumeTidal1[i]]);
 		   }
+		 	
+		   dateFormatter.format(data,0);	
 		 	
 		  var options = {
 		    colors: ['#FF0007', '#960DF9', '#0C1A69' ,'#46FDCF'],
 			hAxis : {
-				title: 'Enregistrements'
+				title: 'Temps',
+				format: 'HH:mm:ss',
+				gridlines: {count : arrayPulsation1.length-1},
 				},
 			vAxis : {
 				title: 'Valeurs'
 			},
-		    title: 'Capacité respiratoire'
+		    title: 'Capacité abdominale'
 		  };
 		  
 		  var chart = new google.visualization.AreaChart(document.getElementById('chart_div3'));
@@ -253,12 +359,15 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 </script>
 
 <%
+	List list2 = null ;
+
 	String hexoDate2 = "";
 	String hexoDateSub2 = "";
 	// Test if we have something in param 
 	if(request.getParameter("date2") != null){
 		hexoDate2 = request.getParameter("date2");
 		restMap.getDataMap("vincentpont@gmail.com", hexoDate2); 
+		list2 = restMap.getDataWorkoutByEmailAndDate(hexoDate2, "vincentpont@gmail.com");
 		hexoDateSub2 = hexoDate2.substring(0, 10);
 		hexoDateSub2 = hexoDateSub2.replace('.', '-');
 		
@@ -267,25 +376,34 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 	else if (request.getParameter("date2") == null)	{
 		hexoDate2 = lastDateWorkout; 
 		restMap.getDataMap("vincentpont@gmail.com", hexoDate2); 
+		list2 = restMap.getDataWorkoutByEmailAndDate(hexoDate2, "vincentpont@gmail.com");
 		hexoDateSub2 = hexoDate2.substring(0, 10);
 		hexoDateSub2 = hexoDateSub2.replace('.', '-');
 	}
 
 	List<String> listPulsations2 = restHEXO.returnAllValueFromJson(hexoDateSub2, "19"); 
 	List<Double> listVitesses2 = restMap.getListVitesses();
+	List<Double> listAltitudes2 = restMap.getListAltitudes();
 	
 	StringBuffer stringBufferPulsation2 = new StringBuffer();
 	StringBuffer stringBufferVitesses2 = new StringBuffer();
+	StringBuffer stringBufferAltitudes2 = new StringBuffer();
 	
 	stringBufferPulsation2 = restMap.convertListToStringBufferInteger(listPulsations2);
 	stringBufferVitesses2 = restMap.convertListToStringBufferInteger(listVitesses2);
+	stringBufferAltitudes2 = restMap.convertListToStringBufferInteger(listAltitudes2);
+	
+	String timeTotal2  = (String) list2.get(1);
+	
 %>
 
 <!-- Google chart Pulsation/Vitesse trajet 2 -->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 
-var arrayVitesses2 = [ <%= stringBufferVitesses2.toString() %> ];
+	var arrayVitesses2 = [ <%= stringBufferVitesses2.toString() %> ];
+	var arrayAltitudes2 = [ <%= stringBufferAltitudes2.toString() %> ];
+    var timeTotal2 =  '<%=timeTotal2%>';
 
 	google.load("visualization", "1", {
 		packages : [ "corechart" ]
@@ -294,31 +412,98 @@ var arrayVitesses2 = [ <%= stringBufferVitesses2.toString() %> ];
 	
 	function drawChart() {
 		
+		var dateFormatter = new google.visualization.DateFormat({pattern : 'HH:mm:ss'})
+		var arrayToHideSpeedAlti2 = new Array();
+		var indexSpeedAlti2 = 0 ;
+
+		
+		// Get time 
+	    var minutesTime =  timeTotal2.substring(0,1);
+		var secondesTime = timeTotal2.substring(2,4);
+		
+		// Convert to milliseconds
+		var minToMs = (minutesTime * 60) * 1000 ;
+		var secToMs = secondesTime * 1000 ;
+		var totalMilliseconds = minToMs  +  secToMs; 
+		//alert(minutesTime);
+		//alert(secondesTime);	
+
+		// Get number of data
+		var numberData = arrayVitesses2.length-1; 		
+		
+		// Divide number of milliseconds by data to know time that was record the data (in ms)
+		var msToMultiple = totalMilliseconds / numberData; 
+		
+		
 		var data = new google.visualization.DataTable();
-		data.addColumn('string', "Enregistrements");
+		data.addColumn('datetime', "Temps");
+		data.addColumn('number', 'Altitudes mètre');
 		data.addColumn('number', 'Vitesses km/h');
 
 		
 	 // Add values and converte it ml to l
 	  for(var i = 0; i < arrayVitesses2.length ; i++){
-	   data.addRow([i.toString(), arrayVitesses2[i]]);
+	   data.addRow([new Date(00, 00, 00, 00, 00, 00, i*msToMultiple), arrayAltitudes2[i], arrayVitesses2[i]]);
 	  }
-		
+	 
+	dateFormatter.format(data,0);
 
 	  var options = {
-			    colors: ['#FFF800'],
+			    colors: ['#1A9F3B','#FFF800'],
 				hAxis : {
-					title: 'Enregistrements'
+					title: 'Temps',
+					format: 'HH:mm:ss',
+					gridlines: {count : arrayVitesses2.length-1},
 					},
 				vAxis : {
 					title: 'Valeurs'
 				},
-			    title: 'Vitesses'
+			    title: 'Vitesses / Altitudes'
 			  };
 
 		var chart = new google.visualization.AreaChart(document
 				.getElementById('chart_div2'));
 		chart.draw(data, options);
+		
+		
+		  var hideSpeed2 = document.getElementById("hideSpeed2");
+		  hideSpeed2.onclick = function()
+			 {
+			  hideSpeed2.disabled  = true;
+				    view = new google.visualization.DataView(data);
+				    arrayToHideSpeedAlti2.splice(indexSpeedAlti2, 0, 2);
+				    if(arrayToHideSpeedAlti2.length < 2){
+					    view.hideColumns(arrayToHideSpeedAlti2);
+					    }			    	
+				    chart.draw(view, options);
+				    indexSpeedAlti2++;
+			 }	 
+		  
+			 var hideAlti2 = document.getElementById("hideAlti2");
+			 hideAlti2.onclick = function()
+			 {
+				 hideAlti2.disabled  = true;
+				    view = new google.visualization.DataView(data);
+				    arrayToHideSpeedAlti2.splice(indexSpeedAlti2, 0, 1);
+				    if(arrayToHideSpeedAlti2.length < 2){
+					    view.hideColumns(arrayToHideSpeedAlti2);
+					    }			    	
+				    chart.draw(view, options);
+				    indexSpeedAlti2++;
+			 }		
+			 
+			 // See all
+			 var seeAll2 = document.getElementById("seeAll2");
+			 seeAll2.onclick = function()
+			 {
+				    view = new google.visualization.DataView(data);
+				    arrayToHideSpeedAlti2.length = 0;
+				    view.setColumns([0,1,2]);
+				    chart.draw(view, options);
+				 	hideSpeed2.disabled  = false;
+					hideAlti2.disabled  = false;
+
+			 }
 		
 	}
 
@@ -355,9 +540,27 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 		google.setOnLoadCallback(drawChart);
 		
 		function drawChart() {
+			
+			var dateFormatter = new google.visualization.DateFormat({pattern : 'HH:mm:ss'})
+			// Get time 
+		    var minutesTime =  timeTotal2.substring(0,1);
+			var secondesTime = timeTotal2.substring(2,4);
+			
+			// Convert to milliseconds
+			var minToMs = (minutesTime * 60) * 1000 ;
+			var secToMs = secondesTime * 1000 ;
+			var totalMilliseconds = minToMs  +  secToMs; 
+			//alert(minutesTime);
+			//alert(secondesTime);	
+
+			// Get number of data
+			var numberData = arrayPulsation2.length-1; 		
+			
+			// Divide number of milliseconds by data to know time that was record the data (in ms)
+			var msToMultiple = totalMilliseconds / numberData; 
 
 			var data = new google.visualization.DataTable();
-			data.addColumn('string', "Enregistrements");
+			data.addColumn('datetime', "Temps");
 			data.addColumn('number', 'Pulsation min');
 			data.addColumn('number', 'Respiration min');
 			data.addColumn('number', 'Ventilation litre/min');
@@ -365,18 +568,26 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 	
 		 	// Add values and converte it ml to l
 		   for(var i = 0; i < arrayPulsation2.length ; i++){
-		   	data.addRow([i.toString(), arrayPulsation2[i], arrayRespiration2[i], arrayVentilation2[i]/1000, arrayVolumeTidal2[i]/1000]);		  
+			   
+			arrayVentilation2[i] = parseFloat((arrayVentilation2[i]/1000).toFixed(2));
+			arrayVolumeTidal2[i] = parseFloat((arrayVolumeTidal2[i]/1000).toFixed(2));
+			
+		   	data.addRow([new Date(00, 00, 00, 00, 00, 00, i*msToMultiple), arrayPulsation2[i], arrayRespiration2[i], arrayVentilation2[i], arrayVolumeTidal2[i]]);		  
 		   }
+		 	
+			dateFormatter.format(data,0);
 		 	
 		  var options = {
 				 colors: ['#FF0007', '#960DF9', '#0C1A69' ,'#46FDCF'],
-			hAxis : {
-				title: 'Enregistrements'
-				},
+				hAxis : {
+					title: 'Temps',
+					format: 'HH:mm:ss',
+					gridlines: {count : arrayPulsation2.length-1},
+					},
 			vAxis : {
 				title: 'Valeurs'
 			},
-		    title: 'Capacité respiratoire'
+		    title: 'Capacité abdominale'
 		  };
 		  
 		  // Draw the chart
@@ -638,7 +849,8 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 		
 		multiple = arrayPulsation1.length / arraySpeed1.length;
 		
-
+		alert("multiple "+multiple);
+		
 		if (multiple <= 2.5){
 			number = 2;
 			multi = 2 ;
@@ -647,7 +859,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 			number = 3 ;
 			multi = 3 ;
 		}
-			
+		alert("number "+number);	
 		// Differences pulsation
 		for(var k = 0 ; k < arraySpeed1.length ; k ++){	
 	 
@@ -1138,6 +1350,10 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 				    <h3>Graphiques </h3>
 <br>
 						<div id="chart_div1" style="width: 100%; height: 400px;"></div>
+						
+						<button title="Cacher l'altitude" class="btn btn-default btn-sm"  style="margin-left:90px;" type="button" id="hideAlti1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>
+						<button title="Cacher la vitesse" class="btn btn-default btn-sm"  type="button" id="hideSpeed1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
+   						<button title="Voir tout" class="btn btn-default btn-sm" type="button" id="seeAll1"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 
 <br>
 						<div id="chart_div3" style="width: 100%; height: 400px;"></div>
@@ -1300,6 +1516,11 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <div style="height: 56px;"> </div>			   				
 <br>
 						<div id="chart_div2" style="width: 100%; height: 400px;"> </div>
+						
+						<button title="Cacher l'altitude" class="btn btn-default btn-sm"  style="margin-left:90px;" type="button" id="hideAlti2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>
+						<button title="Cacher la vitesse" class="btn btn-default btn-sm"  type="button" id="hideSpeed2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
+   						<button title="Voir tout" class="btn btn-default btn-sm" type="button" id="seeAll2"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+						
 <br>
 
 						<div id="chart_div4" style="width: 100%; height: 400px;"></div>	

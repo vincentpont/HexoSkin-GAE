@@ -22,12 +22,14 @@
 <script type="text/javascript">
 	function signinCallback(authResult) {
 		if (authResult['access_token']) {
-			// Autorisation réussie
-			window.location = "/dashboard";
+			// Logged
 		} else if (authResult['error']) {
-			// Fail logged
+			document.getElementById('signinButton').setAttribute('style',
+					'display: none');
+			window.location = "login.jsp";
 		}
 	}
+	
 
 	/**
 	 * Method to logout the user

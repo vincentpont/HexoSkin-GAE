@@ -123,95 +123,7 @@ String timeTotal  = (String) list.get(1);
     
 	function drawChart() {
 		
-		
-		
-		var random ;
-		var moyenne ;
-		// Ici on va corrgier les tailles des listes pour qu'elle soit le plus proche d'un chiffre entier pour 
-		// par la suite rajouter plus facilement de valeurs
-		
-		var difference = arrayPulsation.length / arrayVitesses.length;
-
-		if(difference > 1.50 && difference <= 2.50){
-			// Tant que la différence de taille est plus grand que 1.90
-			while(difference >= 1.90){
-				
-				// on augmente les valeurs avec des moyenne dans la vitesses pour réduire l'écart  2.2 -> 2.0
-				if(difference >= 1.90 && difference < 2.50){
-
-					random = Math.floor(Math.random()* (arrayVitesses.length-4)) + 1 ; 			// we take a random position to add new values to incement size of array
-					moyenne = (arrayVitesses[random] + arrayVitesses[random+1])/2;
-					arrayVitesses.splice(random+1, 0, moyenne);	
-					
-					// same with array of altitudes
-					moyenne = (arrayAltitudes[random] + arrayAltitudes[random+1])/2;
-					arrayAltitudes.splice(random+1, 0, moyenne);	
-				}
-				// On augmente pulsation donc 2.8 -> 3.0 
-				else if (difference >= 1.50 && difference <= 1.90){
-
-					random = Math.floor(Math.random()* (arrayPulsation.length-4)) + 1 ; 			// we take a random position to add new values to incement size of array
-					moyenne = (arrayPulsation[random] + arrayPulsation[random+1])/2;
-					arrayPulsation.splice(random+1, 0, moyenne);
-					
-					// And add too in the others list if not we have more data in pulsation
-					moyenne = (arrayVolumeTidal[random] + arrayVolumeTidal[random+1])/2;
-					arrayVolumeTidal.splice(random+1, 0, moyenne);
-
-					moyenne = (arrayRespiration[random] + arrayRespiration[random+1])/2;
-					arrayRespiration.splice(random+1, 0, moyenne);
-
-					moyenne = (arrayVentilation[random] + arrayVentilation[random+1])/2;
-					arrayVentilation.splice(random+1, 0, moyenne);
-
-				}
-				
-				//alert("difference " +difference);
-				difference = difference = arrayPulsation.length / arrayVitesses.length;
-			}
-		}
-		
-		else if(difference > 2.50 && difference <= 3.50){
-
-			//  Tant que on a est pas entre (2.9 a 3.10) pour maximum de précision
-			while(difference <= 2.90 || difference >= 3.00){
-				// on augmente vitesses donc 2.2 ->2.0
-				if(difference >= 2.90 && difference < 3.50){
-
-					random = Math.floor(Math.random()* (arrayVitesses.length-4)) + 1 ;// we take a random position to add new values to incement size of array
-					moyenne = (arrayVitesses[random] + arrayVitesses[random+1])/2;
-					arrayVitesses.splice(random+1, 0, moyenne);	
-					
-					// same with array of altitudes
-					moyenne = (arrayAltitudes[random] + arrayAltitudes[random+1])/2;
-					arrayAltitudes.splice(random+1, 0, moyenne);	
-					
-				}
-				// On augmente pulsation donc 2.8 -> 3.0 
-				else if (difference >= 2.50 && difference < 2.90){
-
-					random = Math.floor(Math.random()* (arrayPulsation.length-4)) + 1 ;// we take a random position to add new values to incement size of array
-					moyenne = (arrayPulsation[random] + arrayPulsation[random+1])/2;
-					arrayPulsation.splice(random+1, 0, moyenne);
-					
-					// And add too in the others list if not we have more data in pulsation
-					moyenne = (arrayVolumeTidal[random] + arrayVolumeTidal[random+1])/2;
-					arrayVolumeTidal.splice(random+1, 0, moyenne);
-
-					moyenne = (arrayRespiration[random] + arrayRespiration[random+1])/2;
-					arrayRespiration.splice(random+1, 0, moyenne);
-
-					moyenne = (arrayVentilation[random] + arrayVentilation[random+1])/2;
-					arrayVentilation.splice(random+1, 0, moyenne);
-				}
-				
-				difference = difference = arrayPulsation.length / arrayVitesses.length;
-
-			}
-		
-		}
-
-		
+		modifyListFirstTime();
 		
 		multiple = arrayPulsation.length / arrayVitesses.length;
 		var average = 0.0;
@@ -345,7 +257,7 @@ String timeTotal  = (String) list.get(1);
 		var dateFormatter = new google.visualization.DateFormat({pattern : 'HH:mm:ss'})
 		
 		var data = new google.visualization.DataTable();
-			data.addColumn('datetime', "Time");
+			data.addColumn('datetime', "Temps");
 			data.addColumn('number', 'Vitesse km/h');
 			data.addColumn('number', 'Altitudes décamètre');
 			data.addColumn('number', 'Pulsation min');
@@ -371,18 +283,18 @@ String timeTotal  = (String) list.get(1);
 		
 		// Divide number of milliseconds by data to know time that was record the data (in ms)
 		var msToMultiple = totalMilliseconds / numberData; // 684
-			
 		
-		 // Add values
+		
+		// Add values
 		  for(var i = 0; i < arrayPulsation.length  ; i++){
-
+		
 		   // Convert and decimals 2
 		   arrayVentilation[i] = parseFloat((arrayVentilation[i]/1000).toFixed(2));
 		   arrayVolumeTidal[i] = parseFloat((arrayVolumeTidal[i]/1000).toFixed(2));
 
 		   data.addRow([new Date(00, 00, 00, 00, 00, 00, i*msToMultiple), arrayVitesses[i], arrayAltitudes[i]/10, arrayPulsation[i], arrayVolumeTidal[i], 
 		                arrayRespiration[i], arrayVentilation[i]]);
-		
+
 		  }
 			dateFormatter.format(data,0);
 		
@@ -527,6 +439,98 @@ String timeTotal  = (String) list.get(1);
 		 }
 		
 	}
+	
+	
+	function modifyListFirstTime(){
+		
+		var random ;
+		var moyenne ;
+		// Ici on va corrgier les tailles des listes pour qu'elle soit le plus proche d'un chiffre entier pour 
+		// par la suite rajouter plus facilement de valeurs
+		
+		var difference = arrayPulsation.length / arrayVitesses.length;
+
+		if(difference > 1.50 && difference <= 2.50){
+			// Tant que la différence de taille est plus grand que 1.90
+			while(difference >= 1.90){
+				
+				// on augmente les valeurs avec des moyenne dans la vitesses pour réduire l'écart  2.2 -> 2.0
+				if(difference >= 1.90 && difference < 2.50){
+
+					random = Math.floor(Math.random()* (arrayVitesses.length-4)) + 1 ; 			// we take a random position to add new values to incement size of array
+					moyenne = (arrayVitesses[random] + arrayVitesses[random+1])/2;
+					arrayVitesses.splice(random+1, 0, moyenne);	
+					
+					// same with array of altitudes
+					moyenne = (arrayAltitudes[random] + arrayAltitudes[random+1])/2;
+					arrayAltitudes.splice(random+1, 0, moyenne);	
+				}
+				// On augmente pulsation donc 2.8 -> 3.0 
+				else if (difference >= 1.50 && difference <= 1.90){
+
+					random = Math.floor(Math.random()* (arrayPulsation.length-4)) + 1 ; 			// we take a random position to add new values to incement size of array
+					moyenne = (arrayPulsation[random] + arrayPulsation[random+1])/2;
+					arrayPulsation.splice(random+1, 0, moyenne);
+					
+					// And add too in the others list if not we have more data in pulsation
+					moyenne = (arrayVolumeTidal[random] + arrayVolumeTidal[random+1])/2;
+					arrayVolumeTidal.splice(random+1, 0, moyenne);
+
+					moyenne = (arrayRespiration[random] + arrayRespiration[random+1])/2;
+					arrayRespiration.splice(random+1, 0, moyenne);
+
+					moyenne = (arrayVentilation[random] + arrayVentilation[random+1])/2;
+					arrayVentilation.splice(random+1, 0, moyenne);
+
+				}
+				
+				//alert("difference " +difference);
+				difference = difference = arrayPulsation.length / arrayVitesses.length;
+			}
+		}
+		
+		else if(difference > 2.50 && difference <= 3.50){
+
+			//  Tant que on a est pas entre (2.9 a 3.10) pour maximum de précision
+			while(difference <= 2.90 || difference >= 3.00){
+				// on augmente vitesses donc 2.2 ->2.0
+				if(difference >= 2.90 && difference < 3.50){
+
+					random = Math.floor(Math.random()* (arrayVitesses.length-4)) + 1 ;// we take a random position to add new values to incement size of array
+					moyenne = (arrayVitesses[random] + arrayVitesses[random+1])/2;
+					arrayVitesses.splice(random+1, 0, moyenne);	
+					
+					// same with array of altitudes
+					moyenne = (arrayAltitudes[random] + arrayAltitudes[random+1])/2;
+					arrayAltitudes.splice(random+1, 0, moyenne);	
+					
+				}
+				// On augmente pulsation donc 2.8 -> 3.0 
+				else if (difference >= 2.50 && difference < 2.90){
+
+					random = Math.floor(Math.random()* (arrayPulsation.length-4)) + 1 ;// we take a random position to add new values to incement size of array
+					moyenne = (arrayPulsation[random] + arrayPulsation[random+1])/2;
+					arrayPulsation.splice(random+1, 0, moyenne);
+					
+					// And add too in the others list if not we have more data in pulsation
+					moyenne = (arrayVolumeTidal[random] + arrayVolumeTidal[random+1])/2;
+					arrayVolumeTidal.splice(random+1, 0, moyenne);
+
+					moyenne = (arrayRespiration[random] + arrayRespiration[random+1])/2;
+					arrayRespiration.splice(random+1, 0, moyenne);
+
+					moyenne = (arrayVentilation[random] + arrayVentilation[random+1])/2;
+					arrayVentilation.splice(random+1, 0, moyenne);
+				}
+				
+				difference = difference = arrayPulsation.length / arrayVitesses.length;
+
+			}
+		
+		}
+		
+	}
+	
 </script>
 
 
@@ -580,12 +584,6 @@ String timeTotal  = (String) list.get(1);
 	var arraySpeed = [ <%= stringBufferSpeed.toString() %> ];
 	var arrayAlti = [ <%= stringBufferAlti.toString() %> ];
 	var size = arrayLat.length;
-	
-	// HexoSkin data
-	var arrayPulsation = [ <%= stringBufferPulsation.toString() %> ];
-	var arrayVolumeTidals = [ <%= stringBufferVolumeTidal.toString() %> ];
-	var arrayRespirationFreq = [ <%= stringBufferRespirationFreq.toString() %> ];
-	var arrayVentilations = [ <%= stringBufferVentilations.toString() %> ];
 
 	var planCoordinates= new Array() ;	
 	var pathStyle ;
@@ -619,129 +617,143 @@ String timeTotal  = (String) list.get(1);
 	google.maps.event.addDomListener(window, 'load', initialize);
 	
 	
-	/**
-	 * Method to add infos marker (all information)
-	 */
-	function addAllInfos(){
-		
-		var number ;
-		var multi ;
-
-		if (multiple <= 2.5){
-			number = 2;
-			multi = 2 ;
-		}
-		else if (multiple <= 3.5 && multiple > 2.5 ) {
-			number = 3 ;
-			multi = 3 ;
-		}
-		
-		for(var i = 0 ; i < arraySpeed.length ; i ++ ){	
-			
-			
-		    var arrayMarkers = new Array();
-			
-			// Now add the content of the popup
-			  var contentStrings = '<div id="content">'+
-		      '<div id="siteNotice">'+
-		      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
-		      '<div id="bodyContent">'+
-		      '<table class="table">' + 
-		      '<TR>'+
-		      '<TD>' + '<span title="Vitesse km/h" style="font-size:10pt;" class="glyphicon glyphicon-flash">' + '&nbsp;' + arraySpeed[i].toString() +  '</span>' +
-		      '<br>' +
-		       '<span title="Altitude mètre" style="font-size:10pt;" class="glyphicon glyphicon-signal">'+ '&nbsp;'  +  arrayAlti[i].toString()  +'</span>' +
-		      '<br>' +
-		       '<span title="Pulsation min" style="font-size:10pt;" class="glyphicon glyphicon-heart">' + '&nbsp;' + arrayPulsation[number].toString() +  '</span>' +
-		      '<br>' +
-		       '<span title="Volume tidal" style="font-size:10pt;" class="glyphicon glyphicon-stats">' + '&nbsp;'+ (arrayVolumeTidals[number]/1000).toFixed(2) +  '</span>' +
-		      '<br>' +
-		       '<span title="Respiration fréquence" style="font-size:10pt;" class="glyphicon glyphicon-transfer">'+ '&nbsp;' + arrayRespirationFreq[number].toString() +  '</span>' +
-		      '<br>' +
-		      '<span title="Ventilation min" style="font-size:10pt;" class="glyphicon glyphicon-sort-by-attributes">'+ '&nbsp;' + (arrayVentilations[number]/1000).toFixed(2)  +  '</span>' +'</TD>' +
-		      '</TR>' +
-		      '</table>'+
-		      '</div>'+
-		      '</div>'+
-		      '</div>';
-		      
-			  var markerPosition = new google.maps.LatLng(arrayLat[i],arrayLong[i]);
-			  var image = 'img/info_marker.png';
-
-		      arrayMarkers[i] = new google.maps.Marker({
-		        position: markerPosition,
-		        icon : image,
-	    		animation: google.maps.Animation.DROP,
-		        map: map
-		      });
-		      		      
-		      arrayMarkers[i].infowindow = new google.maps.InfoWindow({
-		    	  content: contentStrings,
-		    	  maxWidth: 120
-		    	});
-			  			  		      
-			  // Listener
-			  google.maps.event.addListener(arrayMarkers[i], 'click', function() {
-				  this.infowindow.open(map, this);
-			  });
-			  
-			  number += multi ;
-			  arrayMarkers[i].setMap(map);
-		}
-	}
 	
 	
-	/**
-	 * Method to add speed constance
-	 */
-		function addConstanceSpeed(){
-		
-			var pointarray;
-			var speedConstant = new Array();
+		/*
+		*Method to modify the list to be more accurate to 2 or 3 MORE ACCURATE
+		*
+		*/
+		function modifyLists(){
 			
-			// Heart rate, show if the workout was performant (same speed more or less) 
-			for(var p = 0 ; p < arraySpeed.length ; p ++ ){	
+			var random ;
+			var moyenne ;
+			
+			//alert("arrayPulsation avant " + arrayPulsation.length);
+			//alert("arrayVolumeTidal avant " + arrayVolumeTidal.length);
+			
+			// Ici on va corrgier les tailles encore plus des listes pour qu'elle soit le plus proche d'un chiffre entier (2,3)
+			var difference = arrayPulsation.length / arraySpeed.length;
+
+			if(difference > 1.50 && difference <= 2.50){
+				// Tant que la différence de taille est plus grand que 1.90
+				while(difference > 2.00){
 					
-				//Create array of location
-				if(arraySpeed[p] <= 3.0){	  
-					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 10};
-				}		
-				else if(arraySpeed[p] > 3.0 && arraySpeed[p] <= 6 ) {
-					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 100};								
-				}
-				else if(arraySpeed[p] > 6.0 && arraySpeed[p] <= 9 ) {
-					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 500};								
-				}
-				else if(arraySpeed[p] > 9.0 && arraySpeed[p] <= 12.0 ) {
-					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1000};								
-				}
-				else if(arraySpeed[p] > 12.0) {
-					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1500};								
+					// on enlève deux valeurs mais on mets une moyenne des deux enlever à la place
+					if(difference > 2.00 && difference <= 2.50){
+
+						random = Math.floor(Math.random()* (arrayPulsation.length-2)) + 1 ;
+						
+						moyenne = (arrayPulsation[random] + arrayPulsation[random+1])/2;
+						arrayPulsation.splice(random, 0, moyenne);	
+						arrayPulsation.splice(random+1, 2);// on enlève les deux valeurs		
+						
+						// On fait pareil avec les autres listes
+						moyenne = (arrayVolumeTidal[random] + arrayVolumeTidal[random+1])/2;
+						arrayVolumeTidal.splice(random, 0, moyenne);	
+						arrayVolumeTidal.splice(random+1, 2);	
+						
+						moyenne = (arrayRespiration[random] + arrayRespiration[random+1])/2;
+						arrayRespiration.splice(random, 0, moyenne);	
+						arrayRespiration.splice(random+1, 2);	
+						
+						moyenne = (arrayVentilation[random] + arrayVentilation[random+1])/2;
+						arrayVentilation.splice(random, 0, moyenne);	
+						arrayVentilation.splice(random+1, 2);		
+					}
+					
+					// On rajout une valeur (moyenne) entre deux valeurs
+					else if (difference >= 1.50 && difference < 2.00){
+
+						random = Math.floor(Math.random()* (arrayPulsation.length-2)) + 1 ;
+						
+						moyenne = (arrayPulsation[random] + arrayPulsation[random+1])/2;
+						arrayPulsation.splice(random+1, 0, moyenne);				
+						
+						moyenne = (arrayVolumeTidal[random] + arrayVolumeTidal[random+1])/2;
+						arrayVolumeTidal.splice(random+1, 0, moyenne);	
+						
+						moyenne = (arrayRespiration[random] + arrayRespiration[random+1])/2;
+						arrayRespiration.splice(random+1, 0, moyenne);	
+						
+						moyenne = (arrayVentilation[random] + arrayVentilation[random+1])/2;
+						arrayVentilation.splice(random+1, 0, moyenne);		
+						
+						
+					}
+					//alert("difference " +difference);
+					difference = difference = arrayPulsation.length / arraySpeed.length;
 				}
 			}
+			
+			else if(difference > 2.50 && difference <= 3.50){
 
-			  pointArray = new google.maps.MVCArray(speedConstant);
-				
-			  heatmap = new google.maps.visualization.HeatmapLayer({
-				    data: pointArray
-				  });
-			  
+				//  Tant que on a est pas entre (2.9 a 3.10) pour maximum de précision
+				while(difference < 3.00){
+					// on baisse
+					if(difference > 3.00 && difference <= 3.50){
 
-			  //heatmap.set('gradient', gradient); // bleu
-			  heatmap.set('radius', 20);
-			  // add heatmap
-			  heatmap.setMap(map);
-	}
-	
-		
+						random = Math.floor(Math.random()* (arrayPulsation.length-2)) + 1 ;
+						
+						moyenne = (arrayPulsation[random] + arrayPulsation[random+1])/2;					
+						arrayPulsation.splice(random, 0, moyenne);	
+						arrayPulsation.splice(random+1, 2);// on enlève les deux valeurs
+						
+						moyenne = (arrayVolumeTidal[random] + arrayVolumeTidal[random+1])/2;
+						arrayVolumeTidal.splice(random, 0, moyenne);	
+						arrayVolumeTidal.splice(random+1, 2);	
+						
+						moyenne = (arrayRespiration[random] + arrayRespiration[random+1])/2;
+						arrayRespiration.splice(random, 0, moyenne);	
+						arrayRespiration.splice(random+1, 2);	
+						
+						moyenne = (arrayVentilation[random] + arrayVentilation[random+1])/2;
+						arrayVentilation.splice(random, 0, moyenne);	
+						arrayVentilation.splice(random+1, 2);	
+						
+					}
+					// On augmente 
+					else if (difference >= 2.50 && difference <= 3.0){
+
+						random = Math.floor(Math.random()* (arrayPulsation.length-2)) + 1 ;
+						
+						moyenne = (arrayPulsation[random] + arrayPulsation[random+1])/2;
+						arrayPulsation.splice(random+1, 0, moyenne);
+						
+						moyenne = (arrayVolumeTidal[random] + arrayVolumeTidal[random+1])/2;
+						arrayVolumeTidal.splice(random+1, 0, moyenne);	
+						
+						moyenne = (arrayRespiration[random] + arrayRespiration[random+1])/2;
+						arrayRespiration.splice(random+1, 0, moyenne);	
+						
+						moyenne = (arrayVentilation[random] + arrayVentilation[random+1])/2;
+						arrayVentilation.splice(random+1, 0, moyenne);		
+						
+					}
+					//alert("difference "+difference );
+					difference = difference = arrayPulsation.length / arraySpeed.length;
+
+				}
+			
+			}
+			//alert("arrayPulsation après " + arrayPulsation.length);
+			//alert("arrayVolumeTidal après " + arrayVolumeTidal.length);
+
+			
+			
+		}
 		
 	/**
 	 * Method to add heart rate information
 	 */
 	function addHeartRate(){
+	
+		modifyLists();
 		
-		var number ;
-		var multi ;
+		var multiple = 0 ;
+		multiple = arrayPulsation.length / arraySpeed.length;		
+		var number = 0 ;
+		var multi  ;
+
 
 		if (multiple <= 2.5){
 			number = 2;
@@ -819,10 +831,16 @@ String timeTotal  = (String) list.get(1);
 	
 	function addConstanceHeart(){
 		
+		modifyLists();
+		
 		var pointarray;
 		var HeartConstant = new Array();
-		var number ;
+		
+		var number = 0 ;
 		var multi ;
+		var multiple = 0 ;
+		
+		multiple = arrayPulsation.length / arraySpeed.length;
 		
 		if (multiple <= 2.5){
 			number = 2;
@@ -883,6 +901,82 @@ String timeTotal  = (String) list.get(1);
 		  // add heatmap
 		  heatmap.setMap(map);
 		
+	}
+	
+	/**
+	 * Method to add infos marker (all information)
+	 */
+	function addAllInfos(){
+
+		modifyLists();
+		
+		
+		var number = 0 ;
+		var multi = 0 ;
+		var multiple = 0 ;
+		multiple = arrayPulsation.length / arraySpeed.length;
+
+		if (multiple <= 2.5){
+			number = 2;
+			multi = 2 ;
+		}
+		else if (multiple <= 3.5 && multiple > 2.5 ) {
+			number = 3 ;
+			multi = 3 ;
+		}
+		
+		for(var i = 0 ; i < arraySpeed.length ; i ++ ){	
+			
+			
+		    var arrayMarkers = new Array();
+			
+			// Now add the content of the popup
+			  var contentStrings = '<div id="content">'+
+		      '<div id="siteNotice">'+
+		      '<h5 id="firstHeading" class="firstHeading">Données</h5>'+
+		      '<div id="bodyContent">'+
+		      '<table class="table">' + 
+		      '<TR>'+
+		      '<TD>' + '<span title="Vitesse km/h" style="font-size:10pt;" class="glyphicon glyphicon-flash">' + '&nbsp;' + arraySpeed[i].toString() +  '</span>' +
+		      '<br>' +
+		       '<span title="Altitude mètre" style="font-size:10pt;" class="glyphicon glyphicon-signal">'+ '&nbsp;'  +  arrayAlti[i].toString()  +'</span>' +
+		      '<br>' +
+		       '<span title="Pulsation min" style="font-size:10pt;" class="glyphicon glyphicon-heart">' + '&nbsp;' + arrayPulsation[number].toString() +  '</span>' +
+		      '<br>' +
+		       '<span title="Volume tidal" style="font-size:10pt;" class="glyphicon glyphicon-stats">' + '&nbsp;'+ (arrayVolumeTidal[number]/1000).toFixed(2) +  '</span>' +
+		      '<br>' +
+		       '<span title="Respiration fréquence" style="font-size:10pt;" class="glyphicon glyphicon-transfer">'+ '&nbsp;' + arrayRespiration[number].toString() +  '</span>' +
+		      '<br>' +
+		      '<span title="Ventilation min" style="font-size:10pt;" class="glyphicon glyphicon-sort-by-attributes">'+ '&nbsp;' + (arrayVentilation[number]/1000).toFixed(2)  +  '</span>' +'</TD>' +
+		      '</TR>' +
+		      '</table>'+
+		      '</div>'+
+		      '</div>'+
+		      '</div>';
+		      
+			  var markerPosition = new google.maps.LatLng(arrayLat[i],arrayLong[i]);
+			  var image = 'img/info_marker.png';
+
+		      arrayMarkers[i] = new google.maps.Marker({
+		        position: markerPosition,
+		        icon : image,
+	    		animation: google.maps.Animation.DROP,
+		        map: map
+		      });
+		      		      
+		      arrayMarkers[i].infowindow = new google.maps.InfoWindow({
+		    	  content: contentStrings,
+		    	  maxWidth: 120
+		    	});
+			  			  		      
+			  // Listener
+			  google.maps.event.addListener(arrayMarkers[i], 'click', function() {
+				  this.infowindow.open(map, this);
+			  });
+			  
+			  number += multi ;
+			  arrayMarkers[i].setMap(map);
+		}
 	}
 	
 	
@@ -952,6 +1046,48 @@ String timeTotal  = (String) list.get(1);
 			  
 			  markerSpeed.setMap(map);
 		}	
+	}
+	
+	/**
+	 * Method to add speed constance
+	 */
+		function addConstanceSpeed(){
+		
+			var pointarray;
+			var speedConstant = new Array();
+			
+			// Heart rate, show if the workout was performant (same speed more or less) 
+			for(var p = 0 ; p < arraySpeed.length ; p ++ ){	
+					
+				//Create array of location
+				if(arraySpeed[p] <= 3.0){	  
+					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 10};
+				}		
+				else if(arraySpeed[p] > 3.0 && arraySpeed[p] <= 6 ) {
+					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 100};								
+				}
+				else if(arraySpeed[p] > 6.0 && arraySpeed[p] <= 9 ) {
+					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 500};								
+				}
+				else if(arraySpeed[p] > 9.0 && arraySpeed[p] <= 12.0 ) {
+					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1000};								
+				}
+				else if(arraySpeed[p] > 12.0) {
+					speedConstant[p] = {location: new google.maps.LatLng(arrayLat[p], arrayLong[p]), weight: 1500};								
+				}
+			}
+
+			  pointArray = new google.maps.MVCArray(speedConstant);
+				
+			  heatmap = new google.maps.visualization.HeatmapLayer({
+				    data: pointArray
+				  });
+			  
+
+			  //heatmap.set('gradient', gradient); // bleu
+			  heatmap.set('radius', 20);
+			  // add heatmap
+			  heatmap.setMap(map);
 	}
 	
 	/**
