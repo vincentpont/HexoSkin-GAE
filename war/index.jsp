@@ -53,11 +53,13 @@ RestInvokerHexo restHexo = new RestInvokerHexo(s1);
 RestInvokerDatastore restMap = new RestInvokerDatastore(); 
 
 String restHexoDate = "" ;
+List list ;
 
 // Test if we have something in param 
 if(request.getParameter("date") != null){
 	restHexoDate = request.getParameter("date");
 	restMap.getDataMap("vincentpont@gmail.com", restHexoDate); 
+	list = restMap.getDataWorkoutByEmailAndDate(restHexoDate, "vincentpont@gmail.com");
 	restHexoDate = restHexoDate.substring(0, 10);
 	restHexoDate = restHexoDate.replace('.', '-');
 	
@@ -65,6 +67,7 @@ if(request.getParameter("date") != null){
  // If not we show the last workout
 else{ 
 	restMap.getDataMap("vincentpont@gmail.com", lastDateWorkout); 
+	list = restMap.getDataWorkoutByEmailAndDate(lastDateWorkout, "vincentpont@gmail.com");
 	restHexoDate = lastDateWorkout.substring(0, 10);
 	restHexoDate = restHexoDate.replace('.', '-');
 }
@@ -77,6 +80,7 @@ List<String> listVentilations = restHexo.returnAllValueFromJson(restHexoDate, "3
 
 List<Double> listVitesses = restMap.getListVitesses();
 List<Double> listAltitudes = restMap.getListAltitudes();
+
 
 StringBuffer stringBufferPulsation = new StringBuffer();
 StringBuffer stringBufferVitesses = new StringBuffer();
@@ -92,6 +96,7 @@ stringBufferRespirationFreq = restMap.convertListToStringBufferInteger(listRespi
 stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilations);
 stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 
+String timeTotal  = (String) list.get(1);
 
 %>
 
@@ -111,8 +116,10 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
     var arrayVolumeTidal = [ <%= stringBufferVolumeTidal.toString() %> ];
     var arrayRespiration = [ <%= stringBufferRespirationFreq.toString() %> ];
     var arrayVentilation = [ <%= stringBufferVentilations.toString() %> ];
+    var timeTotal =  '<%=timeTotal%>';
     var multiple;
-	
+
+ 
     
 	function drawChart() {
 		
@@ -335,7 +342,7 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 		//alert("arrayVitesses " + arrayVitesses.join('\n'));
 		//alert("arrayPulsation " + arrayPulsation.length);
 		
-		var dateFormatter = new google.visualization.DateFormat({pattern : 'HH:mm:ss:SSS'})
+		var dateFormatter = new google.visualization.DateFormat({pattern : 'HH:mm:ss'})
 		
 		var data = new google.visualization.DataTable();
 			data.addColumn('datetime', "Time");
@@ -345,15 +352,27 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 			data.addColumn('number', 'Volume Tidale litre');
 			data.addColumn('number', 'Respiration min');
 			data.addColumn('number', 'Ventilation litre/min');
-		
-			var sec  = 1;
-			var miliSec = 46;
-			var day
 
-			 day = moment("2013-02-08 10:00:00.000").add('ms', 153900); // = 2:33
+
+		
+		// A AMELIORER MARCHE QUE POUR LES MIN+SEC	
+		// "2:34"
+		// Get time 
+	    var minutesTime =  timeTotal.substring(0,1);
+		var secondesTime = timeTotal.substring(2,4);
+		
+		// Convert to milliseconds
+		var minToMs = (minutesTime * 60) * 1000 ;
+		var secToMs = secondesTime * 1000 ;
+		var totalMilliseconds = minToMs  +  secToMs; // 154 000
+
+		// Get number of data
+		var numberData = arrayPulsation.length-1; 		//225
+		
+		// Divide number of milliseconds by data to know time that was record the data (in ms)
+		var msToMultiple = totalMilliseconds / numberData; // 684
 			
-			//alert(day);
-			
+		
 		 // Add values
 		  for(var i = 0; i < arrayPulsation.length  ; i++){
 
@@ -361,10 +380,8 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 		   arrayVentilation[i] = parseFloat((arrayVentilation[i]/1000).toFixed(2));
 		   arrayVolumeTidal[i] = parseFloat((arrayVolumeTidal[i]/1000).toFixed(2));
 
-		   // 684 = 2:33
-		   data.addRow([new Date(00, 00, 00, 00, 00, 00, i*716), arrayVitesses[i], arrayAltitudes[i]/10, arrayPulsation[i], arrayVolumeTidal[i], 
+		   data.addRow([new Date(00, 00, 00, 00, 00, 00, i*msToMultiple), arrayVitesses[i], arrayAltitudes[i]/10, arrayPulsation[i], arrayVolumeTidal[i], 
 		                arrayRespiration[i], arrayVentilation[i]]);
-		   var date1 = new Date(00, 00, 00, 00, 00, i, i+460);
 		
 		  }
 			dateFormatter.format(data,0);
@@ -374,7 +391,7 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 			colors: ['#FFF800' , '#00B125', '#FF0007', '#46FDCF', '#960DF9', '#0C1A69'],
 			hAxis : {
 				title: 'Temps',
-				format: 'HH:mm:ss:SSS',
+				format: 'HH:mm:ss',
 				gridlines: {count : arrayPulsation.length-1},
 				titleTextStyle : {
 					color : '#333'
@@ -541,10 +558,7 @@ stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
 	stringBufferLong = restMap.convertListToStringBuffer(listLongitude);
 	stringBufferSpeed = restMap.convertListToStringBuffer(listSpeed);
 	stringBufferAlti = restMap.convertListToStringBuffer(listAltitude);
-	
-	// Get Average of speed
-	List<String> list = restMap.getDataWorkoutByEmailAndDate(lastDateMap, "vincentpont@gmail.com");
-	String speedAverage = list.get(4) ;
+
 	
 	%>
 	
