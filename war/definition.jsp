@@ -29,7 +29,6 @@
 			window.location = "login.jsp";
 		}
 	}
-	
 
 	/**
 	 * Method to logout the user
@@ -96,27 +95,55 @@
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"
 				style="font-size: 12pt;">
-				<h1 class="page-header">Définitions</h1>
+				<h1 class="page-header">Définitions 
+				<span style="font-size: 25pt;"
+						class="glyphicon glyphicon-search"></span>
+				</h1>
 
-				<br>
-				<p style="font-size: 12pt;">
-					<span class="glyphicon glyphicon-stats"></span> <b>Volume tidal
-					</b> (est le volume pulmonaire normale représentant le volume de l'air
-					déplacé entre l'inhalation et l'exhalation) : 0.5 L au repos et 3.0
-					L pendant effort
-				</p>
-				<p style="font-size: 12pt;">
-					<span class="glyphicon glyphicon-transfer"></span> <b>Respiration</b>
-					: 12-20 respi/min et 30 respi/min pendant effort
-				</p>
-				<p style="font-size: 12pt;">
-					<span class="glyphicon glyphicon-sort-by-attributes"></span> <b>Ventilation</b>
-					: 6.0 L/min au repos et 90 L/min pendant effort
-				</p>
+				<h4>Quelques définitions pour le sportif amateur</h4>
+<br>
 
 
-				<br>
-				<div class="row"></div>
+				<table class="table">
+
+					<TR style="font-size: 14pt;">
+						<TH>Donnée</TH>
+						<TH>Définition</TH>
+						<TH>Rapport (repos/effort)</TH>
+					</TR>
+
+					<TR style="font-size: 11pt;">
+
+						<TD><span class="glyphicon glyphicon-stats"></span> <b>Volume
+								tidal</b></TD>
+
+						<TD>est le volume pulmonaire normale représentant le volume
+							de l'air déplacé entre l'inhalation et l'exhalation.</TD>
+
+						<TD>0.5 litre au repos et 3.0 litre pendant effort.</TD>
+					</TR>
+					<TR style="font-size: 11pt;">
+						<TD><span class="glyphicon glyphicon-transfer"></span> <b>Fréquence
+								respiratoire</b></TD>
+
+						<TD>est le nombre de cycles respiratoire (inspiration et
+							expiration) par minute.</TD>
+
+						<TD>12-20 respi/min et 30 respi/min pendant effort.</TD>
+					</TR>
+					<TR style="font-size: 11pt;">
+						<TD><span class="glyphicon glyphicon-sort-by-attributes"></span>
+							<b>Ventilation</b></TD>
+
+						<TD>est le renouvellement de l'air contenu dans les poumons
+							par l'action des muscles respiratoires (diaphragme).</TD>
+
+						<TD>6.0 litre/min au repos et 90 litre/min pendant effort</TD>
+
+					</TR>
+				</table>
+
+
 			</div>
 
 		</div>
@@ -124,11 +151,10 @@
 		<div style="bottom: 0; position: absolute; width: 100%;" class="row">
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<hr>
-				<footer>
-					<p>
-						<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
-							réservés.</b>
-					</p>
+				<footer style="font-size: 9pt;">					
+						<b>Copyright ©2014 HexoSkin Travail de bachelor. Tous droits
+							réservés.</b> 
+						<img title="Logo hes-so Valais" align="right"height="30px" src="img/hes_logo.jpg" />					
 				</footer>
 			</div>
 		</div>

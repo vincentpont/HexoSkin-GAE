@@ -176,11 +176,10 @@
 		<div style="bottom: 0; position: absolute; width: 100%;" class="row">
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<hr>
-				<footer>
-					<p>
-						<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
-							réservés.</b>
-					</p>
+				<footer style="font-size:9pt;">
+						<b>Copyright ©2014 HexoSkin Travail de bachelor. Tous droits
+							réservés.</b> 
+						<img title="Logo hes-so Valais" align="right"height="30px" src="img/hes_logo.jpg" />
 				</footer>
 			</div>
 		</div>

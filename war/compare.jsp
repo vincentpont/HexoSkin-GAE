@@ -126,7 +126,7 @@ String timeTotal1  = (String) list1.get(1);
 			var data = new google.visualization.DataTable();
 			data.addColumn('datetime', "Temps");
 			data.addColumn('number', 'Altitude mètre');
-			data.addColumn('number', 'Vitesses km/h');
+			data.addColumn('number', 'Vitesse km/h');
 
 			
 			
@@ -138,7 +138,7 @@ String timeTotal1  = (String) list1.get(1);
 		   dateFormatter.format(data,0);
 			
 		  var options = {
-		    colors: ['#1A9F3B','#FFF800'],
+		    colors: ['#1A9F3B','#FF7700'],
 			hAxis : {
 				title: 'Temps',
 				format: 'HH:mm:ss',
@@ -254,8 +254,8 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 			data.addColumn('datetime', "Temps");
 			data.addColumn('number', 'Pulsation min');
 			data.addColumn('number', 'Respiration min');
-			data.addColumn('number', 'Ventilation litre/min');
-			data.addColumn('number', 'Volume Tidale litre');
+			data.addColumn('number', 'Ventilation l/min');
+			data.addColumn('number', 'Volume Ti. l');
 	
 		 	// Add values and converte it ml to l
 		   for(var i = 0; i < arrayPulsation1.length ; i++){
@@ -437,8 +437,8 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 		
 		var data = new google.visualization.DataTable();
 		data.addColumn('datetime', "Temps");
-		data.addColumn('number', 'Altitudes mètre');
-		data.addColumn('number', 'Vitesses km/h');
+		data.addColumn('number', 'Altitude mètre');
+		data.addColumn('number', 'Vitesse km/h');
 
 		
 	 // Add values and converte it ml to l
@@ -449,7 +449,7 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 	dateFormatter.format(data,0);
 
 	  var options = {
-			    colors: ['#1A9F3B','#FFF800'],
+			    colors: ['#1A9F3B','#FF7700'],
 				hAxis : {
 					title: 'Temps',
 					format: 'HH:mm:ss',
@@ -563,8 +563,8 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 			data.addColumn('datetime', "Temps");
 			data.addColumn('number', 'Pulsation min');
 			data.addColumn('number', 'Respiration min');
-			data.addColumn('number', 'Ventilation litre/min');
-			data.addColumn('number', 'Volume Tidale litre');
+			data.addColumn('number', 'Ventilation l/min');
+			data.addColumn('number', 'Volume Ti. l');
 	
 		 	// Add values and converte it ml to l
 		   for(var i = 0; i < arrayPulsation2.length ; i++){
@@ -1190,7 +1190,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 					<h1 class="page-header">Comparatif séances &nbsp;
-				   	<img src="img/compare.png" width="50px" height="50px"/> 
+				   	<img src="img/compare.png" width="45px" height="45px"/> 
 					</h1>
 					
 <br>
@@ -1250,31 +1250,31 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
  
  <table class="table">
 				<TR>
-					<TD id="time1TD" title="Temps" class="success">
+					<TD id="time1TD" title="Temps total." class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
 					 <span id="time1SP"  style="font-size:11pt; font-family:Verdana;"> <% out.print(listWorkout1.get(1)); %> </span>
 					
 					</TD> 
 						
-					<TD  id="dist1TD" title="Distance en mètre"  class="success">
+					<TD  id="dist1TD" title="Distance en mètre."  class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
 					 <span id="dist1SP" style="font-size:11pt; font-family:Verdana;"> <% out.print(listWorkout1.get(2)); %>  </span>
 								
 					</TD>
 						
-					<TD id="ca1TD" title="Calories brûlées" class="success">
+					<TD id="ca1TD" title="Calories brûlées." class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
 					 <span id="ca1SP" style="font-size:11pt; font-family:Verdana;"> <% out.print(listWorkout1.get(3)); %> </span>
 					
 					</TD>
 						
-					<TD  id="speed1TD" title="Vitesse moyenne en km/h" class="success">
+					<TD  id="speed1TD" title="Vitesse moyenne en km/h." class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
 					 <span id="speed1SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout1.get(4)); %> </span>	
 					
 					</TD>
 						
-					<TD title="Altitude moyenne en mètre" class="success">
+					<TD title="Altitude moyenne en mètre." class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-signal"></span>	
 				    <span style="font-size:11pt; font-family:Verdana;"> &nbsp;<% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>	
 					
@@ -1311,31 +1311,31 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 					String avgVentilation1  = restHEXO.getAverageFromList(listVentilation1);
 					String ventilation1 = restHEXO.changeMltoLwith2Decimals(avgVentilation1); %>
 
-					<TD  id="puls1TD" title="Pulsation moyenne" class="info">
+					<TD  id="puls1TD" title="Pulsation min moyenne." class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-heart"></span>						
 					<span id="puls1SP" style="font-size:11pt; font-family:Verdana;"> <% out.print(restHEXO.getAverageFromList(listPulsation1));   %> </span>	
 					
 					</TD> 
 					
-					<TD  title="Total pas"  class="info">
+					<TD  title="Total pas."  class="info">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
 				    <span style="font-size:11pt; font-family:Verdana;">  <% out.print(listSteps1.get(listSteps1.size()-1));  %> </span>	
 								
 					</TD>
 					
-					<TD title="Volume Tidal moyen en l/inspiration" class="info">
+					<TD title="Volume Tidal moyen l/inspiration." class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> <%  out.print(volumTidal1);   %> </span>	
 					
 					</TD>
 					
-					<TD title="Respiration min moyenne" class="info">
+					<TD title="Respiration min moyenne." class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> <% out.print(restHEXO.getAverageFromList(listBreathing1));   %> </span>	
 					
 					</TD>
 					
-					<TD title="Ventilation moyenne l/min)" class="info">
+					<TD title="Ventilation moyenne l/min." class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> <%  out.print(ventilation1);  %>  </span>	
 					
@@ -1351,19 +1351,19 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <br>
 						<div id="chart_div1" style="width: 100%; height: 400px;"></div>
 						
-						<button title="Cacher l'altitude" class="btn btn-default btn-sm"  style="margin-left:90px;" type="button" id="hideAlti1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>
-						<button title="Cacher la vitesse" class="btn btn-default btn-sm"  type="button" id="hideSpeed1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
-   						<button title="Voir tout" class="btn btn-default btn-sm" type="button" id="seeAll1"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+						<button title="Cacher l'altitude." class="btn btn-default btn-sm"  style="margin-left:90px;" type="button" id="hideAlti1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>
+						<button title="Cacher la vitesse." class="btn btn-default btn-sm"  type="button" id="hideSpeed1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
+   						<button title="Voir tout." class="btn btn-default btn-sm" type="button" id="seeAll1"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 
 <br>
 						<div id="chart_div3" style="width: 100%; height: 400px;"></div>
 <br>
-						<button title="Cacher la pulsation" class="btn btn-default btn-sm" style="margin-left:90px;" type="button" id="hidePulsation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-						<button title="Cacher la respiration" class="btn btn-default btn-sm"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
-   						<button title="Cacher la ventilation" class="btn btn-default btn-sm" type="button" id="hideVentilation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
+						<button title="Cacher la pulsation." class="btn btn-default btn-sm" style="margin-left:90px;" type="button" id="hidePulsation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+						<button title="Cacher la respiration." class="btn btn-default btn-sm"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
+   						<button title="Cacher la ventilation." class="btn btn-default btn-sm" type="button" id="hideVentilation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
  <br>
-   						<button title="Cacher le volume tidal" class="btn btn-default btn-sm" style="margin-left:165px; margin-top:8px;" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
-   						<button title="Voir tout" class="btn btn-default btn-sm"  style="margin-top:8px;"type="button" id="seeAll3"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+   						<button title="Cacher le volume tidal." class="btn btn-default btn-sm" style="margin-left:165px; margin-top:8px;" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
+   						<button title="Voir tout." class="btn btn-default btn-sm"  style="margin-top:8px;"type="button" id="seeAll3"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 				</div>	
 
 					<div class="col-md-6">
@@ -1416,31 +1416,31 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 
  <table class="table">
 				<TR>
-					<TD id="time2TD" title="Temps" class="success">
+					<TD id="time2TD" title="Temps total." class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
 					  <span id="time2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(1)); %> </span>
 					
 					</TD> 
 						
-					<TD id="dist2TD" title="Distance en mètre"  class="success">
+					<TD id="dist2TD" title="Distance en mètre."  class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
 					 <span id="dist2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(2)); %>  </span>
 								
 					</TD>
 						
-					<TD id="ca2TD" title="Calories brûlées" class="success">
+					<TD id="ca2TD" title="Calories brûlées." class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
 					 <span id="ca2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(3)); %> </span>
 					
 					</TD>
 						
-					<TD id="speed2TD" title="Vitesse moyenne en km/h" class="success">
+					<TD id="speed2TD" title="Vitesse moyenne en km/h." class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
 					 <span id="speed2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(4)); %> </span>	
 					
 					</TD>
 						
-					<TD title="Altitude moyenne en mètre" class="success">
+					<TD title="Altitude moyenne en mètre." class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-signal"></span>	
 				    <span style="font-size:11pt; font-family:Verdana;"> <% out.print(rest.getAltitudeAverage(listAltitude2)); %> </span>	
 					
@@ -1476,31 +1476,31 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 					String avgVentilation2  = restHEXO.getAverageFromList(listVentilation2);
 					String ventilation2 = restHEXO.changeMltoLwith2Decimals(avgVentilation2);%>
 		
-					<TD id="puls2TD" title="Pulsation moyenne" class="info">
+					<TD id="puls2TD" title="Pulsation moyenne." class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-heart"></span>						
 					<span id="puls2SP"  style="font-size:11pt; font-family:Verdana;"><% out.print(restHEXO.getAverageFromList(listPulsation2));  %> </span>	
 					
 					</TD> 
 					
-					<TD  title="Total pas"  class="info">
+					<TD  title="Total pas."  class="info">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
 				    <span style="font-size:11pt; font-family:Verdana;"> &nbsp; <% out.print(listSteps2.get(listSteps2.size()-1));   %> </span>	
 								
 					</TD>
 					
-					<TD title="Volume Tidal moyen en mL/inspiration" class="info">
+					<TD title="Volume Tidal moyen en l/inspiration." class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> &nbsp;<% out.print(volumTidal2);  %> </span>	
 					
 					</TD>
 					
-					<TD title="Respiration min moyenne" class="info">
+					<TD title="Respiration min moyenne." class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> &nbsp;<% out.print(restHEXO.getAverageFromList(listBreathing2));   %> </span>	
 					
 					</TD>
 					
-					<TD title="Ventilation moyenne mL/min)" class="info">
+					<TD title="Ventilation moyenne l/min" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> &nbsp;<%  out.print(ventilation2);  %>  </span>	
 					
@@ -1517,20 +1517,20 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <br>
 						<div id="chart_div2" style="width: 100%; height: 400px;"> </div>
 						
-						<button title="Cacher l'altitude" class="btn btn-default btn-sm"  style="margin-left:90px;" type="button" id="hideAlti2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>
-						<button title="Cacher la vitesse" class="btn btn-default btn-sm"  type="button" id="hideSpeed2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
-   						<button title="Voir tout" class="btn btn-default btn-sm" type="button" id="seeAll2"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+						<button title="Cacher l'altitude." class="btn btn-default btn-sm"  style="margin-left:90px;" type="button" id="hideAlti2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>
+						<button title="Cacher la vitesse." class="btn btn-default btn-sm"  type="button" id="hideSpeed2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
+   						<button title="Voir tout." class="btn btn-default btn-sm" type="button" id="seeAll2"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 						
 <br>
 
 						<div id="chart_div4" style="width: 100%; height: 400px;"></div>	
 <br>
-						<button title="Cacher la pulsation" class="btn btn-default btn-sm" style="margin-left:90px;" type="button" id="hidePulsation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-						<button title="Cacher la respiration" class="btn btn-default btn-sm"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button> 
-   						<button title="Cacher la ventilation" class="btn btn-default btn-sm" type="button" id="hideVentilation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
+						<button title="Cacher la pulsation." class="btn btn-default btn-sm" style="margin-left:90px;" type="button" id="hidePulsation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+						<button title="Cacher la respiration." class="btn btn-default btn-sm"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button> 
+   						<button title="Cacher la ventilation." class="btn btn-default btn-sm" type="button" id="hideVentilation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
 <br>
-   						<button title="Cacher le volume tidal" class="btn btn-default btn-sm" type="button" style="margin-left:165px; margin-top:8px;" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
-   						<button  title="Voir tout" class="btn btn-default btn-sm" style="margin-top:8px;" type="button" id="seeAll4"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+   						<button title="Cacher le volume tidal." class="btn btn-default btn-sm" type="button" style="margin-left:165px; margin-top:8px;" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
+   						<button  title="Voir tout." class="btn btn-default btn-sm" style="margin-top:8px;" type="button" id="seeAll4"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 				
 											
 					</div>
@@ -1578,12 +1578,12 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 			<TR>
 			
 				<TD> <span style="font-style:italic; font-size:11pt;"> Première séance : &nbsp; </span>
-				<img title="Tracé du chemin de la séance parcourue." src="img/path.png"/> 
+				<img title="Tracé du premier chemin de la séance parcourue." src="img/path.png"/> 
 				
 <br>
 
 				<span style="font-style:italic; font-size:11pt;"> Deuxième séance : &nbsp; </span>
-				<img title="Tracé du chemin de la séance parcourue." src="img/path2.png"/> 
+				<img title="Tracé du deuxième chemin de la séance parcourue." src="img/path2.png"/> 
 				
 <br>
 			    
@@ -1592,15 +1592,15 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 				<img title="Point d'arrivée." src="img/dd-end.png"/> 
 <br>				
 				<span style="font-style:italic; font-size:11pt;"> Degré de pulsation entre les deux séances :   </span>
-				<img title="Vitesse basse" src="img/h1.png"/>  <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>20</span>
-				<img title="Vitesse moyenne" src="img/h2.png"/> <span style="font-size:10pt;">entre 20 et 40</span>
-				<img title="Vitesse haute" src="img/h3.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %>40</span>
+				<img title="Vitesse basse." src="img/h1.png"/>  <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>20</span>
+				<img title="Vitesse moyenne." src="img/h2.png"/> <span style="font-size:10pt;">entre 20 et 40</span>
+				<img title="Vitesse haute." src="img/h3.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %>40</span>
 						
  <br>			
 				<span style="font-style:italic; font-size:11pt;"> Degré de vitesse entre les deux séances :  </span>
-				<img title="Vitesse basse" src="img/Speedlow.png"/> <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>3</span>  
-				<img title="Vitesse moyenne" src="img/SpeedMiddle.png"/> <span style="font-size:10pt;">entre 3 et 6 </span> 
-				<img title="Vitesse haute" src="img/SpeedMax.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %>6 </span>  
+				<img title="Vitesse basse." src="img/Speedlow.png"/> <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>3</span>  
+				<img title="Vitesse moyenne." src="img/SpeedMiddle.png"/> <span style="font-size:10pt;">entre 3 et 6 </span> 
+				<img title="Vitesse haute." src="img/SpeedMax.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %>6 </span>  
     
 		    
 			    </TD>
@@ -1617,11 +1617,10 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <div   class="row">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<hr>
-		<footer>
-			<p>
-				<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
-					réservés.</b>
-			</p>
+		<footer style="font-size:9pt;">
+						<b>Copyright ©2014 HexoSkin Travail de bachelor. Tous droits
+							réservés.</b> 
+						<img title="Logo hes-so Valais" align="right"height="30px" src="img/hes_logo.jpg" />
 		</footer>
 		</div>
 	</div>

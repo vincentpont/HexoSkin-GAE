@@ -123,7 +123,10 @@ String timeTotal  = (String) list.get(1);
     
 	function drawChart() {
 		
+		//alert("arrayVitesses " +arrayVitesses.length);
+		//alert("arrayVitesses av" + arrayVitesses.join('\n'));
 		modifyListFirstTime();
+
 		
 		multiple = arrayPulsation.length / arrayVitesses.length;
 		var average = 0.0;
@@ -186,6 +189,7 @@ String timeTotal  = (String) list.get(1);
 		    	position ++;
 			}
 		}
+		
 		
 		// Reinitialize
 		average = 0.0;
@@ -250,6 +254,7 @@ String timeTotal  = (String) list.get(1);
 			}
 		}
 		
+		//alert("arrayVitesses ap" + arrayVitesses.join('\n'));
 		//alert("arrayVitesses " +arrayVitesses.length);
 		//alert("arrayVitesses " + arrayVitesses.join('\n'));
 		//alert("arrayPulsation " + arrayPulsation.length);
@@ -259,11 +264,11 @@ String timeTotal  = (String) list.get(1);
 		var data = new google.visualization.DataTable();
 			data.addColumn('datetime', "Temps");
 			data.addColumn('number', 'Vitesse km/h');
-			data.addColumn('number', 'Altitudes décamètre');
+			data.addColumn('number', 'Altitude dam');
 			data.addColumn('number', 'Pulsation min');
-			data.addColumn('number', 'Volume Tidale litre');
+			data.addColumn('number', 'Volume Ti. l');
 			data.addColumn('number', 'Respiration min');
-			data.addColumn('number', 'Ventilation litre/min');
+			data.addColumn('number', 'Ventilation l/min');
 
 
 		
@@ -300,7 +305,7 @@ String timeTotal  = (String) list.get(1);
 		
 		 
 		var options = {
-			colors: ['#FFF800' , '#00B125', '#FF0007', '#46FDCF', '#960DF9', '#0C1A69'],
+			colors: ['#FF7700' , '#00B125', '#FF0007', '#46FDCF', '#960DF9', '#0C1A69'],
 			hAxis : {
 				title: 'Temps',
 				format: 'HH:mm:ss',
@@ -440,7 +445,7 @@ String timeTotal  = (String) list.get(1);
 		
 	}
 	
-	
+	// For graph
 	function modifyListFirstTime(){
 		
 		var random ;
@@ -456,8 +461,8 @@ String timeTotal  = (String) list.get(1);
 				
 				// on augmente les valeurs avec des moyenne dans la vitesses pour réduire l'écart  2.2 -> 2.0
 				if(difference >= 1.90 && difference < 2.50){
-
-					random = Math.floor(Math.random()* (arrayVitesses.length-4)) + 1 ; 			// we take a random position to add new values to incement size of array
+					// We don't want to begin at 3 start or end points
+					random = Math.floor(Math.random()* (arrayVitesses.length-3)) + 3 ; 			// we take a random position to add new values to incement size of array
 					moyenne = (arrayVitesses[random] + arrayVitesses[random+1])/2;
 					arrayVitesses.splice(random+1, 0, moyenne);	
 					
@@ -468,7 +473,7 @@ String timeTotal  = (String) list.get(1);
 				// On augmente pulsation donc 2.8 -> 3.0 
 				else if (difference >= 1.50 && difference <= 1.90){
 
-					random = Math.floor(Math.random()* (arrayPulsation.length-4)) + 1 ; 			// we take a random position to add new values to incement size of array
+					random = Math.floor(Math.random()* (arrayPulsation.length-3)) + 3 ; 			// we take a random position to add new values to incement size of array
 					moyenne = (arrayPulsation[random] + arrayPulsation[random+1])/2;
 					arrayPulsation.splice(random+1, 0, moyenne);
 					
@@ -484,7 +489,7 @@ String timeTotal  = (String) list.get(1);
 
 				}
 				
-				//alert("difference " +difference);
+				//alert("random " +random);
 				difference = difference = arrayPulsation.length / arrayVitesses.length;
 			}
 		}
@@ -496,7 +501,7 @@ String timeTotal  = (String) list.get(1);
 				// on augmente vitesses donc 2.2 ->2.0
 				if(difference >= 2.90 && difference < 3.50){
 
-					random = Math.floor(Math.random()* (arrayVitesses.length-4)) + 1 ;// we take a random position to add new values to incement size of array
+					random = Math.floor(Math.random()* (arrayVitesses.length-3)) + 3 ;// we take a random position to add new values to incement size of array
 					moyenne = (arrayVitesses[random] + arrayVitesses[random+1])/2;
 					arrayVitesses.splice(random+1, 0, moyenne);	
 					
@@ -508,7 +513,7 @@ String timeTotal  = (String) list.get(1);
 				// On augmente pulsation donc 2.8 -> 3.0 
 				else if (difference >= 2.50 && difference < 2.90){
 
-					random = Math.floor(Math.random()* (arrayPulsation.length-4)) + 1 ;// we take a random position to add new values to incement size of array
+					random = Math.floor(Math.random()* (arrayPulsation.length-3)) + 3 ;// we take a random position to add new values to incement size of array
 					moyenne = (arrayPulsation[random] + arrayPulsation[random+1])/2;
 					arrayPulsation.splice(random+1, 0, moyenne);
 					
@@ -522,7 +527,7 @@ String timeTotal  = (String) list.get(1);
 					moyenne = (arrayVentilation[random] + arrayVentilation[random+1])/2;
 					arrayVentilation.splice(random+1, 0, moyenne);
 				}
-				
+				//alert("random " +random);
 				difference = difference = arrayPulsation.length / arrayVitesses.length;
 
 			}
@@ -943,11 +948,11 @@ String timeTotal  = (String) list.get(1);
 		      '<br>' +
 		       '<span title="Pulsation min" style="font-size:10pt;" class="glyphicon glyphicon-heart">' + '&nbsp;' + arrayPulsation[number].toString() +  '</span>' +
 		      '<br>' +
-		       '<span title="Volume tidal" style="font-size:10pt;" class="glyphicon glyphicon-stats">' + '&nbsp;'+ (arrayVolumeTidal[number]/1000).toFixed(2) +  '</span>' +
+		       '<span title="Volume tidal" style="font-size:10pt;" class="glyphicon glyphicon-stats">' + '&nbsp;'+ arrayVolumeTidal[number].toString() +  '</span>' +
 		      '<br>' +
 		       '<span title="Respiration fréquence" style="font-size:10pt;" class="glyphicon glyphicon-transfer">'+ '&nbsp;' + arrayRespiration[number].toString() +  '</span>' +
 		      '<br>' +
-		      '<span title="Ventilation min" style="font-size:10pt;" class="glyphicon glyphicon-sort-by-attributes">'+ '&nbsp;' + (arrayVentilation[number]/1000).toFixed(2)  +  '</span>' +'</TD>' +
+		      '<span title="Ventilation min" style="font-size:10pt;" class="glyphicon glyphicon-sort-by-attributes">'+ '&nbsp;' + arrayVentilation[number].toString() +  '</span>' +'</TD>' +
 		      '</TR>' +
 		      '</table>'+
 		      '</div>'+
@@ -1235,28 +1240,28 @@ String timeTotal  = (String) list.get(1);
 
 				<table class="table">
 				<TR>
-					<TD title="Temps" class="success">
+					<TD title="Temps total." class="success">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-time"></span> 
 						<span style="font-size:14pt; font-family:Verdana;"> <% out.print(listWorkout.get(1)); %> </span>
 					</TD> 
 						
-					<TD  title="Distance en mètre"  class="success">				
+					<TD  title="Distance en mètre."  class="success">				
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-sort"></span> 
 						 <span style="font-size:14pt; font-family:Verdana;">  <% out.print(listWorkout.get(2)); %> </span>
 					</TD>
 						
-					<TD title="Calories brûlées" class="success">
+					<TD title="Calories brûlées." class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-fire"></span>	
 						 <span style="font-size:14pt; font-family:Verdana;">&nbsp;  <% out.print(listWorkout.get(3)); %></span>
 					</TD>
 						
-					<TD title="Vitesse moyenne en km/h" class="success">
+					<TD title="Vitesse moyenne en km/h". class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-flash"></span>	
 						 <span style="font-size:14pt; font-family:Verdana;">&nbsp;  <% out.print(listWorkout.get(4)); %> </span>	
 											
 					</TD>
 						
-					<TD title="Altitude moyenne en mètre" class="success">
+					<TD title="Altitude moyenne en mètre." class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-signal"></span>	
 						 <span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>				
 					</TD>
@@ -1296,27 +1301,27 @@ String timeTotal  = (String) list.get(1);
 			%>
 			
 				<TR>
-					<TD title="Pulsation moyenne" class="info">
+					<TD title="Pulsation min moyenne." class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-heart"></span>						
 						<span style="font-size:14pt; font-family:Verdana;"><% out.print(restHEXO.getAverageFromList(listPulsation));  %> </span>	
 					</TD> 
 					
-					<TD  title="Total pas" class="info">				
+					<TD  title="Total pas." class="info">				
 						<span style="font-size:21pt;" class="glyphicon glyphicon-road"></span>						
 					    <span style="font-size:14pt; font-family:Verdana;"><% out.print(listSteps.get(listSteps.size()-1));  %> </span>	
 					</TD>
 					
-					<TD title="Volume Tidal moyen l/inspiration" class="info">
+					<TD title="Volume Tidal moyen l/inspiration." class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-stats"></span>						
 						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(volumTidal);   %> </span>	
 					</TD>
 					
-					<TD title="Respiration min moyenne" class="info">
+					<TD title="Respiration min moyenne." class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-transfer"></span>						
 						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(restHEXO.getAverageFromList(listBreathing));   %> </span>	
 					</TD>
 					
-					<TD title="Ventilation moyenne l/min)" class="info">
+					<TD title="Ventilation moyenne l/min." class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
 						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(ventilation);  %>  </span>	
 					</TD>
@@ -1351,14 +1356,14 @@ String timeTotal  = (String) list.get(1);
 
 						<TR>
 							<TD>												
-							<button title="Montrer toutes les vitesses." style="margin-top:12pt;" type='button' class="btn btn-warning btn-sm" onclick="addSpeed();"><span class="glyphicon glyphicon-flash"></span></button>
+							<button title="Afficher les vitesses." style="margin-top:12pt;" type='button' class="btn btn-warning btn-sm" onclick="addSpeed();"><span class="glyphicon glyphicon-flash"></span></button>
 							<button title="Montrer si la vitesse est constante." style="margin-top:12pt;"  type='button' class="btn btn-warning btn-sm" onclick="addConstanceSpeed();"><b>Constance</b></button>
 							</TD>
 						</TR>
 										
 						<TR>						
 							<TD>
-							<button title="Montrer toutes les pulsations." style="margin-top:12pt;" type='button' class="btn btn-danger btn-sm" onclick="addHeartRate();"><span class="glyphicon glyphicon-heart"></span></button>	
+							<button title="Afficher toutes les pulsations." style="margin-top:12pt;" type='button' class="btn btn-danger btn-sm" onclick="addHeartRate();"><span class="glyphicon glyphicon-heart"></span></button>	
 							<button title="Montrer si les pulsations sont constantes." style="margin-top:12pt;" type='button' class="btn btn-danger btn-sm" onclick="addConstanceHeart();"><b>Constance</b></button>
 							</TD>
 						</TR>
@@ -1430,13 +1435,13 @@ String timeTotal  = (String) list.get(1);
 								<table>
 									<TR>
 										<TD>
-										<button style="margin-left:150px;" title="Cacher la vitesse" class="btn btn-default btn-sm" type="button" id="hideSpeed"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
-										<button  title="Cacher l'altitue" class="btn btn-default btn-sm" type="button" id="hideAltitude"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>				   					
-				   						<button  title="Cacher la pulsation" class="btn btn-default btn-sm" type="button" id="hidePulsation"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-										<button  title="Cacher le volume tidal" class="btn btn-default btn-sm" type="button" id="hideTidal"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Volume ti. </button>
-										<button  title="Cacher la respiration" class="btn btn-default btn-sm" type="button" id="hideRespiration"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Repiration</button>
-										<button  title="Cacher la ventilation" class="btn btn-default btn-sm" type="button" id="hideVentilation"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Ventilation</button>
-				   						<button  title="Voir tout" class="btn btn-default btn-sm" type="button" id="seeAll"> &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+										<button style="margin-left:190px;" title="Cacher la vitesse." class="btn btn-default btn-sm" type="button" id="hideSpeed"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
+										<button  title="Cacher l'altitue." class="btn btn-default btn-sm" type="button" id="hideAltitude"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>				   					
+				   						<button  title="Cacher la pulsation." class="btn btn-default btn-sm" type="button" id="hidePulsation"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+										<button  title="Cacher le volume tidal." class="btn btn-default btn-sm" type="button" id="hideTidal"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Volume ti. </button>
+										<button  title="Cacher la respiration." class="btn btn-default btn-sm" type="button" id="hideRespiration"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Repiration</button>
+										<button  title="Cacher la ventilation." class="btn btn-default btn-sm" type="button" id="hideVentilation"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Ventilation</button>
+				   						<button  title="Voir tout." class="btn btn-default btn-sm" type="button" id="seeAll"> &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 										</TD>
 									</TR>
 								</table>
@@ -1452,11 +1457,10 @@ String timeTotal  = (String) list.get(1);
 <div class="row">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<hr>
-		<footer>
-			<p>
-				<b>Copyright ©2014 HexoSkin Travail bachelor. Tous droits
-					réservés.</b>
-			</p>
+		<footer style="font-size:9pt;">
+						<b>Copyright ©2014 HexoSkin Travail de bachelor. Tous droits
+							réservés.</b> 
+						<img title="Logo hes-so Valais" align="right"height="30px" src="img/hes_logo.jpg" />
 		</footer>
 		</div>
 	</div>
