@@ -5,30 +5,6 @@
 <html lang="en">
 <head>
 
-<!-- Google account get account -->
-<script type="text/javascript">
-	(function() {
-		var po = document.createElement('script');
-		po.type = 'text/javascript';
-		po.async = true;
-		po.src = 'https://apis.google.com/js/client:plusone.js';
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(po, s);
-	})();
-</script>
-
-<!-- Google account test token -->
-<script type="text/javascript">
-	function signinCallback(authResult) {
-		if (authResult['access_token']) {
-			// Autorisation réussie
-			window.location = "/dashboard";
-		} else if (authResult['error']) {
-			// Fail logged
-		}
-	}
-</script>
-
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -43,6 +19,9 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="bootstrap-3.1.1/dist/css/bootstrap.min.css">
 <link href="bootstrap-3.1.1/dist/css/dashboard.css" rel="stylesheet">
+
+<!-- Import login.js -->
+<script src="js/login.js"></script>
 
 </head>
 

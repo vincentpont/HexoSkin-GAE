@@ -134,6 +134,125 @@ public class RestInvokerDatastore {
 		return list;
 
 	}
+	
+	
+	/**
+	 * Method to get the user
+	 * 
+	 * @Param: String email
+	 * 
+	 */
+	public void updateUser(String email, String sexe, String age, String weight)
+			throws UnsupportedEncodingException {
+
+
+		String urlRequest = "https://logical-light-564.appspot.com/_ah/api/helloworld/v1/void/updateUser?Email="
+				+ URLEncoder.encode(email, "UTF-8")
+				+ "&Sexe="
+				+ URLEncoder.encode(sexe, "UTF-8")
+				+ "&Age="
+				+ URLEncoder.encode(age, "UTF-8")
+				+ "&Weight="
+				+ URLEncoder.encode(weight, "UTF-8");
+		
+
+		try {
+
+			URL url = new URL(urlRequest);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("PUT");
+			conn.addRequestProperty("Content-Length ", "0"); // sans un espace après  Content-Length ça marche pas!
+			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("Authorization", basicAuth);
+
+			
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204 ) {
+				throw new RuntimeException("Failed, HTTP error code : "
+						+ conn.getResponseCode() + " "
+						+ conn.getResponseMessage());
+			}
+			
+
+			// Disconnect
+			conn.disconnect();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		}
+
+	}
+	
+	
+	/**
+	 * Method to get the user
+	 * 
+	 * @Param: String email
+	 * 
+	 * @Return: JSONObject containing the infos user
+	 */
+	public List<String> getUser(String email)
+			throws UnsupportedEncodingException {
+
+		// Create url request and encode email and date
+		String urlRequest = "https://logical-light-564.appspot.com/_ah/api/helloworld/v1/jsonobject/getUser?Email="
+				+ URLEncoder.encode(email, "UTF-8");
+
+		List<String> list = new ArrayList<String>();
+
+		try {
+
+			URL url = new URL(urlRequest);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("Authorization", basicAuth);
+
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed, HTTP error code : "
+						+ conn.getResponseCode() + " "
+						+ conn.getResponseMessage());
+			}
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					(conn.getInputStream())));
+
+			String jsonText = readAll(br);
+
+			try {
+				json = new JSONObject(jsonText);
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			// Disconnect
+			conn.disconnect();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		}
+
+		// Pass values to the list
+		try {
+			list.add(json.getString("Email"));
+			list.add(json.getString("Sexe"));
+			list.add(json.getString("Age"));
+			list.add(json.getString("Weight"));
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return list;
+
+	}
+	
+	
+	
 
 	/**
 	 * Method to get all workouts from the specified email

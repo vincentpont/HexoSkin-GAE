@@ -50,6 +50,25 @@ public class RestDatastore_Test {
 			fail();
 		}
 	}
+	
+	/**
+	 * 
+	 * Method that test if a specify user is  saved into the entity Users
+	 * @throws UnsupportedEncodingException
+	 */
+	@Test
+	public void testUsers()
+			throws UnsupportedEncodingException {
+
+		List<String> listUser = restDatastore.getUser(email);
+		if (listUser.get(0).equals(email)) {
+			// Ok
+			System.out.println(listUser.get(0));
+		} else {
+			fail();
+		}
+
+	}
 
 	/**
 	 * Method that test if we get the values from the map Latitude, longitude,

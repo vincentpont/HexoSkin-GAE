@@ -6,6 +6,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 
 <!-- Servlet index -->
+
 	<servlet>
 		<servlet-name>HexoSkin_Dashboard_GAE</servlet-name>
 		<servlet-class>servlets_GAE.HexoSkin_Dashboard_Servlet</servlet-class>
@@ -16,6 +17,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	
 <!-- Servlet compare -->
+
 	<servlet>
 		<servlet-name>HexoSkin_Compare_GAE</servlet-name>
 		<servlet-class>servlets_GAE.HexoSkin_Compare_Servlet</servlet-class>
@@ -23,6 +25,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>HexoSkin_Compare_GAE</servlet-name>
 		<url-pattern>/compare</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Servlet Profile -->
+	
+	<servlet>
+		<servlet-name>HexoSkin_Profile_GAE</servlet-name>
+		<servlet-class>servlets_GAE.HexoSkin_Profile_Servlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HexoSkin_Profile_GAE</servlet-name>
+		<url-pattern>/profile</url-pattern>
 	</servlet-mapping>
 	
 	

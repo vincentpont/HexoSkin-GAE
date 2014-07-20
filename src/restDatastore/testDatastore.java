@@ -15,10 +15,19 @@ public class testDatastore {
 			JSONException {
 
 		RestInvokerDatastore rest = new RestInvokerDatastore();
-
+/*
 		System.out.println("Data from entity newSeance :");
 		System.out.println("");
+		
+		List list = rest.getUser("vincentpont@gmail.com");
 
+		  Iterator<String> iterator = list.iterator(); 
+		  while(iterator.hasNext()) {
+			  System.out.println(iterator.next()); 
+			  }
+		  
+		  */
+		  rest.updateUser("vincentpont@gmail.com" , "homme", "24", "90");
 
 	/*
 		  List list = rest.getAllWorkoutByEmail("vincentpont@gmail.com");
@@ -57,10 +66,7 @@ public class testDatastore {
 		
 		*/
 		
-		
-		String se = "6 km/h";
-		se.substring(se.length()-1, se.length()-4);
-		System.out.println(se);
+
 	}
 
 }

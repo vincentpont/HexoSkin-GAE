@@ -4,37 +4,9 @@
 <html lang="en">
 <head>
 
-<!-- Google account get account -->
-<script type="text/javascript">
-	(function() {
-		var po = document.createElement('script');
-		po.type = 'text/javascript';
-		po.async = true;
-		po.src = 'https://apis.google.com/js/client:plusone.js';
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(po, s);
-	})();
-</script>
+<%@ page import="java.util.List;"%>
 
-<!-- Google account test token -->
-<script type="text/javascript">
-	function signinCallback(authResult) {
-		if (authResult['access_token']) {
-			// Logged
-		} else if (authResult['error']) {
-			document.getElementById('signinButton').setAttribute('style',
-					'display: none');
-			window.location = "login.jsp";
-		}
-	}
 
-	/**
-	 * Method to logout the user
-	 */
-	function logout() {
-		document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
-	}
-</script>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,6 +21,9 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="bootstrap-3.1.1/dist/css/bootstrap.min.css">
 <link href="bootstrap-3.1.1/dist/css/dashboard.css" rel="stylesheet">
+
+<!-- Import login.js -->
+<script src="js/login.js"></script>
 
 </head>
 
@@ -68,7 +43,7 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="profile.jsp">Profile</a></li>
+					<li><a href="profile">Profile</a></li>
 					<li><a href="javascript:logout();">Logout</a></li>
 					<li><a href="about.jsp">About</a></li>
 				</ul>
@@ -95,9 +70,51 @@
 						class="glyphicon glyphicon-user"></span>
 				</h1>
 
+				<div class="col-md-6">
 
-				<br>
-				<div class="row"></div>
+					<br>
+
+
+<%
+	List listUser = (List) request.getAttribute("listUser");
+%>
+
+	<form method="post" action="profile">
+		<div class="form-group">
+			<label for="email">Email address</label> <input width="100px"
+				type="email" disabled class="form-control" name="Email"
+				value='<%=listUser.get(0)%>'>
+		</div>
+		<div class="form-group">
+			<label for="sexe">Sexe</label> <input width="100px" type="text"
+				class="form-control" name="Sexe" value='<%=listUser.get(1)%>'>
+		</div>
+		<div class="form-group">
+			<label for="age">Age</label> <input width="100px" type="text"
+				class="form-control" name="Age" value='<%=listUser.get(2)%>'>
+		</div>
+		<div class="form-group">
+			<label for="poids">Poids</label> <input width="100px" type="text"
+				class="form-control" name="Weight" value='<%=listUser.get(3)%>'>
+		</div>
+		<button type='submit' class="btn btn-success" onClick="">
+			<b> Sauvegarder </b>
+		</button>
+	</form>
+				</div>
+
+
+				<div class="col-md-6">
+
+					<!-- 
+					<div class="form-group">
+						<label for="exampleInputFile">Ajouter une image</label> <input
+							width="100px" type="file" id="exampleInputFile">
+						<p class="help-block">Taille de 100*100 .</p>
+					</div>
+ -->
+				</div>
+
 			</div>
 
 		</div>
@@ -105,10 +122,10 @@
 		<div style="bottom: 0; position: absolute; width: 100%;" class="row">
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<hr>
-				<footer style="font-size:9pt;">
-						<b>Copyright ©2014 HexoSkin Travail de bachelor. Tous droits
-							réservés.</b> 
-						<img title="Logo hes-so Valais" align="right"height="30px" src="img/hes_logo.jpg" />
+				<footer style="font-size: 9pt;">
+					<b>Copyright ©2014 HexoSkin Travail de bachelor. Tous droits
+						réservés.</b> <img title="Logo hes-so Valais" align="right"
+						height="30px" src="img/hes_logo.jpg" />
 				</footer>
 			</div>
 		</div>
@@ -117,7 +134,7 @@
 
 
 	<span id="signinButton" style="display: none"> <span
-		class="g-signin" data-callback="signinCallback"
+		class="g-signin" data-callback="signinCallbacks"
 		data-clientid="799362622292-cisd7bgllvoo1pckcsm38smvl9ec1m60.apps.googleusercontent.com"
 		data-cookiepolicy="single_host_origin"
 		data-requestvisibleactions="http://schemas.google.com/AddActivity"

@@ -6,39 +6,6 @@
 
 
 
-<!-- Google account get account -->
-<script type="text/javascript">
-	(function() {
-		var po = document.createElement('script');
-		po.type = 'text/javascript';
-		po.async = true;
-		po.src = 'https://apis.google.com/js/client:plusone.js';
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(po, s);
-	})();
-</script>
-
-<!-- Google account test token -->
-<script type="text/javascript">
-	function signinCallback(authResult) {
-		if (authResult['access_token']) {
-			// Logged
-		} else if (authResult['error']) {
-			document.getElementById('signinButton').setAttribute('style',
-					'display: none');
-			window.location = "login.jsp";
-		}
-	}
-
-	/**
-	 * Method to logout the user
-	 */
-	function logout() {
-		document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://9-dot-logical-light-564.appspot.com/login.jsp";
-	}
-</script>
-
-
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -52,6 +19,9 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="bootstrap-3.1.1/dist/css/bootstrap.min.css">
 <link href="bootstrap-3.1.1/dist/css/dashboard.css" rel="stylesheet">
+
+<!-- Import login.js -->
+<script src="js/login.js"></script>
 
 </head>
 
@@ -71,7 +41,7 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="profile.jsp">Profile</a></li>
+					<li><a href="profile">Profile</a></li>
 					<li><a href="javascript:logout();">Logout</a></li>
 					<li><a href="about.jsp">About</a></li>
 				</ul>
@@ -163,7 +133,7 @@
 
 
 	<span id="signinButton" style="display: none"> <span
-		class="g-signin" data-callback="signinCallback"
+		class="g-signin" data-callback="signinCallbacks"
 		data-clientid="799362622292-cisd7bgllvoo1pckcsm38smvl9ec1m60.apps.googleusercontent.com"
 		data-cookiepolicy="single_host_origin"
 		data-requestvisibleactions="http://schemas.google.com/AddActivity"
