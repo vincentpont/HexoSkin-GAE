@@ -28,7 +28,7 @@
 function signinCallback(authResult) {
 	if (authResult['access_token']) {
 		// Autorisation réussie
-		window.location = "/dashboard";
+		window.location = "/training";
 	} else if (authResult['error']) {
 		// Fail logged
 	}

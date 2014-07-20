@@ -44,7 +44,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="dashboard">HexoSkin</a>
+				<a class="navbar-brand" href="training">HexoSkin</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
@@ -61,7 +61,7 @@
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li><a href="dashboard">Dashboard</a></li>
+					<li><a href="training">Entraînement</a></li>
 					<li><a href="compare">Comparer</a></li>
 					<li class="active"><a href="historique.jsp">Historique</a></li>
 					<li><a href="definition.jsp">Définitions</a></li>

@@ -8,12 +8,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 <!-- Servlet index -->
 
 	<servlet>
-		<servlet-name>HexoSkin_Dashboard_GAE</servlet-name>
-		<servlet-class>servlets_GAE.HexoSkin_Dashboard_Servlet</servlet-class>
+		<servlet-name>HexoSkin_Training_GAE</servlet-name>
+		<servlet-class>servlets_GAE.HexoSkin_Training_Servlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>HexoSkin_Dashboard_GAE</servlet-name>
-		<url-pattern>/dashboard</url-pattern>
+		<servlet-name>HexoSkin_Training_GAE</servlet-name>
+		<url-pattern>/training</url-pattern>
 	</servlet-mapping>
 	
 <!-- Servlet compare -->

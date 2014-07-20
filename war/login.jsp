@@ -36,7 +36,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="dashboard">HexoSkin</a>
+				<a class="navbar-brand" href="training">HexoSkin</a>
 			</div>
 			<div class="navbar-collapse collapse">
 

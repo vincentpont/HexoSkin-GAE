@@ -8,7 +8,7 @@ import restDatastore.RestInvokerDatastore;
 
 
 @SuppressWarnings("serial")
-public class HexoSkin_Dashboard_Servlet extends HttpServlet {
+public class HexoSkin_Training_Servlet extends HttpServlet {
 	
 	private final String email = "vincentpont@gmail.com";
 	
