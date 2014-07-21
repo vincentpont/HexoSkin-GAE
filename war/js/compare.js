@@ -148,7 +148,7 @@ function addDiffHeart() {
 			diffPuls = arrayPulsation1[number] - arrayPulsation2[number];
 
 			// Test value of the differences to add the right icon img
-			if (diffSpeeds <= 20) {
+			if (diffPuls <= 20) {
 				pulsImg = 'img/h1.png';
 			} else if (diffPuls > 20 && diffPuls <= 40) {
 				pulsImg = 'img/h2.png';
@@ -244,7 +244,7 @@ function addDiffSpeed() {
 				speedImg = 'img/SpeedMax.png';
 			}
 
-			diffSpeedStr = diffSpeeds.toString(+' km/h');
+			diffSpeedStr = diffSpeeds.toString()+' km/h';
 			namePath = "Trajet 1";
 		} else {
 

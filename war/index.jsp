@@ -259,7 +259,8 @@ String timeTotal  = (String) list.get(1);
 						
 					<TD title="Calories brûlées." class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-fire"></span>	
-						 <span style="font-size:14pt; font-family:Verdana;">&nbsp;  <% out.print(listWorkout.get(3)); %></span>
+						 <span style="font-size:14pt; font-family:Verdana;">&nbsp; 
+						  <% out.print(listWorkout.get(3)); %></span>
 					</TD>
 						
 					<TD title="Vitesse moyenne en km/h". class="success">
@@ -309,7 +310,8 @@ String timeTotal  = (String) list.get(1);
 				<TR>
 					<TD title="Pulsation min moyenne." class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-heart"></span>						
-						<span style="font-size:14pt; font-family:Verdana;"><% out.print(restHEXO.getAverageFromList(listPulsation));  %> </span>	
+						<span style="font-size:14pt; font-family:Verdana;">
+						<% out.print(restHEXO.getAverageFromList(listPulsation));  %> </span>	
 					</TD> 
 					
 					<TD  title="Total pas." class="info">				
