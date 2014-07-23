@@ -205,12 +205,16 @@ String timeTotal  = (String) list.get(1);
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
-				<ul class="nav nav-sidebar titreNavigation">
-					<li class="active"><a href="training">Entraînement</a></li>
+				<ul class="nav nav-sidebar">
+					<li><a href="training">Entraînement</a></li>
 					<li><a href="compare">Comparer</a></li>
 					<li><a href="historique.jsp">Historique</a></li>
-				    <li><a href="definition.jsp">Définitions</a></li>
 				</ul>
+				
+				<ul class="nav nav-sidebar">
+					<li><a href="statistic">Statistique</a></li>
+				    <li><a href="definition.jsp">Définitions</a></li>
+		        </ul>
 			</div>
 
 			<%

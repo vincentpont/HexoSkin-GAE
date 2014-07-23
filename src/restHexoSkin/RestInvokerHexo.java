@@ -61,7 +61,7 @@ public class RestInvokerHexo {
 			conn.setRequestProperty("Authorization", basicAuth);
 
 
-			if (conn.getResponseCode() != 200) {
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 400) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
@@ -107,7 +107,7 @@ public class RestInvokerHexo {
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Authorization", basicAuth);
 
-			if (conn.getResponseCode() != 200) {
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 400) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
@@ -311,7 +311,7 @@ public class RestInvokerHexo {
 			conn.setRequestProperty("Authorization", basicAuth);
 
 
-			if (conn.getResponseCode() != 200) {
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 400) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());

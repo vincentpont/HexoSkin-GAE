@@ -116,6 +116,9 @@ function initialize() {
  * Method to add differences of heart rate on the path
  */
 function addDiffHeart() {
+	
+	modifyLists(arrayPulsation1, arraySpeed1);
+	modifyLists(arrayPulsation2, arraySpeed1);
 
 	var markerDiffPuls;
 	var markerPosition;
@@ -208,6 +211,81 @@ function addDiffHeart() {
 
 		number += multi;
 		markerDiffPuls.setMap(map);
+	}
+}
+
+/**
+ * Method to modify the list to be more accurate to 2 or 3 for maps
+ */
+function modifyLists(arrayPulsations, arraySpeeds) {
+	var arrayPulsation = arrayPulsations;
+	var arraySpeed = arraySpeeds;
+	var random;
+	var moyenne;
+
+	// Ici on va corrgier les tailles encore plus des listes pour qu'elle soit
+	// le plus proche d'un chiffre entier (2,3)
+	var difference = arrayPulsation.length / arraySpeed.length;
+
+	if (difference > 1.50 && difference <= 2.50) {
+		// Tant que la différence de taille est plus grand que 1.90
+		while (difference > 2.00) {
+
+			// on enlève deux valeurs mais on mets une moyenne des deux enlever
+			// à la place
+			if (difference > 2.00 && difference <= 2.50) {
+
+				random = Math
+						.floor(Math.random() * (arrayPulsation.length - 2)) + 1;
+
+				moyenne = (arrayPulsation[random] + arrayPulsation[random + 1]) / 2;
+				arrayPulsation.splice(random, 0, moyenne);
+				arrayPulsation.splice(random + 1, 2);// on enlève les deux
+														// valeurs
+
+			}
+
+			// On rajout une valeur (moyenne) entre deux valeurs
+			else if (difference >= 1.50 && difference < 2.00) {
+
+				random = Math
+						.floor(Math.random() * (arrayPulsation.length - 2)) + 1;
+
+				moyenne = (arrayPulsation[random] + arrayPulsation[random + 1]) / 2;
+				arrayPulsation.splice(random + 1, 0, moyenne);
+
+			}
+			difference = difference = arrayPulsation.length / arraySpeed.length;
+		}
+	}
+
+	else if (difference > 2.50 && difference <= 3.50) {
+
+		// Tant que on a est pas entre (2.9 a 3.10) pour maximum de précision
+		while (difference < 3.00) {
+			// on baisse
+			if (difference > 3.00 && difference <= 3.50) {
+
+				random = Math
+						.floor(Math.random() * (arrayPulsation.length - 2)) + 1;
+
+				moyenne = (arrayPulsation[random] + arrayPulsation[random + 1]) / 2;
+				arrayPulsation.splice(random, 0, moyenne);
+				arrayPulsation.splice(random + 1, 2);// on enlève les deux valeurs
+			}
+			// On augmente
+			else if (difference >= 2.50 && difference <= 3.0) {
+
+				random = Math
+						.floor(Math.random() * (arrayPulsation.length - 2)) + 1;
+
+				moyenne = (arrayPulsation[random] + arrayPulsation[random + 1]) / 2;
+				arrayPulsation.splice(random + 1, 0, moyenne);
+
+			}
+
+			difference = difference = arrayPulsation.length / arraySpeed.length;
+		}
 	}
 }
 

@@ -301,12 +301,16 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
-	          <ul class="nav nav-sidebar">
-				<li><a href="training">Entraînement</a></li>
-	            <li class="active"><a href="compare">Comparer</a></li>
-                <li><a href="historique.jsp">Historique</a></li>
+				<ul class="nav nav-sidebar">
+					<li><a href="training">Entraînement</a></li>
+					<li><a href="compare">Comparer</a></li>
+					<li><a href="historique.jsp">Historique</a></li>
+				</ul>
+				
+				<ul class="nav nav-sidebar">
+					<li><a href="statistic">Statistique</a></li>
 				    <li><a href="definition.jsp">Définitions</a></li>
-	          </ul>
+		        </ul>
 			</div>
 			
 

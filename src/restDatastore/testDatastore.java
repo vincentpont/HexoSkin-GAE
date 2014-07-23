@@ -27,7 +27,7 @@ public class testDatastore {
 			  }
 		  
 		  */
-		  rest.updateUser("vincentpont@gmail.com" , "homme", "24", "90");
+		  //rest.updateUser("vincentpont@gmail.com" , "homme", "24", "90");
 
 	/*
 		  List list = rest.getAllWorkoutByEmail("vincentpont@gmail.com");
@@ -66,6 +66,28 @@ public class testDatastore {
 		
 		*/
 		
+		List<String> listWorkouts = rest.getAllWorkoutByEmail("vincentpont@gmail.com");
+
+		Double totalCalorie = 0.0 ;
+		
+		Iterator<String> iterator2 = listWorkouts.iterator(); 
+		while(iterator2.hasNext()) {
+			System.out.println(iterator2.next());
+			}
+		
+		System.out.println("======================================");
+		
+		int j = 3 ; // first valu at position 3
+		
+		for(int i = 0 ; i <listWorkouts.size();i++){
+			
+			if(j <= listWorkouts.size()){
+			totalCalorie += Double.parseDouble(listWorkouts.get(j));
+			System.out.println("list: "+listWorkouts.get(j));
+			} 
+			j += 5 ;
+		}
+		System.out.println("Total :" + totalCalorie);
 
 	}
 

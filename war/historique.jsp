@@ -63,9 +63,13 @@
 				<ul class="nav nav-sidebar">
 					<li><a href="training">Entraînement</a></li>
 					<li><a href="compare">Comparer</a></li>
-					<li class="active"><a href="historique.jsp">Historique</a></li>
-					<li><a href="definition.jsp">Définitions</a></li>
+					<li><a href="historique.jsp">Historique</a></li>
 				</ul>
+				
+				<ul class="nav nav-sidebar">
+					<li><a href="statistic">Statistique</a></li>
+				    <li><a href="definition.jsp">Définitions</a></li>
+		        </ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<h1 class="page-header">Historique des séances</h1>

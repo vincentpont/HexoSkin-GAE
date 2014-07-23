@@ -57,8 +57,12 @@
 					<li><a href="training">Entraînement</a></li>
 					<li><a href="compare">Comparer</a></li>
 					<li><a href="historique.jsp">Historique</a></li>
-					<li class="active"><a href="definition.jsp">Définitions</a></li>
 				</ul>
+				
+				<ul class="nav nav-sidebar">
+					<li><a href="statistic">Statistique</a></li>
+				    <li><a href="definition.jsp">Définitions</a></li>
+		        </ul>
 			</div>
 
 
@@ -75,17 +79,18 @@
 
 
 				<table class="table">
-
+	<thead>
 					<TR style="font-size: 14pt;">
 						<TH>Donnée</TH>
 						<TH>Définition</TH>
 						<TH>Rapport (repos/effort)</TH>
 					</TR>
-
+ </thead>
+ <tbody>
 					<TR style="font-size: 11pt;">
 
 						<TD><span class="glyphicon glyphicon-stats"></span> <b>Volume
-								tidal</b></TD>
+								ti.</b></TD>
 
 						<TD>est le volume pulmonaire normale représentant le volume
 							de l'air déplacé entre l'inhalation et l'exhalation.</TD>
@@ -94,7 +99,7 @@
 					</TR>
 					<TR style="font-size: 11pt;">
 						<TD><span class="glyphicon glyphicon-transfer"></span> <b>Fréquence
-								respiratoire</b></TD>
+								respi.</b></TD>
 
 						<TD>est le nombre de cycles respiratoire (inspiration et
 							expiration) par minute.</TD>
@@ -111,6 +116,7 @@
 						<TD>6.0 litre/min au repos et 90 litre/min pendant effort</TD>
 
 					</TR>
+					</tbody>
 				</table>
 
 

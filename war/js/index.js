@@ -350,20 +350,7 @@ function modifyListFirstTime() {
 			// réduire l'écart 2.2 -> 2.0
 			if (difference >= 1.90 && difference < 2.50) {
 				// We don't want to begin at 3 start or end points
-				random = Math.floor(Math.random() * (arrayVitesses.length - 3)) + 3; // we
-																						// take
-																						// a
-																						// random
-																						// position
-																						// to
-																						// add
-																						// new
-																						// values
-																						// to
-																						// incement
-																						// size
-																						// of
-																						// array
+				random = Math.floor(Math.random() * (arrayVitesses.length - 3)) + 3; 
 				moyenne = (arrayVitesses[random] + arrayVitesses[random + 1]) / 2;
 				arrayVitesses.splice(random + 1, 0, moyenne);
 
@@ -375,20 +362,8 @@ function modifyListFirstTime() {
 			else if (difference >= 1.50 && difference <= 1.90) {
 
 				random = Math
-						.floor(Math.random() * (arrayPulsation.length - 3)) + 3; // we
-																					// take
-																					// a
-																					// random
-																					// position
-																					// to
-																					// add
-																					// new
-																					// values
-																					// to
-																					// incement
-																					// size
-																					// of
-																					// array
+						.floor(Math.random() * (arrayPulsation.length - 3)) + 3;
+
 				moyenne = (arrayPulsation[random] + arrayPulsation[random + 1]) / 2;
 				arrayPulsation.splice(random + 1, 0, moyenne);
 
@@ -417,20 +392,8 @@ function modifyListFirstTime() {
 			// on augmente vitesses donc 2.2 ->2.0
 			if (difference >= 2.90 && difference < 3.50) {
 
-				random = Math.floor(Math.random() * (arrayVitesses.length - 3)) + 3;// we
-																					// take
-																					// a
-																					// random
-																					// position
-																					// to
-																					// add
-																					// new
-																					// values
-																					// to
-																					// incement
-																					// size
-																					// of
-																					// array
+				random = Math.floor(Math.random() * (arrayVitesses.length - 3)) + 3;
+
 				moyenne = (arrayVitesses[random] + arrayVitesses[random + 1]) / 2;
 				arrayVitesses.splice(random + 1, 0, moyenne);
 
@@ -442,21 +405,7 @@ function modifyListFirstTime() {
 			// On augmente pulsation donc 2.8 -> 3.0
 			else if (difference >= 2.50 && difference < 2.90) {
 
-				random = Math
-						.floor(Math.random() * (arrayPulsation.length - 3)) + 3;// we
-																				// take
-																				// a
-																				// random
-																				// position
-																				// to
-																				// add
-																				// new
-																				// values
-																				// to
-																				// incement
-																				// size
-																				// of
-																				// array
+				random = Math.floor(Math.random() * (arrayPulsation.length - 3)) + 3;
 				moyenne = (arrayPulsation[random] + arrayPulsation[random + 1]) / 2;
 				arrayPulsation.splice(random + 1, 0, moyenne);
 

@@ -13,8 +13,9 @@
 <meta name="author" content="Vincent Pont">
 <link rel="shortcut icon" href="img/icoFav.png">
 
+<%@ page import="java.util.List, java.util.Iterator;"%>
 
-<title>HexoSkin-About</title>
+<title>HexoSkin-Statistique</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="bootstrap-3.1.1/dist/css/bootstrap.min.css">
@@ -26,7 +27,12 @@
 </head>
 
 <body>
-
+<!-- Get variables from servlet -->
+<% String numberOfWorkout = String.valueOf(request.getAttribute("countWorkout")); 
+String totalCalorie = String.valueOf(request.getAttribute("totalCalorie")); 
+String totalDistance = String.valueOf(request.getAttribute("totalDistance")); 
+String pasTotal = String.valueOf(request.getAttribute("pasTotal")); 
+%>
 
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
@@ -68,13 +74,50 @@
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"
 				style="font-size: 12pt;">
-				<h1 class="page-header">A propos</h1>
+				<h1 class="page-header">Statistique</h1>
 
-				<p>Mapper l'effort grâce à HexoSkin.</p>
-				<p>Travail de bachelor 2014</p>
-				<p>Étudiant : Vincent Point</p>
-				<p>Professeur responsable : Monsieur Michael Schumacher</p>
-				<p>HES-SO Valais</p>
+				<h4>Quelques Statistiques générales</h4>
+<br>			
+
+				
+				<table class="table table-striped">
+
+	<thead>
+					<TR style="font-size: 13pt;">
+						<TH>Donnée </TH>
+						<TH>Total</TH>
+					</TR>
+	</thead>
+		<tbody>
+					<TR title="Total des entraînement réalisés" style="font-size: 11pt;">
+
+						<TD > Entraînement réalisés </TD> 
+						<TD> <b><% out.print(numberOfWorkout); %> </b>	</TD>
+
+					</TR>
+					<TR title="Total des calories brûlées" style="font-size: 11pt;">
+
+						<TD > Calories brûlées 	</TD> 
+						<TD> <b><% out.print(totalCalorie); %> </b>  	</TD>
+									
+					</TR>
+					<TR title="Total de la distance parcourues en mètre" style="font-size: 11pt;">
+
+						<TD > Distance parcourue </TD> 
+						<TD> <b> <% out.print(totalDistance);  %> </b>  </TD>
+
+					</TR>				
+					
+					<TR title="Total des pas" style="font-size: 11pt;">
+
+						<TD> Total des pas </TD> 
+						<TD><b> <% out.print(pasTotal);  %>  </b>  </TD>
+
+					</TR>
+					</tbody>
+				</table>
+
+
 
 				<br>
 				<div class="row"></div>

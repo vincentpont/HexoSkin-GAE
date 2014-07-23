@@ -259,7 +259,7 @@ public class RestInvokerDatastore {
 	 * 
 	 * @Param: String email
 	 * 
-	 * @Return: JSONObject containing a JSONArray with all the workouts
+	 * @Return: List containing all the workouts
 	 */
 	public List<String> getAllWorkoutByEmail(String email) {
 
