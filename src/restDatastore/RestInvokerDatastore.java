@@ -317,7 +317,7 @@ public class RestInvokerDatastore {
 				JSONObject childJSONObject = jsonMainArr.getJSONObject(i);
 				list.add(childJSONObject.getString("Date"));
 				list.add(childJSONObject.getString("Time"));
-				list.add(childJSONObject.getString("Distance"));
+				list.add(childJSONObject.getString("Distance").replaceAll("'", "")); // replace invalide characters
 				list.add(childJSONObject.getString("Calories"));
 				list.add(childJSONObject.getString("Speed"));
 				countRows++;
@@ -398,10 +398,7 @@ public class RestInvokerDatastore {
 		System.out.println(StringVitesses);
 
 		// Substring and parse the values into Double
-		listLatitudes = substringLists(StringLatitudes);
-		listLongitudes = substringLists(StringLongitudes);
-		listVitesses = substringLists(StringVitesses);
-		listAltitudes = substringLists(StringAltitudes);
+
 
 	}
 

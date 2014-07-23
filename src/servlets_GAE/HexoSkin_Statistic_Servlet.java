@@ -55,6 +55,7 @@ public class HexoSkin_Statistic_Servlet extends HttpServlet {
 		Double totalDistance = 0.0;
 		int k = 2; // first value at position 3
 
+
 		for (int i = 0; i < listWorkouts.size(); i++) {
 
 			if (k <= listWorkouts.size()) {

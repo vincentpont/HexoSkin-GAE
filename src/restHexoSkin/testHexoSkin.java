@@ -35,7 +35,7 @@ public class testHexoSkin {
 		 */
 		
 		// Delete
-		//rest.deleteWorkoutById("37478");
+		//rest.deleteWorkoutById("37810");
 		
 		
 		//  *** Pas total
@@ -59,6 +59,7 @@ public class testHexoSkin {
 
 		}
 			System.out.println("pasTotal " + pasTotal);
+			
 	}
 
 }
