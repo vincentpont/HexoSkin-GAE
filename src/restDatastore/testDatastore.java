@@ -48,46 +48,25 @@ public class testDatastore {
 		
 		// Get listofDouble data map, Get average speed
 		
-		/*
+		
 		String date = rest.getLastDateWorkout("vincentpont@gmail.com");
 		System.out.println(date);
-		rest.getDataMap("vincentpont@gmail.com", "2014.07.07.19:40");
+		rest.getDataMap("vincentpont@gmail.com", "2014.07.23.19:46");
 		Iterator<Double> iterator = rest.getListLatitudes().iterator(); 
 		while(iterator.hasNext()) {
 			System.out.println(iterator.next());
 			}
 	
-		List list = rest.getDataWorkoutByEmailAndDate("2014.07.07.19:40", "vincentpont@gmail.com");
+		List list = rest.getDataWorkoutByEmailAndDate("2014.07.23.19:46", "vincentpont@gmail.com");
 		
 		Iterator<String> iterator2 = list.iterator(); 
 		while(iterator2.hasNext()) {
 			System.out.println(iterator2.next());
 			}
 		
-		*/
+		System.out.println(rest.getListVitesses());
 		
-		List<String> listWorkouts = rest.getAllWorkoutByEmail("vincentpont@gmail.com");
 
-		Double totalCalorie = 0.0 ;
-		
-		Iterator<String> iterator2 = listWorkouts.iterator(); 
-		while(iterator2.hasNext()) {
-			System.out.println(iterator2.next());
-			}
-		
-		System.out.println("======================================");
-		
-		int j = 3 ; // first valu at position 3
-		
-		for(int i = 0 ; i <listWorkouts.size();i++){
-			
-			if(j <= listWorkouts.size()){
-			totalCalorie += Double.parseDouble(listWorkouts.get(j));
-			System.out.println("list: "+listWorkouts.get(j));
-			} 
-			j += 5 ;
-		}
-		System.out.println("Total :" + totalCalorie);
 
 	}
 

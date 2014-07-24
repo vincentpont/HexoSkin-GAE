@@ -395,10 +395,13 @@ public class RestInvokerDatastore {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		System.out.println(StringVitesses);
+
 
 		// Substring and parse the values into Double
-
+		listVitesses = substringLists(StringVitesses);
+		listAltitudes = substringLists(StringAltitudes);
+		listLatitudes = substringLists(StringLatitudes);
+		listLongitudes = substringLists(StringLongitudes);
 
 	}
 

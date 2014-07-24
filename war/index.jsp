@@ -88,6 +88,9 @@ String timeTotal  = (String) list.get(1);
     var arrayVentilation = [ <%= stringBufferVentilations.toString() %> ];
     var timeTotal =  '<%=timeTotal%>';
     var multiple;
+    
+    alert(arrayVitesses);
+    alert(arrayAltitudes);
 
     // Call method
 	modifyListFirstTime();

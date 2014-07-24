@@ -24,6 +24,7 @@
 
 <!-- Import login.js -->
 <script src="js/login.js"></script>
+<script src="js/profile.js"></script>
 
 </head>
 
@@ -83,23 +84,23 @@
 	List listUser = (List) request.getAttribute("listUser");
 %>
 
-	<form method="post" action="profile">
+	<form method="post" action="profile" onSubmit="return checkform(this);">
 		<div class="form-group">
 			<label for="email">Email address</label> <input width="100px"
-				type="email" disabled class="form-control" name="Email"
+				type="email" disabled class="form-control" name="Email" id="email"
 				value='<%=listUser.get(0)%>'>
 		</div>
 		<div class="form-group">
 			<label for="sexe">Sexe</label> <input width="100px" type="text"
-				class="form-control" name="Sexe" value='<%=listUser.get(1)%>'>
+				class="form-control" name="Sexe" id="sexe" value='<%=listUser.get(1)%>'>
 		</div>
 		<div class="form-group">
 			<label for="age">Age</label> <input width="100px" type="text"
-				class="form-control" name="Age" value='<%=listUser.get(2)%>'>
+				class="form-control" name="Age" id="age" value='<%=listUser.get(2)%>'>
 		</div>
 		<div class="form-group">
 			<label for="poids">Poids</label> <input width="100px" type="text"
-				class="form-control" name="Weight" value='<%=listUser.get(3)%>'>
+				class="form-control" name="Weight" id="poids" value='<%=listUser.get(3)%>'>
 		</div>
 		<button type='submit' class="btn btn-success" onClick="">
 			<b> Sauvegarder </b>
