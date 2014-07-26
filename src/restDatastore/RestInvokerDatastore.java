@@ -513,7 +513,6 @@ public class RestInvokerDatastore {
 		List listDates = rest.getAllWorkoutDates(email);
 
 		List<DatesComparator> list = new ArrayList<DatesComparator>();
-		Iterator<DatesComparator> it = list.iterator();
 
 		for (int i = 0; i < listDates.size(); i++) {
 			list.add(new DatesComparator((String) listDates.get(i)));

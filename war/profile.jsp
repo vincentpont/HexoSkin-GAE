@@ -16,7 +16,7 @@
 <link rel="shortcut icon" href="img/icoFav.png">
 
 
-<title>HexoSkin-Profile</title>
+<title>HexoSkin-Profil</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="bootstrap-3.1.1/dist/css/bootstrap.min.css">
@@ -44,7 +44,7 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="profile">Profile</a></li>
+					<li><a href="profile">Profil</a></li>
 					<li><a href="javascript:logout();">Logout</a></li>
 					<li><a href="about.jsp">About</a></li>
 				</ul>
@@ -63,7 +63,7 @@
 				</ul>
 				
 				<ul class="nav nav-sidebar">
-					<li><a href="statistic">Statistique</a></li>
+					<li><a href="statistic">Statistiques</a></li>
 				    <li><a href="definition.jsp">Définitions</a></li>
 		        </ul>
 			</div>
@@ -71,7 +71,7 @@
 
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<h1 class="page-header">
-					Profile <span style="font-size: 25pt;"
+					Profil <span style="font-size: 25pt;"
 						class="glyphicon glyphicon-user"></span>
 				</h1>
 

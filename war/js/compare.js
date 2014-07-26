@@ -627,7 +627,7 @@ function drawChartResp1() {
 		vAxis : {
 			title : 'Valeurs'
 		},
-		title : 'Capacité abdominale'
+		title : 'Capacité thoracique'
 	};
 
 	var chart = new google.visualization.AreaChart(document
@@ -856,7 +856,7 @@ function drawChartResp2() {
 		vAxis : {
 			title : 'Valeurs'
 		},
-		title : 'Capacité abdominale'
+		title : 'Capacité thoracique'
 	};
 
 	// Draw the chart

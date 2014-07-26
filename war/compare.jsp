@@ -14,32 +14,31 @@
 <script src="js/compare.js"></script>
 
 <!--  Get Variable Servlet -->
-<%  String lastDateWorkout = (String) request.getAttribute("lastDateWorkout"); %>
+<%  
+final String lastDateWorkout = (String) request.getAttribute("lastDateWorkout"); 
+final String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
+final String email = "vincentpont@gmail.com";
+final RestInvokerHexo restHEXO = new RestInvokerHexo(s1); 
+final RestInvokerDatastore restMap = new RestInvokerDatastore(); 
 
-
-<%
-String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
-RestInvokerHexo restHEXO = new RestInvokerHexo(s1); 
-RestInvokerDatastore restMap = new RestInvokerDatastore(); 
 String hexoDate1 = "" ;
 String hexoDateSub1 = "";
-List list1 = null ;
+List<String> list1 = null ;
 
 // Test if we have something in param 
 if(request.getParameter("date1") != null){
 	hexoDate1 = request.getParameter("date1");
-	restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
-	list1 = restMap.getDataWorkoutByEmailAndDate(hexoDate1, "vincentpont@gmail.com");
+	restMap.getDataMap(email, hexoDate1); 
+	list1 = restMap.getDataWorkoutByEmailAndDate(hexoDate1, email);
 	hexoDateSub1 = hexoDate1.substring(0, 10);
 	hexoDateSub1 = hexoDateSub1.replace('.', '-');
 	
 }
  // If not we show the last workout
 else if (request.getParameter("date1") == null){
-	hexoDate1 = lastDateWorkout; 
-	restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
-	list1 = restMap.getDataWorkoutByEmailAndDate(hexoDate1, "vincentpont@gmail.com");
-	hexoDateSub1 = hexoDate1.substring(0, 10);
+	restMap.getDataMap(email, lastDateWorkout); 
+	list1 = restMap.getDataWorkoutByEmailAndDate(lastDateWorkout, email);
+	hexoDateSub1 = lastDateWorkout.substring(0, 10);
 	hexoDateSub1 = hexoDateSub1.replace('.', '-');
 }
 
@@ -117,8 +116,8 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 	// Test if we have something in param 
 	if(request.getParameter("date2") != null){
 		hexoDate2 = request.getParameter("date2");
-		restMap.getDataMap("vincentpont@gmail.com", hexoDate2); 
-		list2 = restMap.getDataWorkoutByEmailAndDate(hexoDate2, "vincentpont@gmail.com");
+		restMap.getDataMap(email, hexoDate2); 
+		list2 = restMap.getDataWorkoutByEmailAndDate(hexoDate2, email);
 		hexoDateSub2 = hexoDate2.substring(0, 10);
 		hexoDateSub2 = hexoDateSub2.replace('.', '-');
 		
@@ -126,8 +125,8 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 	 // If not we show the last workout
 	else if (request.getParameter("date2") == null)	{
 		hexoDate2 = lastDateWorkout; 
-		restMap.getDataMap("vincentpont@gmail.com", hexoDate2); 
-		list2 = restMap.getDataWorkoutByEmailAndDate(hexoDate2, "vincentpont@gmail.com");
+		restMap.getDataMap(email, hexoDate2); 
+		list2 = restMap.getDataWorkoutByEmailAndDate(hexoDate2, email);
 		hexoDateSub2 = hexoDate2.substring(0, 10);
 		hexoDateSub2 = hexoDateSub2.replace('.', '-');
 	}
@@ -208,7 +207,7 @@ stringBufferVentilations2 = restMap.convertListToStringBufferInteger(listVentila
 
 <%
 // Trajet 1
-restMap.getDataMap("vincentpont@gmail.com", hexoDate1); 
+restMap.getDataMap(email, hexoDate1); 
 List<Double> listLatitude1 = restMap.getListLatitudes();
 List<Double> listLongitude1 = restMap.getListLongitudes();
 
@@ -219,7 +218,7 @@ stringBufferLat1 = restMap.convertListToStringBuffer(listLatitude1);
 stringBufferLong1 = restMap.convertListToStringBuffer(listLongitude1);
 
 // trajet 2
-restMap.getDataMap("vincentpont@gmail.com", hexoDate2); 
+restMap.getDataMap(email, hexoDate2); 
 List<Double> listLatitude2 = restMap.getListLatitudes();
 List<Double> listLongitude2 = restMap.getListLongitudes();
 
@@ -289,7 +288,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 			</div>
 			<div class="navbar-collapse collapse" >
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="profile">Profile</a></li>
+					<li><a href="profile">Profil</a></li>
 					<li><a href="javascript:logout();">Logout</a></li>
 					<li><a href="about.jsp">About</a></li>
 				</ul>
@@ -308,7 +307,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 				</ul>
 				
 				<ul class="nav nav-sidebar">
-					<li><a href="statistic">Statistique</a></li>
+					<li><a href="statistic">Statistiques</a></li>
 				    <li><a href="definition.jsp">Définitions</a></li>
 		        </ul>
 			</div>
@@ -324,8 +323,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 					<h3>Choisissez deux séances à comparer</h3>
 <br>				
 				    <%
-					RestInvokerDatastore rest =  new RestInvokerDatastore();
-					List listDates1 = rest.getAllDatesWorkoutSorted("vincentpont@gmail.com");
+					List listDates1 = restMap.getAllDatesWorkoutSorted(email);
 					Iterator<String> iterator1 = listDates1.iterator();
 					%>
 
@@ -351,20 +349,20 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 					// Test if we have something in param 
 					if(request.getParameter("date1") != null){
 						dateToShow1 = request.getParameter("date1");
-						listWorkout1 = rest.getDataWorkoutByEmailAndDate(dateToShow1,
-								"vincentpont@gmail.com");
-						rest.getDataMap("vincentpont@gmail.com", dateToShow1); 
+						listWorkout1 = restMap.getDataWorkoutByEmailAndDate(dateToShow1,
+								email);
+						restMap.getDataMap(email, dateToShow1); 
 					}
 				     // If not we show the last workout
 					else if(request.getParameter("date1") == null){
 						dateToShow1 = lastDateWorkout;
-						listWorkout1 = rest.getDataWorkoutByEmailAndDate(dateToShow1,
-								"vincentpont@gmail.com");
+						listWorkout1 = restMap.getDataWorkoutByEmailAndDate(dateToShow1,
+								email);
 						// Get data for altitude
-						rest.getDataMap("vincentpont@gmail.com", dateToShow1); 
+						restMap.getDataMap(email, dateToShow1); 
 					}
 					
-					List<Double> listAltitude = rest.getListAltitudes();
+					List<Double> listAltitude = restMap.getListAltitudes();
 
 				 %>   
 
@@ -377,33 +375,33 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
  
  <table class="table">
 				<TR>
-					<TD id="time1TD" title="Temps total." class="success">
+					<TD id="time1TD" title="Temps total" class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
 					 <span id="time1SP"  style="font-size:11pt; font-family:Verdana;"> <% out.print(listWorkout1.get(1)); %> </span>
 					
 					</TD> 
 						
-					<TD  id="dist1TD" title="Distance en mètre."  class="success">
+					<TD  id="dist1TD" title="Distance en mètres"  class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
 					 <span id="dist1SP" style="font-size:11pt; font-family:Verdana;"> <% out.print(listWorkout1.get(2)); %>  </span>
 								
 					</TD>
 						
-					<TD id="ca1TD" title="Calories brûlées." class="success">
+					<TD id="ca1TD" title="Calories brûlées" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
 					 <span id="ca1SP" style="font-size:11pt; font-family:Verdana;"> <% out.print(listWorkout1.get(3)); %> </span>
 					
 					</TD>
 						
-					<TD  id="speed1TD" title="Vitesse moyenne en km/h." class="success">
+					<TD  id="speed1TD" title="Vitesse moyenne en km/h" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
 					 <span id="speed1SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout1.get(4)); %> </span>	
 					
 					</TD>
 						
-					<TD title="Altitude moyenne en mètre." class="success">
+					<TD title="Altitude moyenne en mètres" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-signal"></span>	
-				    <span style="font-size:11pt; font-family:Verdana;"> &nbsp;<% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>	
+				    <span style="font-size:11pt; font-family:Verdana;"> &nbsp;<% out.print(restMap.getAltitudeAverage(listAltitude)); %> </span>	
 					
 					</TD>
 				</TR>
@@ -438,31 +436,31 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 					String avgVentilation1  = restHEXO.getAverageFromList(listVentilation1);
 					String ventilation1 = restHEXO.changeMltoLwith2Decimals(avgVentilation1); %>
 
-					<TD  id="puls1TD" title="Pulsation min moyenne." class="info">
+					<TD  id="puls1TD" title="Pulsation min moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-heart"></span>						
 					<span id="puls1SP" style="font-size:11pt; font-family:Verdana;"> <% out.print(restHEXO.getAverageFromList(listPulsation1));   %> </span>	
 					
 					</TD> 
 					
-					<TD  title="Total pas."  class="info">
+					<TD  title="Total pas"  class="info">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
 				    <span style="font-size:11pt; font-family:Verdana;">  <% out.print(listSteps1.get(listSteps1.size()-1));  %> </span>	
 								
 					</TD>
 					
-					<TD title="Volume Tidal moyen l/inspiration." class="info">
+					<TD title="Volume Tidal moyen l/inspiration" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> <%  out.print(volumTidal1);   %> </span>	
 					
 					</TD>
 					
-					<TD title="Respiration min moyenne." class="info">
+					<TD title="Respiration min moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> <% out.print(restHEXO.getAverageFromList(listBreathing1));   %> </span>	
 					
 					</TD>
 					
-					<TD title="Ventilation moyenne l/min." class="info">
+					<TD title="Ventilation moyenne l/min" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> <%  out.print(ventilation1);  %>  </span>	
 					
@@ -477,26 +475,26 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <br>
 						<div id="chart_div1" style="width: 100%; height: 400px;"></div>
 						
-						<button title="Cacher l'altitude." class="btn btn-default btn-sm"  style="margin-left:90px;" type="button" id="hideAlti1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>
-						<button title="Cacher la vitesse." class="btn btn-default btn-sm"  type="button" id="hideSpeed1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
-   						<button title="Voir tout." class="btn btn-default btn-sm" type="button" id="seeAll1"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+						<button title="Cacher l'altitude" class="btn btn-default btn-sm"  style="margin-left:90px;" type="button" id="hideAlti1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>
+						<button title="Cacher la vitesse" class="btn btn-default btn-sm"  type="button" id="hideSpeed1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
+   						<button title="Voir tout" class="btn btn-default btn-sm" type="button" id="seeAll1"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 
 <br>
 						<div id="chart_div3" style="width: 100%; height: 400px;"></div>
 <br>
-						<button title="Cacher la pulsation." class="btn btn-default btn-sm" style="margin-left:90px;" type="button" id="hidePulsation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-						<button title="Cacher la respiration." class="btn btn-default btn-sm"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
-   						<button title="Cacher la ventilation." class="btn btn-default btn-sm" type="button" id="hideVentilation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
+						<button title="Cacher la pulsation" class="btn btn-default btn-sm" style="margin-left:90px;" type="button" id="hidePulsation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+						<button title="Cacher la respiration" class="btn btn-default btn-sm"  type="button" id="hideRespiration1"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button>
+   						<button title="Cacher la ventilation" class="btn btn-default btn-sm" type="button" id="hideVentilation1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
  <br>
-   						<button title="Cacher le volume tidal." class="btn btn-default btn-sm" style="margin-left:165px; margin-top:8px;" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
-   						<button title="Voir tout." class="btn btn-default btn-sm"  style="margin-top:8px;"type="button" id="seeAll3"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+   						<button title="Cacher le volume tidal" class="btn btn-default btn-sm" style="margin-left:165px; margin-top:8px;" type="button" id="hideVolumeTidal1"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
+   						<button title="Voir tout" class="btn btn-default btn-sm"  style="margin-top:8px;"type="button" id="seeAll3"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 				</div>	
 
 					<div class="col-md-6">
 
 								
 					<% // Récupère une liste de ttes les dates
-					List listDates2 = rest.getAllDatesWorkoutSorted("vincentpont@gmail.com");
+					List listDates2 = restMap.getAllDatesWorkoutSorted(email);
 					Iterator iterator2 = listDates2.iterator();
 					%>
 
@@ -519,20 +517,19 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 					// Test if we have something in param 
 					if(request.getParameter("date2") != null){
 						dateToShow2 = request.getParameter("date2");
-						listWorkout2 = rest.getDataWorkoutByEmailAndDate(dateToShow2,
-								"vincentpont@gmail.com");
-						rest.getDataMap("vincentpont@gmail.com", dateToShow2); 
+						listWorkout2 = restMap.getDataWorkoutByEmailAndDate(dateToShow2,
+								email);
+						restMap.getDataMap(email, dateToShow2); 
 					}
 				     // If not we show the last workout
 					else if(request.getParameter("date2") == null){
 						dateToShow2 = lastDateWorkout;
-						listWorkout2 = rest.getDataWorkoutByEmailAndDate(dateToShow2,
-								"vincentpont@gmail.com");
+						listWorkout2 = restMap.getDataWorkoutByEmailAndDate(dateToShow2,
+								email);
 						// Get data for altitude
-						rest.getDataMap("vincentpont@gmail.com", dateToShow2); 
 					}
 				
-					List<Double> listAltitude2 = rest.getListAltitudes(); %>  		
+					List<Double> listAltitude2 = restMap.getListAltitudes(); %>  		
 
 <br>
 			    <span title="Date" style="font-size:20pt;" class="glyphicon glyphicon-calendar"></span>  &nbsp;
@@ -542,33 +539,33 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 
  <table class="table">
 				<TR>
-					<TD id="time2TD" title="Temps total." class="success">
+					<TD id="time2TD" title="Temps total" class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-time"></span> 
 					  <span id="time2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(1)); %> </span>
 					
 					</TD> 
 						
-					<TD id="dist2TD" title="Distance en mètre."  class="success">
+					<TD id="dist2TD" title="Distance en mètres"  class="success">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-sort"></span> 
 					 <span id="dist2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(2)); %>  </span>
 								
 					</TD>
 						
-					<TD id="ca2TD" title="Calories brûlées." class="success">
+					<TD id="ca2TD" title="Calories brûlées" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-fire"></span>	
 					 <span id="ca2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(3)); %> </span>
 					
 					</TD>
 						
-					<TD id="speed2TD" title="Vitesse moyenne en km/h." class="success">
+					<TD id="speed2TD" title="Vitesse moyenne en km/h" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-flash"></span>	
 					 <span id="speed2SP" style="font-size:11pt; font-family:Verdana;">  <% out.print(listWorkout2.get(4)); %> </span>	
 					
 					</TD>
 						
-					<TD title="Altitude moyenne en mètre." class="success">
+					<TD title="Altitude moyenne en mètres" class="success">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-signal"></span>	
-				    <span style="font-size:11pt; font-family:Verdana;"> <% out.print(rest.getAltitudeAverage(listAltitude2)); %> </span>	
+				    <span style="font-size:11pt; font-family:Verdana;"> <% out.print(restMap.getAltitudeAverage(listAltitude2)); %> </span>	
 					
 					</TD>
 				</TR>
@@ -602,25 +599,25 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 					String avgVentilation2  = restHEXO.getAverageFromList(listVentilation2);
 					String ventilation2 = restHEXO.changeMltoLwith2Decimals(avgVentilation2);%>
 		
-					<TD id="puls2TD" title="Pulsation moyenne." class="info">
+					<TD id="puls2TD" title="Pulsation moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-heart"></span>						
 					<span id="puls2SP"  style="font-size:11pt; font-family:Verdana;"><% out.print(restHEXO.getAverageFromList(listPulsation2));  %> </span>	
 					
 					</TD> 
 					
-					<TD  title="Total pas."  class="info">
+					<TD  title="Total pas"  class="info">
 					<span style="font-size:14pt;" class="glyphicon glyphicon-road"></span>						
 				    <span style="font-size:11pt; font-family:Verdana;"> &nbsp; <% out.print(listSteps2.get(listSteps2.size()-1));   %> </span>	
 								
 					</TD>
 					
-					<TD title="Volume Tidal moyen en l/inspiration." class="info">
+					<TD title="Volume Tidal moyen en l/inspiration" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-stats"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> &nbsp;<% out.print(volumTidal2);  %> </span>	
 					
 					</TD>
 					
-					<TD title="Respiration min moyenne." class="info">
+					<TD title="Respiration min moyenne" class="info">
 					<span  style="font-size:14pt;" class="glyphicon glyphicon-transfer"></span>						
 					<span style="font-size:11pt; font-family:Verdana;"> &nbsp;<% out.print(restHEXO.getAverageFromList(listBreathing2));   %> </span>	
 					
@@ -643,20 +640,20 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <br>
 						<div id="chart_div2" style="width: 100%; height: 400px;"> </div>
 						
-						<button title="Cacher l'altitude." class="btn btn-default btn-sm"  style="margin-left:90px;" type="button" id="hideAlti2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>
-						<button title="Cacher la vitesse." class="btn btn-default btn-sm"  type="button" id="hideSpeed2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
+						<button title="Cacher l'altitude" class="btn btn-default btn-sm"  style="margin-left:90px;" type="button" id="hideAlti2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Altitude</button>
+						<button title="Cacher la vitesse" class="btn btn-default btn-sm"  type="button" id="hideSpeed2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vitesse</button>
    						<button title="Voir tout." class="btn btn-default btn-sm" type="button" id="seeAll2"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 						
 <br>
 
 						<div id="chart_div4" style="width: 100%; height: 400px;"></div>	
 <br>
-						<button title="Cacher la pulsation." class="btn btn-default btn-sm" style="margin-left:90px;" type="button" id="hidePulsation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
-						<button title="Cacher la respiration." class="btn btn-default btn-sm"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button> 
-   						<button title="Cacher la ventilation." class="btn btn-default btn-sm" type="button" id="hideVentilation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
+						<button title="Cacher la pulsation" class="btn btn-default btn-sm" style="margin-left:90px;" type="button" id="hidePulsation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Pulsation</button>
+						<button title="Cacher la respiration" class="btn btn-default btn-sm"  type="button" id="hideRespiration2"  > <span class="glyphicon glyphicon-eye-close"></span>  &nbsp;Respi.</button> 
+   						<button title="Cacher la ventilation" class="btn btn-default btn-sm" type="button" id="hideVentilation2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Venti.</button>
 <br>
-   						<button title="Cacher le volume tidal." class="btn btn-default btn-sm" type="button" style="margin-left:165px; margin-top:8px;" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
-   						<button  title="Voir tout." class="btn btn-default btn-sm" style="margin-top:8px;" type="button" id="seeAll4"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
+   						<button title="Cacher le volume tidal" class="btn btn-default btn-sm" type="button" style="margin-left:165px; margin-top:8px;" id="hideVolumeTidal2"  >  <span class="glyphicon glyphicon-eye-close"></span>  &nbsp; Vol. Ti</button>
+   						<button  title="Voir tout" class="btn btn-default btn-sm" style="margin-top:8px;" type="button" id="seeAll4"  > &nbsp; <span class="glyphicon glyphicon-eye-open"></span> &nbsp;</button>
 				
 											
 					</div>
@@ -679,16 +676,16 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 							<TD>
 
 <br>
-							<button title="Enlever le chemin de la carte." type='button' class="btn btn-default btn-sm" onclick="removePaths();"><b>Enlever chemin</b></button>	
-							<button title="Enlever les points de départ et stop." type='button' class="btn btn-default btn-sm" onclick="removeStartEndPointPath1();"><b>Enlever départ/stop</b></button>	
+							<button title="Enlever le chemin de la carte" type='button' class="btn btn-default btn-sm" onclick="removePaths();"><b>Enlever chemin</b></button>	
+							<button title="Enlever les points de départ et stop" type='button' class="btn btn-default btn-sm" onclick="removeStartEndPointPath1();"><b>Enlever départ/stop</b></button>	
 <br>
 <br>
-							<button title="Montrer les différences de vitesses." style="margin-top:12pt;" type='button' class="btn btn-warning btn-sm" onclick="addDiffSpeed();"><b>Calculer vitesses</b></button>
+							<button title="Montrer les différences de vitesses" style="margin-top:12pt;" type='button' class="btn btn-warning btn-sm" onclick="addDiffSpeed();"><b>Calculer vitesses</b></button>
 <br>
-							<button title="Montrer les différences de pulsation." style="margin-top:12pt;" type='button' class="btn btn-danger btn-sm" onclick="addDiffHeart();"><b>Calculer pulsations</b></button>
+							<button title="Montrer les différences de pulsations" style="margin-top:12pt;" type='button' class="btn btn-danger btn-sm" onclick="addDiffHeart();"><b>Calculer pulsations</b></button>
 <br>
 <br>
-							<button  title="Recharger la carte et réinitialiser." style="margin-top:15pt;" type='button' class="btn btn-success" onclick="initialize();"> <b> <span class="glyphicon glyphicon-refresh"> </span>  &nbsp; Recharger  </b></button>
+							<button  title="Recharger la carte et réinitialiser" style="margin-top:15pt;" type='button' class="btn btn-success" onclick="initialize();"> <b> <span class="glyphicon glyphicon-refresh"> </span>  &nbsp; Recharger  </b></button>
 							</TD>
 						</TR>
 					</table>
@@ -704,29 +701,29 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 			<TR>
 			
 				<TD> <span style="font-style:italic; font-size:11pt;"> Première séance : &nbsp; </span>
-				<img title="Tracé du premier chemin de la séance parcourue." src="img/path.png"/> 
+				<img title="Tracé du premier chemin de la séance parcourue" src="img/path.png"/> 
 				
 <br>
 
 				<span style="font-style:italic; font-size:11pt;"> Deuxième séance : &nbsp; </span>
-				<img title="Tracé du deuxième chemin de la séance parcourue." src="img/path2.png"/> 
+				<img title="Tracé du deuxième chemin de la séance parcourue" src="img/path2.png"/> 
 				
 <br>
 			    
 			    <span style="font-style:italic; font-size:11pt;"> Point début/stop : </span>
-				<img title="Point de départ." src="img/dd-start.png"/> 
-				<img title="Point d'arrivée." src="img/dd-end.png"/> 
+				<img title="Point de départ" src="img/dd-start.png"/> 
+				<img title="Point d'arrivée" src="img/dd-end.png"/> 
 <br>				
 				<span style="font-style:italic; font-size:11pt;"> Degré de pulsation entre les deux séances :   </span>
-				<img title="Vitesse basse." src="img/h1.png"/>  <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>20</span>
-				<img title="Vitesse moyenne." src="img/h2.png"/> <span style="font-size:10pt;">entre 20 et 40</span>
-				<img title="Vitesse haute." src="img/h3.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %>40</span>
+				<img title="Vitesse basse" src="img/h1.png"/>  <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>20</span>
+				<img title="Vitesse moyenne" src="img/h2.png"/> <span style="font-size:10pt;">entre 20 et 40</span>
+				<img title="Vitesse haute" src="img/h3.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %>40</span>
 						
  <br>			
 				<span style="font-style:italic; font-size:11pt;"> Degré de vitesse entre les deux séances :  </span>
-				<img title="Vitesse basse." src="img/Speedlow.png"/> <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>3</span>  
-				<img title="Vitesse moyenne." src="img/SpeedMiddle.png"/> <span style="font-size:10pt;">entre 3 et 6 </span> 
-				<img title="Vitesse haute." src="img/SpeedMax.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %>6 </span>  
+				<img title="Vitesse basse" src="img/Speedlow.png"/> <span style="font-size:10pt;"><%out.print("<b>< </b>"); %>3</span>  
+				<img title="Vitesse moyenne" src="img/SpeedMiddle.png"/> <span style="font-size:10pt;">entre 3 et 6 </span> 
+				<img title="Vitesse haute" src="img/SpeedMax.png"/> <span style="font-size:10pt;"><%out.print("<b>> </b>"); %>6 </span>  
     
 		    
 			    </TD>

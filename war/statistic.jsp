@@ -47,7 +47,7 @@ String pasTotal = String.valueOf(request.getAttribute("pasTotal"));
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="profile">Profile</a></li>
+					<li><a href="profile">Profil</a></li>
 					<li><a href="javascript:logout();">Logout</a></li>
 					<li><a href="about.jsp">About</a></li>
 				</ul>
@@ -66,7 +66,7 @@ String pasTotal = String.valueOf(request.getAttribute("pasTotal"));
 				</ul>
 				
 				<ul class="nav nav-sidebar">
-					<li><a href="statistic">Statistique</a></li>
+					<li><a href="statistic">Statistiques</a></li>
 				    <li><a href="definition.jsp">Définitions</a></li>
 		        </ul>
 			</div>

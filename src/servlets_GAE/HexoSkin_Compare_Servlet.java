@@ -10,6 +10,7 @@ public class HexoSkin_Compare_Servlet extends HttpServlet {
 	
 	
 	private final String email = "vincentpont@gmail.com";
+	private RestInvokerDatastore restDatastore = new RestInvokerDatastore();
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
@@ -19,7 +20,7 @@ public class HexoSkin_Compare_Servlet extends HttpServlet {
 			*/
 		
 			// Call method to get last date of workouts and pass it to the page
-			RestInvokerDatastore restDatastore = new RestInvokerDatastore();
+
 			String lastDateWorkout = restDatastore.getLastDateWorkout(email);
 			
 			// If nothing in param we give the last date

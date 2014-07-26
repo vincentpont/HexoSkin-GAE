@@ -48,7 +48,7 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="profile">Profile</a></li>
+					<li><a href="profile">Profil</a></li>
 					<li><a href="javascript:logout();">Logout</a></li>
 					<li><a href="about.jsp">About</a></li>
 				</ul>
@@ -67,7 +67,7 @@
 				</ul>
 				
 				<ul class="nav nav-sidebar">
-					<li><a href="statistic">Statistique</a></li>
+					<li><a href="statistic">Statistiques</a></li>
 				    <li><a href="definition.jsp">Définitions</a></li>
 		        </ul>
 			</div>
@@ -81,7 +81,7 @@
 								<th title="Date"><span style="font-size: 18pt;"
 									class="glyphicon glyphicon-calendar"> Date</span></th>
 								<th title="Temps"><span style="font-size: 18pt;"
-									class="glyphicon glyphicon-time"> Time</span></th>
+									class="glyphicon glyphicon-time"> Temps</span></th>
 								<th title="Distance en mètre"><span
 									style="font-size: 18pt;" class="glyphicon glyphicon-sort">
 										Distance</span></th>

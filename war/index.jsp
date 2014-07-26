@@ -13,42 +13,48 @@
 <script src="js/login.js"></script>
 <script src="js/index.js"></script>
 
-<!--  Get Variable from Servlet -->
-<%  String lastDateWorkout = (String) request.getAttribute("lastDateWorkout"); %>
-
+<!--  Get Variable from Servlet or in Param -->
 <%  
-String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
-RestInvokerHexo restHexo = new RestInvokerHexo(s1); 
-RestInvokerDatastore restMap = new RestInvokerDatastore(); 
-
-String restHexoDate = "" ;
-List list ;
+final String lastDateWorkout = (String) request.getAttribute("lastDateWorkout"); 
+final String email = "vincentpont@gmail.com";
+final String s1 = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
+final RestInvokerHexo restHexo = new RestInvokerHexo(s1); 
+final RestInvokerDatastore restData = new RestInvokerDatastore(); 
+String paramDate = "";
 
 // Test if we have something in param 
 if(request.getParameter("date") != null){
-	restHexoDate = request.getParameter("date");
-	restMap.getDataMap("vincentpont@gmail.com", restHexoDate); 
-	list = restMap.getDataWorkoutByEmailAndDate(restHexoDate, "vincentpont@gmail.com");
-	restHexoDate = restHexoDate.substring(0, 10);
-	restHexoDate = restHexoDate.replace('.', '-');
+	paramDate = request.getParameter("date");	
+}
+
+
+String restHexoDate1 = "" ;
+List<String> list ;
+
+// Test if we have something in param 
+if(request.getParameter("date") != null){
+	restData.getDataMap(email, paramDate); 
+	list = restData.getDataWorkoutByEmailAndDate(paramDate, email);
+	restHexoDate1 = paramDate.substring(0, 10);
+	restHexoDate1 = restHexoDate1.replace('.', '-');
 	
 }
  // If not we show the last workout
 else{ 
-	restMap.getDataMap("vincentpont@gmail.com", lastDateWorkout); 
-	list = restMap.getDataWorkoutByEmailAndDate(lastDateWorkout, "vincentpont@gmail.com");
-	restHexoDate = lastDateWorkout.substring(0, 10);
-	restHexoDate = restHexoDate.replace('.', '-');
+	restData.getDataMap(email, lastDateWorkout); 
+	list = restData.getDataWorkoutByEmailAndDate(lastDateWorkout, email);
+	restHexoDate1 = lastDateWorkout.substring(0, 10);
+	restHexoDate1 = restHexoDate1.replace('.', '-');
 }
 
 
-List<String> listPulsations = restHexo.returnAllValueFromJson(restHexoDate, "19"); 
-List<String> listVolumeTidals = restHexo.returnAllValueFromJson(restHexoDate, "37"); 
-List<String> listRespirationFreqs = restHexo.returnAllValueFromJson(restHexoDate, "33"); 
-List<String> listVentilations = restHexo.returnAllValueFromJson(restHexoDate, "36"); 
+List<String> listPulsations = restHexo.returnAllValueFromJson(restHexoDate1, "19"); 
+List<String> listVolumeTidals = restHexo.returnAllValueFromJson(restHexoDate1, "37"); 
+List<String> listRespirationFreqs = restHexo.returnAllValueFromJson(restHexoDate1, "33"); 
+List<String> listVentilations = restHexo.returnAllValueFromJson(restHexoDate1, "36"); 
 
-List<Double> listVitesses = restMap.getListVitesses();
-List<Double> listAltitudes = restMap.getListAltitudes();
+List<Double> listVitesses = restData.getListVitesses();
+List<Double> listAltitudes = restData.getListAltitudes();
 
 
 StringBuffer stringBufferPulsation = new StringBuffer();
@@ -58,12 +64,12 @@ StringBuffer stringBufferRespirationFreq = new StringBuffer();
 StringBuffer stringBufferVentilations = new StringBuffer();
 StringBuffer stringBufferAltitudes = new StringBuffer();
 
-stringBufferPulsation = restMap.convertListToStringBufferInteger(listPulsations);
-stringBufferVitesses = restMap.convertListToStringBufferInteger(listVitesses);
-stringBufferVolumeTidal = restMap.convertListToStringBufferInteger(listVolumeTidals);
-stringBufferRespirationFreq = restMap.convertListToStringBufferInteger(listRespirationFreqs);
-stringBufferVentilations = restMap.convertListToStringBufferInteger(listVentilations);
-stringBufferAltitudes = restMap.convertListToStringBufferInteger(listAltitudes);
+stringBufferPulsation = restData.convertListToStringBufferInteger(listPulsations);
+stringBufferVitesses = restData.convertListToStringBufferInteger(listVitesses);
+stringBufferVolumeTidal = restData.convertListToStringBufferInteger(listVolumeTidals);
+stringBufferRespirationFreq = restData.convertListToStringBufferInteger(listRespirationFreqs);
+stringBufferVentilations = restData.convertListToStringBufferInteger(listVentilations);
+stringBufferAltitudes = restData.convertListToStringBufferInteger(listAltitudes);
 
 String timeTotal  = (String) list.get(1);
 
@@ -88,9 +94,6 @@ String timeTotal  = (String) list.get(1);
     var arrayVentilation = [ <%= stringBufferVentilations.toString() %> ];
     var timeTotal =  '<%=timeTotal%>';
     var multiple;
-    
-    alert(arrayVitesses);
-    alert(arrayAltitudes);
 
     // Call method
 	modifyListFirstTime();
@@ -101,22 +104,18 @@ String timeTotal  = (String) list.get(1);
 </script>
 
 	<%
-	String lastDateMap = "";
-	
 	// Test if we have something in param 
 	if(request.getParameter("date") != null){
-		lastDateMap = request.getParameter("date");
-		restMap.getDataMap("vincentpont@gmail.com", lastDateMap); 
+		restData.getDataMap(email, paramDate); 
 	} // If not we show the last workout
 	else{
-		lastDateMap = lastDateWorkout;
-		restMap.getDataMap("vincentpont@gmail.com", lastDateMap); 
+		restData.getDataMap(email, lastDateWorkout); 
 	}
 	
-	List<Double> listLatitude = restMap.getListLatitudes();
-	List<Double> listLongitude = restMap.getListLongitudes();
-	List<Double> listSpeed = restMap.getListVitesses();
-	List<Double> listAltitude = restMap.getListAltitudes();
+	List<Double> listLatitude = restData.getListLatitudes();
+	List<Double> listLongitude = restData.getListLongitudes();
+	List<Double> listSpeed = restData.getListVitesses();
+	List<Double> listAltitude = restData.getListAltitudes();
 
 	StringBuffer stringBufferLat = new StringBuffer();
 	StringBuffer stringBufferLong = new StringBuffer();
@@ -124,12 +123,10 @@ String timeTotal  = (String) list.get(1);
 	StringBuffer stringBufferAlti = new StringBuffer();
 	
 	// Convert to stringbuffer to pass the list in javascript array
-	stringBufferLat = restMap.convertListToStringBuffer(listLatitude);
-	stringBufferLong = restMap.convertListToStringBuffer(listLongitude);
-	stringBufferSpeed = restMap.convertListToStringBuffer(listSpeed);
-	stringBufferAlti = restMap.convertListToStringBuffer(listAltitude);
-
-	
+	stringBufferLat = restData.convertListToStringBuffer(listLatitude);
+	stringBufferLong = restData.convertListToStringBuffer(listLongitude);
+	stringBufferSpeed = restData.convertListToStringBuffer(listSpeed);
+	stringBufferAlti = restData.convertListToStringBuffer(listAltitude);
 	%>
 	
 	<!-- Google MAPS -->
@@ -196,7 +193,7 @@ String timeTotal  = (String) list.get(1);
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="profile">Profile</a></li>
+					<li><a href="profile">Profil</a></li>
 					<li><a href="javascript:logout();">Logout</a></li>
 					<li><a href="about.jsp">About</a></li>
 				</ul>
@@ -215,26 +212,25 @@ String timeTotal  = (String) list.get(1);
 				</ul>
 				
 				<ul class="nav nav-sidebar">
-					<li><a href="statistic">Statistique</a></li>
+					<li><a href="statistic">Statistiques</a></li>
 				    <li><a href="definition.jsp">Définitions</a></li>
 		        </ul>
 			</div>
 
 			<%
 				List<String> listWorkout  ;
-				String dateToShow = "" ;
-				 RestInvokerDatastore rest = new RestInvokerDatastore();
+				String dateToShow = "";
 				// Test if we have something in param 
 				if(request.getParameter("date") != null){
-					dateToShow = request.getParameter("date");
-					listWorkout = rest.getDataWorkoutByEmailAndDate(dateToShow,
-							"vincentpont@gmail.com");
+					dateToShow = paramDate;
+					listWorkout = restData.getDataWorkoutByEmailAndDate(paramDate,
+							email);
 				}
 			     // If not we show the last workout
 				else{
 					dateToShow = lastDateWorkout;
-					listWorkout = rest.getDataWorkoutByEmailAndDate(dateToShow,
-							"vincentpont@gmail.com");
+					listWorkout = restData.getDataWorkoutByEmailAndDate(lastDateWorkout,
+							email);
 				}
 			%>
 
@@ -254,89 +250,85 @@ String timeTotal  = (String) list.get(1);
 
 				<table class="table">
 				<TR>
-					<TD title="Temps total." class="success">
+					<TD title="Temps total" class="success">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-time"></span> 
 						<span style="font-size:14pt; font-family:Verdana;"> <% out.print(listWorkout.get(1)); %> </span>
 					</TD> 
 						
-					<TD  title="Distance en mètre."  class="success">				
+					<TD  title="Distance en mètres"  class="success">				
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-sort"></span> 
 						 <span style="font-size:14pt; font-family:Verdana;">  <% out.print(listWorkout.get(2)); %> </span>
 					</TD>
 						
-					<TD title="Calories brûlées." class="success">
+					<TD title="Calories brûlées" class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-fire"></span>	
 						 <span style="font-size:14pt; font-family:Verdana;">&nbsp; 
 						  <% out.print(listWorkout.get(3)); %></span>
 					</TD>
 						
-					<TD title="Vitesse moyenne en km/h". class="success">
+					<TD title="Vitesse moyenne en km/h" class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-flash"></span>	
 						 <span style="font-size:14pt; font-family:Verdana;">&nbsp;  <% out.print(listWorkout.get(4)); %> </span>	
 											
 					</TD>
 						
-					<TD title="Altitude moyenne en mètre." class="success">
+					<TD title="Altitude moyenne en mètres" class="success">
 						<span style="font-size:21pt;" class="glyphicon glyphicon-signal"></span>	
-						 <span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(rest.getAltitudeAverage(listAltitude)); %> </span>				
+						 <span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(restData.getAltitudeAverage(listAltitude)); %> </span>				
 					</TD>
 				</TR>
 		
 			<%	
-			String s1s = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354";
-			RestInvokerHexo restHEXO = new RestInvokerHexo(s1s);
-			String dateHEXO = "" ;
+			String restHexoDate2 = "" ;
 			
 			// Test if we have something in param 
 			if(request.getParameter("date") != null){
-				dateHEXO = request.getParameter("date");
-				dateHEXO = dateHEXO.substring(0, 10);
-				dateHEXO = dateHEXO.replace('.', '-');
+				restHexoDate2 = paramDate.substring(0, 10);
+				restHexoDate2 = restHexoDate2.replace('.', '-');
 			}
 		     // If not we show the last workout
 			else{
-				dateHEXO = lastDateWorkout;
-				dateHEXO = dateHEXO.substring(0, 10);
-				dateHEXO = dateHEXO.replace('.', '-');
+				restHexoDate2 = lastDateWorkout.substring(0, 10);
+				restHexoDate2 = restHexoDate2.replace('.', '-');
 			}
 			
-			List<String> listPulsation = restHEXO.returnAllValueFromJson(dateHEXO, "19");
-			List<String> listSteps = restHEXO.returnAllValueFromJson(dateHEXO, "52");
-			List<String> listBreathing = restHEXO.returnAllValueFromJson(dateHEXO, "33");
-			List<String> listVentilation = restHEXO.returnAllValueFromJson(dateHEXO, "36");
-			List<String> listVolumeTidal = restHEXO.returnAllValueFromJson(dateHEXO, "37");
+			List<String> listPulsation = restHexo.returnAllValueFromJson(restHexoDate2, "19");
+			List<String> listSteps = restHexo.returnAllValueFromJson(restHexoDate2, "52");
+			List<String> listBreathing = restHexo.returnAllValueFromJson(restHexoDate2, "33");
+			List<String> listVentilation = restHexo.returnAllValueFromJson(restHexoDate2, "36");
+			List<String> listVolumeTidal = restHexo.returnAllValueFromJson(restHexoDate2, "37");
 			
-			String avgTidal  = restHEXO.getAverageFromList(listVolumeTidal);
-			String volumTidal = restHEXO.changeMltoLwith2Decimals(avgTidal);
+			String avgTidal  = restHexo.getAverageFromList(listVolumeTidal);
+			String volumTidal = restHexo.changeMltoLwith2Decimals(avgTidal);
 			
-			String avgVentilation  = restHEXO.getAverageFromList(listVentilation);
-			String ventilation = restHEXO.changeMltoLwith2Decimals(avgVentilation);
+			String avgVentilation  = restHexo.getAverageFromList(listVentilation);
+			String ventilation = restHexo.changeMltoLwith2Decimals(avgVentilation);
 
 			%>
 			
 				<TR>
-					<TD title="Pulsation min moyenne." class="info">
+					<TD title="Pulsation min moyenne" class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-heart"></span>						
 						<span style="font-size:14pt; font-family:Verdana;">
-						<% out.print(restHEXO.getAverageFromList(listPulsation));  %> </span>	
+						<% out.print(restHexo.getAverageFromList(listPulsation));  %> </span>	
 					</TD> 
 					
-					<TD  title="Total pas." class="info">				
+					<TD  title="Total pas" class="info">				
 						<span style="font-size:21pt;" class="glyphicon glyphicon-road"></span>						
 					    <span style="font-size:14pt; font-family:Verdana;"><% out.print(listSteps.get(listSteps.size()-1));  %> </span>	
 					</TD>
 					
-					<TD title="Volume Tidal moyen l/inspiration." class="info">
+					<TD title="Volume Tidal moyen l/inspiration" class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-stats"></span>						
 						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(volumTidal);   %> </span>	
 					</TD>
 					
-					<TD title="Respiration min moyenne." class="info">
+					<TD title="Respiration min moyenne" class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-transfer"></span>						
-						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(restHEXO.getAverageFromList(listBreathing));   %> </span>	
+						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <% out.print(restHexo.getAverageFromList(listBreathing));   %> </span>	
 					</TD>
 					
-					<TD title="Ventilation moyenne l/min." class="info">
+					<TD title="Ventilation moyenne l/min" class="info">
 						<span  style="font-size:21pt;" class="glyphicon glyphicon-sort-by-attributes"></span>						
 						<span style="font-size:14pt; font-family:Verdana;">&nbsp; <%  out.print(ventilation);  %>  </span>	
 					</TD>

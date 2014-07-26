@@ -10,8 +10,8 @@ import java.util.Comparator;
  * Travail de bachelor 2014
  */
 
-@SuppressWarnings("rawtypes")
-public class withComparator implements Comparator {
+
+public class withComparator implements Comparator<Object> {
 
 	@Override
 	public int compare(Object o1, Object o2) {
@@ -24,9 +24,7 @@ public class withComparator implements Comparator {
 			if((r = p1.getDate().compareTo(p2.getDate()))== 0)
 				if((r = p1.getDate().compareTo(p2.getDate()))== 0)
 					return 0 ;
-			
-			
-		
+				
 		return r;
 	}
 	

@@ -35,9 +35,9 @@ public class testHexoSkin {
 		 */
 		
 		// Delete
-		//rest.deleteWorkoutById("37810");
+		rest.deleteWorkoutById("36747");
 		
-		
+		/*
 		//  *** Pas total
 		int pasTotal = 0 ;
 		List<String> listDate = data.getAllWorkoutDates("vincentpont@gmail.com");
@@ -59,7 +59,7 @@ public class testHexoSkin {
 
 		}
 			System.out.println("pasTotal " + pasTotal);
-			
+		*/	
 	}
 
 }
