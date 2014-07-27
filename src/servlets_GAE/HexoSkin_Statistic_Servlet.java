@@ -1,17 +1,20 @@
 package servlets_GAE;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import com.google.appengine.labs.repackaged.org.json.JSONObject;
-
 import restDatastore.RestInvokerDatastore;
 import restHexoSkin.RestInvokerHexo;
+
+/**
+ * Author : Pont Vincent 
+ * Class : Servlet to pass variables to statistic page
+ * Last modification : 25.07.2014
+ * Travail de bachelor 2014
+ */
 
 @SuppressWarnings("serial")
 public class HexoSkin_Statistic_Servlet extends HttpServlet {
@@ -68,6 +71,8 @@ public class HexoSkin_Statistic_Servlet extends HttpServlet {
 		
 		//  *** Pas total
 		int pasTotal = 0 ;
+		
+		@SuppressWarnings("unchecked")
 		List<String> listDate = data.getAllWorkoutDates(email);
 		String restHexoDate = "";
 

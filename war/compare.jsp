@@ -109,6 +109,7 @@ stringBufferVentilations1 = restMap.convertListToStringBufferInteger(listVentila
 </script>
 
 <%
+	@SuppressWarnings("rawtypes")
 	List list2 = null ;
 
 	String hexoDate2 = "";
@@ -324,7 +325,7 @@ stringBufferLong2 = restMap.convertListToStringBuffer(listLongitude2);
 <br>				
 				    <%
 					List listDates1 = restMap.getAllDatesWorkoutSorted(email);
-					Iterator<String> iterator1 = listDates1.iterator();
+					Iterator iterator1 = listDates1.iterator();
 					%>
 
 					<div class="col-md-6">	

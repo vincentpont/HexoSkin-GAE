@@ -413,6 +413,7 @@ public class RestInvokerDatastore {
 	 * 
 	 * @Return: JSONObject containing a JSONArray with all the dates
 	 */
+	@SuppressWarnings("rawtypes")
 	public List getAllWorkoutDates(String email)
 			throws UnsupportedEncodingException {
 
@@ -481,9 +482,11 @@ public class RestInvokerDatastore {
 	 * 
 	 * @Return : List of dates sorted
 	 */
+	@SuppressWarnings("rawtypes")
 	public List getAllDatesWorkoutSorted(String email)
 			throws UnsupportedEncodingException {
 
+		@SuppressWarnings("unchecked")
 		List<String> listDates = getAllWorkoutDates(email);
 
 		List<DatesComparator> list = new ArrayList<DatesComparator>();
@@ -510,6 +513,7 @@ public class RestInvokerDatastore {
 			throws UnsupportedEncodingException {
 
 		RestInvokerDatastore rest = new RestInvokerDatastore();
+		@SuppressWarnings("rawtypes")
 		List listDates = rest.getAllWorkoutDates(email);
 
 		List<DatesComparator> list = new ArrayList<DatesComparator>();
@@ -551,7 +555,7 @@ public class RestInvokerDatastore {
 	 *            of latitudes, longitudes, speed, altitude
 	 * @return StringBuffer
 	 */
-	public StringBuffer convertListToStringBuffer(List list) {
+	public StringBuffer convertListToStringBuffer(@SuppressWarnings("rawtypes") List list) {
 
 		StringBuffer stringBuffer = new StringBuffer();
 
@@ -573,7 +577,7 @@ public class RestInvokerDatastore {
 	 *          
 	 * @return StringBuffer
 	 */
-	public StringBuffer convertListToStringBufferInteger(List list) {
+	public StringBuffer convertListToStringBufferInteger(@SuppressWarnings("rawtypes") List list) {
 
 		StringBuffer stringBuffer = new StringBuffer();
 

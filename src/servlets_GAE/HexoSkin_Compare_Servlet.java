@@ -5,6 +5,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import restDatastore.RestInvokerDatastore;
 
+/**
+ * Author : Pont Vincent 
+ * Class : Servlet to pass variables to compare page
+ * Last modification : 25.07.2014
+ * Travail de bachelor 2014
+ */
+
 @SuppressWarnings("serial")
 public class HexoSkin_Compare_Servlet extends HttpServlet {
 	

@@ -3,7 +3,7 @@ package helper;
 import java.util.Comparator;
 
 /**
- * Class that sort a list of dates returned by datastore 
+ * Class that sort a list of dates returned by Datastore 
  * Created by Vincent Pont
  * 30.06.2014
  * Last modification 30.06.2014

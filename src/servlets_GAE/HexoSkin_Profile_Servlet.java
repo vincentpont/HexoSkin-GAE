@@ -9,6 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import restDatastore.RestInvokerDatastore;
 
+
+/**
+ * Author : Pont Vincent 
+ * Class : Servlet to pass variables to profile page
+ * Last modification : 25.07.2014
+ * Travail de bachelor 2014
+ */
+
 @SuppressWarnings("serial")
 public class HexoSkin_Profile_Servlet extends HttpServlet {
 
@@ -21,7 +29,7 @@ public class HexoSkin_Profile_Servlet extends HttpServlet {
 		* Call user by email 
 		*/
 		
-		List listUser = restDatastore.getUser(email);
+		List<String> listUser = restDatastore.getUser(email);
 		request.setAttribute("listUser", listUser);
 		request.getRequestDispatcher("profile.jsp").forward(request, response);
 			
