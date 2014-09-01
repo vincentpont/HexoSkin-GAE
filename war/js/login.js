@@ -28,15 +28,19 @@
 function signinCallback(authResult) {
 	if (authResult['access_token']) {
 		// Autorisation réussie
-		window.location = "/training";
+		
+	  window.location = "/training";
+		
 	} else if (authResult['error']) {
 		// Fail logged
 	}
 }
 
+
+
 /**
  * Method that test the token to know if the user is connected or not
- * For all others pages
+ * For all others pages for redirection if not logged
  * @param authResult
  */
 function signinCallbacks(authResult) {

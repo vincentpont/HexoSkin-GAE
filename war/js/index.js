@@ -17,11 +17,13 @@
  * Method that draw the charts
  */
 function drawChart() {
-
+	
 	// Call method to modify the lists
 	modifyListFirstTime();
 
+
 	multiple = arrayPulsation.length / arrayVitesses.length;
+
 	var average = 0.0;
 	var index = 0;
 	var position = 0;
@@ -326,6 +328,7 @@ function drawChart() {
 		hideRespiration.disabled = false;
 		hideVentilation.disabled = false;
 	}
+	
 
 }
 

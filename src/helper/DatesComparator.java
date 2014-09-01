@@ -19,8 +19,7 @@ public class DatesComparator {
 	public DatesComparator(String date) {
 		this.dateString = date;
 	}
-
-
+	
 	public String getDate() {
 		return dateString;
 	}

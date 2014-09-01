@@ -119,14 +119,15 @@ function addDiffHeart() {
 	
 	modifyLists(arrayPulsation1, arraySpeed1);
 	modifyLists(arrayPulsation2, arraySpeed1);
-
+	
+	
 	var markerDiffPuls;
 	var markerPosition;
 	var pulsImg;
 	var namePath;
 
 	// Test the differences vitesses
-	var diffPuls;
+	var diffPuls = 0;
 	var diffPulsStr;
 
 	var number;
@@ -144,8 +145,8 @@ function addDiffHeart() {
 
 	// Differences pulsation
 	for (var k = 0; k < arraySpeed1.length; k++) {
-
-		if (arrayPulsation1[number] > arrayPulsation2[number]) {
+		
+		if (arrayPulsation1[number] >= arrayPulsation2[number]) {
 			// Set position
 			markerPosition = new google.maps.LatLng(arrayLat1[k], arrayLong1[k]);
 			diffPuls = arrayPulsation1[number] - arrayPulsation2[number];
@@ -153,15 +154,16 @@ function addDiffHeart() {
 			// Test value of the differences to add the right icon img
 			if (diffPuls <= 20) {
 				pulsImg = 'img/h1.png';
-			} else if (diffPuls > 20 && diffPuls <= 40) {
+			} else if (diffPuls > 20 && diffPuls <= 50) {
 				pulsImg = 'img/h2.png';
-			} else if (diffPuls > 40) {
+			} else if (diffPuls > 50) {
 				pulsImg = 'img/h3.png';
 			}
 
 			diffPulsStr = diffPuls.toString() + ' puls.';
 			namePath = "Trajet 1";
-		} else {
+			
+		} else if (arrayPulsation1[number] <= arrayPulsation2[number]) {
 			markerPosition = new google.maps.LatLng(arrayLat2[k], arrayLong2[k]);
 			diffPuls = arrayPulsation2[number] - arrayPulsation1[number];
 
@@ -177,6 +179,8 @@ function addDiffHeart() {
 			diffPulsStr = diffPuls.toString() + ' puls.';
 			namePath = "Trajet 2";
 		}
+
+
 
 		// Now add the content of the popup
 		var contentStringPuls = '<div id="content">'
@@ -206,10 +210,8 @@ function addDiffHeart() {
 		google.maps.event.addListener(markerDiffPuls, 'click', function() {
 			this.infowindow.open(map, this);
 		});
-
-		// show only if there is a differences
-
-		number += multi;
+		
+		number += multi;	
 		markerDiffPuls.setMap(map);
 	}
 }
@@ -293,7 +295,7 @@ function modifyLists(arrayPulsations, arraySpeeds) {
  * Method to add differences of Speeds on the path
  */
 function addDiffSpeed() {
-
+	
 	// Differences vitesses
 	for (var k = 0; k < arraySpeed1.length; k++) {
 
@@ -306,7 +308,7 @@ function addDiffSpeed() {
 		var diffSpeeds;
 		var diffSpeedStr;
 
-		if (arraySpeed1[k] > arraySpeed2[k]) {
+		if (arraySpeed1[k] >= arraySpeed2[k]) {
 
 			// Set position
 			markerPosition = new google.maps.LatLng(arrayLat1[k], arrayLong1[k]);
@@ -324,7 +326,7 @@ function addDiffSpeed() {
 
 			diffSpeedStr = diffSpeeds.toString()+' km/h';
 			namePath = "Trajet 1";
-		} else {
+		} else if (arraySpeed2[k] > arraySpeed1[k] ){
 
 			markerPosition = new google.maps.LatLng(arrayLat2[k], arrayLong2[k]);
 			diffSpeeds = arraySpeed2[k] - arraySpeed1[k];
@@ -342,6 +344,7 @@ function addDiffSpeed() {
 			diffSpeedStr = diffSpeeds.toString() + ' km/h';
 			namePath = "Trajet 2";
 		}
+
 
 		// Now add the content of the popup
 		var contentStringSpeeds = '<div id="content">'

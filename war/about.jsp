@@ -70,9 +70,9 @@
 				style="font-size: 12pt;">
 				<h1 class="page-header">A propos</h1>
 
-				<p>Mapper l'effort grâce à HexoSkin.</p>
-				<p>Travail de bachelor 2014</p>
-				<p>Étudiant : Vincent Point</p>
+				<p>Mapper l'effort grâce au HexoSkin.</p>
+				<p>Travail de Bachelor 2014</p>
+				<p>Étudiant : Vincent Pont</p>
 				<p>Professeur responsable : Monsieur Michael Schumacher</p>
 				<p>HES-SO Valais</p>
 

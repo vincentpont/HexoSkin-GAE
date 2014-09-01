@@ -92,7 +92,7 @@ public class RestInvokerDatastore {
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Authorization", basicAuth);
 
-			if (conn.getResponseCode() != 200) {
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
@@ -166,7 +166,7 @@ public class RestInvokerDatastore {
 			conn.setRequestProperty("Authorization", basicAuth);
 
 			
-			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204 ) {
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
@@ -209,7 +209,7 @@ public class RestInvokerDatastore {
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Authorization", basicAuth);
 
-			if (conn.getResponseCode() != 200) {
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
@@ -282,7 +282,7 @@ public class RestInvokerDatastore {
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Authorization", basicAuth);
 
-			if (conn.getResponseCode() != 200) {
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
@@ -353,7 +353,7 @@ public class RestInvokerDatastore {
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Authorization", basicAuth);
 
-			if (conn.getResponseCode() != 200) {
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
@@ -431,7 +431,7 @@ public class RestInvokerDatastore {
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Authorization", basicAuth);
 
-			if (conn.getResponseCode() != 200) {
+			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 204) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
@@ -512,9 +512,8 @@ public class RestInvokerDatastore {
 	public String getLastDateWorkout(String email)
 			throws UnsupportedEncodingException {
 
-		RestInvokerDatastore rest = new RestInvokerDatastore();
 		@SuppressWarnings("rawtypes")
-		List listDates = rest.getAllWorkoutDates(email);
+		List listDates = getAllWorkoutDates(email);
 
 		List<DatesComparator> list = new ArrayList<DatesComparator>();
 
@@ -524,9 +523,8 @@ public class RestInvokerDatastore {
 
 		// Sort
 		Collections.sort(list, new withComparator());
-
-		DatesComparator date = list.get(list.size() - 1);
-		String lastDate = date.toString();
+		
+		String lastDate = list.get(list.size() - 1).toString();
 
 		return lastDate;
 	}

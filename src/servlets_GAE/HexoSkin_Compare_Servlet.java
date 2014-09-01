@@ -1,9 +1,12 @@
 package servlets_GAE;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
+
 import restDatastore.RestInvokerDatastore;
+import restHexoSkin.RestInvokerHexo;
 
 /**
  * Author : Pont Vincent 
@@ -18,6 +21,8 @@ public class HexoSkin_Compare_Servlet extends HttpServlet {
 	
 	private final String email = "vincentpont@gmail.com";
 	private RestInvokerDatastore restDatastore = new RestInvokerDatastore();
+	private final String url = "https://api.hexoskin.com/api/v1/record/?startTimestamp__gte=1404205354" ;
+	private RestInvokerHexo restHexo = new RestInvokerHexo(url);
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {

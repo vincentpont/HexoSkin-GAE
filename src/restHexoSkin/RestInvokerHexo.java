@@ -31,7 +31,7 @@ public class RestInvokerHexo {
 	private String userpass;
 	private String basicAuth;
 	private String urlIDAndDatatype;
-	private final String username = "bruno.alves@hevs.ch";
+	private final String username = "Bruno.Alves@hevs.ch";
 	private final String password = "$hes-so2014!";
 
 	// Constructor emtpy
@@ -44,6 +44,7 @@ public class RestInvokerHexo {
 		userpass = username + ":" + password;
 		basicAuth = "Basic "
 				+ new String(new Base64().encode(userpass.getBytes()));
+		
 		getJSONObjectData();
 
 	}
@@ -60,8 +61,8 @@ public class RestInvokerHexo {
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Authorization", basicAuth);
 
-
-			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 400) {
+			
+			if (conn.getResponseCode() >= 400) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
@@ -107,7 +108,7 @@ public class RestInvokerHexo {
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Authorization", basicAuth);
 
-			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 400) {
+			if (conn.getResponseCode() >= 400) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
@@ -311,7 +312,7 @@ public class RestInvokerHexo {
 			conn.setRequestProperty("Authorization", basicAuth);
 
 
-			if (conn.getResponseCode() != 200 && conn.getResponseCode() != 400) {
+			if (conn.getResponseCode() >= 400) {
 				throw new RuntimeException("Failed, HTTP error code : "
 						+ conn.getResponseCode() + " "
 						+ conn.getResponseMessage());
